@@ -1369,7 +1369,7 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   color: var(--color-text);
   line-height: 1.55;
   resize: vertical;
-  min-height: 130px;
+  min-height: 104px;
   transition: border-color var(--transition), box-shadow var(--transition);
 }
 .form-row textarea:focus {
