@@ -1124,12 +1124,14 @@ h3 { font-size: 1.15rem; font-weight: 600; }
 /* ---------------------------------------------------------
    Scroll reveal animations
 --------------------------------------------------------- */
-.reveal {
+/* Scoped to html.js so the page is never blank when JavaScript is
+   unavailable or fails to load. The class is set at the top of script.js. */
+.js .reveal {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.7s ease, transform 0.7s ease;
 }
-.reveal.is-visible {
+.js .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
@@ -1339,6 +1341,21 @@ h3 { font-size: 1.15rem; font-weight: 600; }
 .btn-filled:hover { transform: none; box-shadow: none; }
 .btn:disabled { cursor: not-allowed; }
 .btn:disabled:hover { transform: none; }
+
+/* ---- Confirmation shown after the application is emailed ---- */
+.apply-sent {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 30px;
+  padding: 18px 22px;
+  border-radius: var(--radius-md);
+  background: rgba(30, 140, 99, 0.1);
+  border-left: 4px solid var(--color-success);
+  color: var(--color-text);
+}
+.apply-sent[hidden] { display: none; }
+.apply-sent svg { color: var(--color-success); flex-shrink: 0; margin-top: 1px; }
 
 /* ---- Application modal ----
    The form is a popup now, so the page itself stays compact. The base
