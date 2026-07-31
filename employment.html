@@ -85,6 +85,47 @@
         </div>
 
         <ul class="job-grid reveal" id="job-grid">
+          <li class="job-card" data-role="Freelancer / Part-Timer" data-variant="experienced">
+            <div class="job-card-top">
+              <h3 id="job-freelance-title">Freelancer / Part-Timer</h3>
+              <span class="job-status job-status--open">Available</span>
+            </div>
+            <p class="job-card-desc">
+              Take on jobs as they come, around your own schedule. Suited to
+              technicians already working who want extra site work.
+            </p>
+            <ul class="job-meta">
+              <li>Part-time</li>
+              <li>Flexible hours</li>
+              <li>Per-project</li>
+            </ul>
+            <button type="button" class="btn btn-primary btn-block js-apply"
+                    data-role="Freelancer / Part-Timer" data-variant="experienced"
+                    aria-describedby="job-freelance-title">
+              Apply Now
+            </button>
+          </li>
+
+          <li class="job-card" data-role="Office / Admin" data-variant="office">
+            <div class="job-card-top">
+              <h3 id="job-office-title">Office / Admin</h3>
+              <span class="job-status job-status--open">Available</span>
+            </div>
+            <p class="job-card-desc">
+              Keep scheduling, records, and client communication running smoothly
+              from our office. Organised, steady, and good with people.
+            </p>
+            <ul class="job-meta">
+              <li>Full-time</li>
+              <li>Office-based</li>
+            </ul>
+            <button type="button" class="btn btn-primary btn-block js-apply"
+                    data-role="Office / Admin" data-variant="office"
+                    aria-describedby="job-office-title">
+              Apply Now
+            </button>
+          </li>
+
           <li class="job-card" data-role="Experienced Technician" data-variant="experienced">
             <div class="job-card-top">
               <h3 id="job-experienced-title">Experienced Technician</h3>
@@ -125,45 +166,25 @@
             </button>
           </li>
 
-          <li class="job-card" data-role="Office / Admin" data-variant="office">
+          <li class="job-card job-card--filled" data-role="Branch Manager" aria-disabled="true">
             <div class="job-card-top">
-              <h3 id="job-office-title">Office / Admin</h3>
-              <span class="job-status job-status--open">Available</span>
-            </div>
-            <p class="job-card-desc">
-              Keep scheduling, records, and client communication running smoothly
-              from our office. Organised, steady, and good with people.
-            </p>
-            <ul class="job-meta">
-              <li>Full-time</li>
-              <li>Office-based</li>
-            </ul>
-            <button type="button" class="btn btn-primary btn-block js-apply"
-                    data-role="Office / Admin" data-variant="office"
-                    aria-describedby="job-office-title">
-              Apply Now
-            </button>
-          </li>
-
-          <li class="job-card job-card--filled" data-role="Service Coordinator" aria-disabled="true">
-            <div class="job-card-top">
-              <h3 id="job-coordinator-title">Service Coordinator</h3>
+              <h3 id="job-branch-title">Branch Manager</h3>
               <span class="job-status job-status--filled">Filled</span>
             </div>
             <p class="job-card-desc">
-              Coordinates technician dispatch and job schedules. This role has been
-              filled &mdash; check back for future openings.
+              Runs day-to-day operations, staffing, and client accounts for a branch.
+              This role has been filled &mdash; check back for future openings.
             </p>
             <ul class="job-meta">
               <li>Full-time</li>
               <li>Office-based</li>
             </ul>
             <button type="button" class="btn btn-block btn-filled" disabled
-                    aria-describedby="job-coordinator-title">
+                    aria-describedby="job-branch-title">
               Position Full
             </button>
           </li>
-        </ul>
+</ul>
       </div>
     </section>
 

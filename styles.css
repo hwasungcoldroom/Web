@@ -1289,9 +1289,32 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   white-space: nowrap;
   flex-shrink: 0;
 }
+/* "Available" pulses to draw the eye. Kept in the green family rather than
+   flashing red — red on an open role would read as "unavailable". The ring
+   expanding outwards is what makes it register as live. Same 1.6s easing as
+   the nav link, well clear of the 3-flashes-per-second seizure threshold. */
 .job-status--open {
   color: var(--color-success);
   background: rgba(30, 140, 99, 0.12);
+  animation: availablePulse 1.6s ease-in-out infinite;
+}
+@keyframes availablePulse {
+  0%, 100% {
+    background: rgba(30, 140, 99, 0.12);
+    color: var(--color-success);
+    box-shadow: 0 0 0 0 rgba(30, 140, 99, 0.5);
+  }
+  50% {
+    background: rgba(30, 140, 99, 0.32);
+    color: #10553A;
+    box-shadow: 0 0 0 6px rgba(30, 140, 99, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .job-status--open {
+    animation: none;
+    background: rgba(30, 140, 99, 0.22);
+  }
 }
 .job-status--filled {
   color: var(--color-text-muted);
