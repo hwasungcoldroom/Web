@@ -28,10 +28,13 @@ const FROM_DEFAULT = 'Hwasung Careers <onboarding@resend.dev>';
 const MAX_CV_BYTES = 3 * 1024 * 1024;
 const ALLOWED_EXT  = /\.(pdf|docx)$/i;
 
+// Must match the data-role values on the job cards in employment.html.
+// A role missing from this list is rejected as an invalid position.
 const POSITIONS = [
+  'Freelancer / Part-Timer',
+  'Office / Admin',
   'Experienced Technician',
-  'No-Experience Technician',
-  'Office / Admin'
+  'No-Experience Technician'
 ];
 
 function escapeHtml(value) {
