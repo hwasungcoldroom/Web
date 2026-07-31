@@ -1650,3 +1650,32 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   background-size: contain;
 }
 .brand-mark img { visibility: hidden; }
+
+
+/* =========================================================
+   "WE'RE HIRING" — Employment nav link
+   Pulses between the brand blue and red to pull the eye towards it.
+
+   Deliberately a smooth 1.8s fade rather than a hard on/off blink:
+   anything flashing more than three times a second is a seizure risk
+   (WCAG 2.3.1), and a hard blink also reads as a broken page rather
+   than an invitation. Switched off for visitors who ask for reduced
+   motion, where it falls back to solid red so it still stands out.
+   ========================================================= */
+.main-nav a[href="employment.html"] {
+  animation: hiringPulse 1.8s ease-in-out infinite;
+  font-weight: 700;
+}
+@keyframes hiringPulse {
+  0%, 100% { color: var(--color-primary); }
+  50%      { color: #D32F2F; }
+}
+/* The underline that marks the current page follows the text colour */
+.main-nav a[href="employment.html"]::after { background: currentColor; }
+
+@media (prefers-reduced-motion: reduce) {
+  .main-nav a[href="employment.html"] {
+    animation: none;
+    color: #D32F2F;
+  }
+}

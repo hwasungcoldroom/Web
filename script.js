@@ -469,8 +469,7 @@
   var BASE = 238;          // y of the bottom of the mercury column
   var HOLD = 2600;         // ms paused at each temperature
   var MOVE = 1100;         // ms travelling between temperatures
-  // y positions matching the tick marks: 0, -20, -50
-  var STOPS = [30, 106, 220];
+  var STOPS = [30, 98, 220];        // y positions for 0, -18 and -50
 
   function setLevel(y) {
     column.setAttribute('y', y);
