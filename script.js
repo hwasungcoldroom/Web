@@ -716,7 +716,9 @@
   /* ---------- submit ---------- */
 
   form.addEventListener('submit', function (event) {
-    event.preventDefault();
+    // Note: default is NOT prevented up here. It is prevented only when the
+    // form is invalid, or when no endpoint is configured — otherwise the
+    // browser must be allowed to POST, since that is what carries the CV.
 
     // Evaluate every field so all messages appear at once
     var checks = [
@@ -730,14 +732,25 @@
     var ok = checks.indexOf(false) === -1;
 
     if (!ok) {
+      event.preventDefault();
       var firstBad = form.querySelector('input[aria-invalid="true"], textarea[aria-invalid="true"]');
       if (firstBad) firstBad.focus();
       return;
     }
 
-    successBox.hidden = true;
-    submitBtn.setAttribute('data-loading', 'true');
-    submitBtn.disabled = true;
+    // Everything valid. If a real endpoint is configured, let the browser do a
+    // normal POST — that is what carries the CV file. The applicant lands on
+    // the `_next` URL afterwards, which shows the confirmation banner.
+    if (form.getAttribute('action')) {
+      successBox.hidden = true;
+      submitBtn.setAttribute('data-loading', 'true');
+      submitBtn.disabled = true;
+      return;                       // no preventDefault: the form submits
+    }
+
+    // No endpoint configured — fall back to a local confirmation so the flow
+    // can still be demonstrated. Nothing is sent in this branch.
+    event.preventDefault();
 
     var experience = [];
     if (!expBlock.hidden) {
@@ -745,7 +758,7 @@
       for (var i = 0; i < picked.length; i++) experience.push(picked[i].value);
     }
 
-    var payload = {
+    console.log('[Application not sent — no action set on the form]', {
       position:   positionIn.value,
       firstName:  document.getElementById('firstName').value.trim(),
       lastName:   document.getElementById('lastName').value.trim(),
@@ -754,25 +767,11 @@
       experience: experience,
       details:    details.value.trim(),
       cv:         fileInput.files[0] ? fileInput.files[0].name : null
-    };
+    });
 
-    // ---------------------------------------------------
-    // BACKEND INTEGRATION POINT
-    // Like the booking form, this has no server behind it yet.
-    // The file needs a real upload endpoint — send the form as
-    // multipart/form-data rather than JSON, for example:
-    //
-    //   fetch('https://your-backend.example.com/api/apply', {
-    //     method: 'POST',
-    //     body: new FormData(form)
-    //   })
-    //
-    // Until then this shows the confirmation locally so the flow
-    // can be demonstrated. NOTE: nothing is actually sent, and no
-    // one is notified of an application.
-    // ---------------------------------------------------
+    submitBtn.setAttribute('data-loading', 'true');
+    submitBtn.disabled = true;
     window.setTimeout(function () {
-      console.log('[Application submitted — no backend connected]', payload);
       form.reset();
       resetUpload();
       updateWordCount();
@@ -782,4 +781,17 @@
       submitBtn.disabled = false;
     }, 700);
   });
+
+  /* Applicant returning from the mail service: confirm, then tidy the URL so a
+     refresh does not show the message again. */
+  (function () {
+    if (window.location.search.indexOf('sent=1') === -1) return;
+    var sent = document.getElementById('apply-sent');
+    if (!sent) return;
+    sent.hidden = false;
+    sent.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  })();
 })();
