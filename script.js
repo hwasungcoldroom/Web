@@ -1,3 +1,20 @@
+/* ---------------------------------------------------------
+   FAILSAFE — runs before anything else.
+   Content that animates in is hidden by `.reveal { opacity: 0 }` and only
+   JavaScript ever reveals it. If this file fails to load, or errors partway,
+   the page would otherwise stay blank. Two protections:
+     1. The hiding rule is scoped to `html.js`, set below. No JS = no hiding.
+     2. This timer reveals everything after 4s regardless, in case the script
+        starts but breaks before the observer is wired up.
+   --------------------------------------------------------- */
+(function () {
+  document.documentElement.className += ' js';
+  window.setTimeout(function () {
+    var els = document.querySelectorAll('.reveal:not(.is-visible)');
+    for (var i = 0; i < els.length; i++) els[i].classList.add('is-visible');
+  }, 4000);
+})();
+
 /* =========================================================
    HWASUNG REFRIGERATION — SCRIPT.JS
    Shared by every page. Handles the mobile nav, scroll
