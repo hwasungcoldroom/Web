@@ -73,6 +73,17 @@
     <!-- ============ OPEN POSITIONS ============ -->
     <section id="open-positions" class="section">
       <div class="container">
+        <div class="apply-sent" id="apply-sent" role="status" hidden>
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" aria-hidden="true">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/>
+          </svg>
+          <span>
+            <strong>Application sent.</strong>
+            Thanks — we&rsquo;ve received it and will be in touch by phone or email.
+          </span>
+        </div>
+
         <div class="section-head reveal">
           <p class="eyebrow">Now Hiring</p>
           <h2>Open Positions</h2>
@@ -241,7 +252,26 @@
         </button>
       </div>
 
-      <form id="apply-form" novalidate enctype="multipart/form-data">
+      <!-- ===================================================================
+           WHERE APPLICATIONS ARE SENT
+           The `action` below is the only line that decides this. It posts the
+           form (CV attached) to FormSubmit, which forwards it to the address
+           in the URL. To change the recipient, change the address in `action`.
+           To move to your own backend later, swap the whole URL.
+           =================================================================== -->
+          <form id="apply-form" novalidate
+                method="POST"
+                enctype="multipart/form-data"
+                action="https://formsubmit.co/hwasungcoldroom@gmail.com">
+
+            <!-- Settings read by FormSubmit, not shown to the applicant -->
+            <input type="hidden" name="_subject" value="New job application — Hwasung Refrigeration">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="https://www.hwasung1996.com/employment.html?sent=1">
+            <!-- Spam trap: real people never fill this in, bots usually do -->
+            <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
+
             <input type="hidden" name="position" id="apply-position" value="">
 
             <div class="form-grid">
