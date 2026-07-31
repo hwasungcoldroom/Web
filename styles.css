@@ -1340,6 +1340,56 @@ h3 { font-size: 1.15rem; font-weight: 600; }
 .btn:disabled { cursor: not-allowed; }
 .btn:disabled:hover { transform: none; }
 
+/* ---- Application modal ----
+   The form is a popup now, so the page itself stays compact. The base
+   .modal-panel already caps height at 90vh and scrolls, which the taller
+   application form needs. */
+.modal-panel--apply {
+  max-width: 640px;
+  padding: 32px;
+  text-align: left;
+}
+.modal-panel--apply .apply-panel-head { margin-top: 4px; padding-right: 44px; }
+.modal-panel--apply .form-row:last-of-type { margin-bottom: 0; }
+
+/* ---- Free-text detail field ---- */
+.form-row--notes { margin-bottom: 4px; }
+.notes-hint {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin: -2px 0 2px;
+}
+.form-row textarea {
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: #fff;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--color-text);
+  line-height: 1.55;
+  resize: vertical;
+  min-height: 130px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.form-row textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(30, 90, 140, 0.15);
+}
+.notes-footer { display: flex; justify-content: flex-end; }
+.word-count {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--color-text-muted);
+}
+.word-count.is-near { color: #B26A00; }
+.word-count.is-over { color: var(--color-error); font-weight: 600; }
+.form-row textarea.is-over {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 3px rgba(179, 53, 42, 0.14);
+}
+
 /* ---- Prompt shown before a role is chosen ---- */
 .apply-empty {
   text-align: center;
@@ -1555,6 +1605,7 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   .form-grid { grid-template-columns: 1fr; gap: 0; }
   .apply-panel { padding: 26px 20px; }
   .apply-panel-head { flex-direction: column; align-items: flex-start; }
+  .modal-panel--apply { padding: 24px 18px; max-height: 92vh; }
 }
 
 @media (max-width: 480px) {
