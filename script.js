@@ -482,3 +482,265 @@
 
   window.setTimeout(travel, HOLD);
 })();
+
+
+/* ---------------------------------------------------
+   Employment page
+   One application form that reshapes itself for the
+   chosen role. Runs only on employment.html; every
+   element lookup is guarded so other pages skip it.
+   --------------------------------------------------- */
+(function () {
+  var panel = document.getElementById('apply-panel');
+  var form = document.getElementById('apply-form');
+  if (!panel || !form) return;
+
+  var grid        = document.getElementById('job-grid');
+  var empty       = document.getElementById('apply-empty');
+  var roleName    = document.getElementById('apply-role-name');
+  var positionIn  = document.getElementById('apply-position');
+  var changeBtn   = document.getElementById('apply-change');
+  var expBlock    = document.getElementById('experience-block');
+  var trainNote   = document.getElementById('training-note');
+  var submitBtn   = document.getElementById('apply-submit');
+  var successBox  = document.getElementById('apply-success');
+
+  var fileInput   = document.getElementById('cv');
+  var uploadArea  = document.getElementById('upload-area');
+  var uploadText  = document.getElementById('upload-text');
+  var uploadSub   = uploadText.querySelector('.upload-sub');
+  var uploadTitle = uploadText.querySelector('strong');
+
+  var MAX_BYTES = 10 * 1024 * 1024;               // 10 MB
+  var ALLOWED = /\.(pdf|docx)$/i;
+  var DEFAULT_TITLE = uploadTitle.textContent;
+  var DEFAULT_SUB = uploadSub.textContent;
+
+  /* Which extra fields each role shows.
+     office: neither block — personal details, CV, submit only. */
+  var VARIANTS = {
+    experienced: { experience: true,  training: false },
+    trainee:     { experience: false, training: true  },
+    office:      { experience: false, training: false }
+  };
+
+  /* ---------- role selection ---------- */
+
+  function selectRole(role, variant) {
+    var cfg = VARIANTS[variant] || VARIANTS.office;
+
+    roleName.textContent = role;
+    positionIn.value = role;
+
+    expBlock.hidden = !cfg.experience;
+    trainNote.hidden = !cfg.training;
+
+    // Unchecking on switch stops a hidden box from being submitted for a
+    // role that never displayed it.
+    if (!cfg.experience) {
+      var boxes = expBlock.querySelectorAll('input[type="checkbox"]');
+      for (var i = 0; i < boxes.length; i++) boxes[i].checked = false;
+    }
+
+    empty.hidden = true;
+    panel.hidden = false;
+    successBox.hidden = true;
+
+    // Highlight the card being applied for
+    var cards = grid.querySelectorAll('.job-card');
+    for (var c = 0; c < cards.length; c++) {
+      cards[c].classList.toggle('is-selected', cards[c].getAttribute('data-role') === role);
+    }
+
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Move focus into the form so keyboard and screen-reader users follow along
+    window.setTimeout(function () {
+      var first = document.getElementById('firstName');
+      if (first) first.focus({ preventScroll: true });
+    }, 420);
+  }
+
+  function clearRole() {
+    panel.hidden = true;
+    empty.hidden = false;
+    positionIn.value = '';
+    roleName.textContent = '\u00a0';
+
+    var cards = grid.querySelectorAll('.job-card');
+    for (var i = 0; i < cards.length; i++) cards[i].classList.remove('is-selected');
+
+    grid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    window.setTimeout(function () {
+      var firstBtn = grid.querySelector('.js-apply');
+      if (firstBtn) firstBtn.focus({ preventScroll: true });
+    }, 420);
+  }
+
+  // Only .js-apply buttons are wired up, so the disabled "Position Full"
+  // button can never open the form.
+  var applyBtns = document.querySelectorAll('.js-apply');
+  for (var b = 0; b < applyBtns.length; b++) {
+    applyBtns[b].addEventListener('click', function () {
+      selectRole(this.getAttribute('data-role'), this.getAttribute('data-variant'));
+    });
+  }
+  changeBtn.addEventListener('click', clearRole);
+
+  /* ---------- CV upload ---------- */
+
+  function describeFile(file) {
+    var kb = file.size / 1024;
+    var size = kb > 1024 ? (kb / 1024).toFixed(1) + ' MB' : Math.round(kb) + ' KB';
+    return file.name + ' \u2014 ' + size;
+  }
+
+  function resetUpload() {
+    uploadArea.classList.remove('has-file');
+    uploadTitle.textContent = DEFAULT_TITLE;
+    uploadSub.textContent = DEFAULT_SUB;
+  }
+
+  fileInput.addEventListener('change', function () {
+    var file = fileInput.files && fileInput.files[0];
+    if (!file) { resetUpload(); return; }
+    if (validateFile()) {
+      uploadArea.classList.add('has-file');
+      uploadTitle.textContent = 'CV attached';
+      uploadSub.textContent = describeFile(file);
+    } else {
+      resetUpload();
+    }
+  });
+
+  // Drag and drop onto the upload area
+  ['dragenter', 'dragover'].forEach(function (evt) {
+    uploadArea.addEventListener(evt, function (e) {
+      e.preventDefault();
+      uploadArea.classList.add('is-dragover');
+    });
+  });
+  ['dragleave', 'drop'].forEach(function (evt) {
+    uploadArea.addEventListener(evt, function (e) {
+      e.preventDefault();
+      uploadArea.classList.remove('is-dragover');
+    });
+  });
+  uploadArea.addEventListener('drop', function (e) {
+    if (e.dataTransfer && e.dataTransfer.files.length) {
+      fileInput.files = e.dataTransfer.files;
+      fileInput.dispatchEvent(new Event('change'));
+    }
+  });
+
+  /* ---------- validation ---------- */
+
+  function setError(id, message) {
+    var el = document.getElementById(id + '-error');
+    if (el) el.textContent = message || '';
+    var input = document.getElementById(id);
+    if (input) {
+      input.setAttribute('data-touched', 'true');
+      input.setAttribute('aria-invalid', message ? 'true' : 'false');
+    }
+    return !message;
+  }
+
+  function validateText(id, label) {
+    var v = document.getElementById(id).value.trim();
+    return setError(id, v ? '' : 'Please enter your ' + label + '.');
+  }
+
+  function validateMobile() {
+    var v = document.getElementById('mobile').value.trim();
+    if (!v) return setError('mobile', 'Please enter your mobile number.');
+    if (!/^[\d\s()+.-]{7,20}$/.test(v)) return setError('mobile', 'Please enter a valid mobile number.');
+    return setError('mobile', '');
+  }
+
+  function validateEmail() {
+    var v = document.getElementById('email').value.trim();
+    if (!v) return setError('email', 'Please enter your email address.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return setError('email', 'Please enter a valid email address.');
+    return setError('email', '');
+  }
+
+  function validateFile() {
+    var file = fileInput.files && fileInput.files[0];
+    if (!file) return setError('cv', 'Please attach your CV.');
+    if (!ALLOWED.test(file.name)) return setError('cv', 'Your CV must be a PDF or DOCX file.');
+    if (file.size > MAX_BYTES) return setError('cv', 'That file is larger than 10 MB. Please upload a smaller one.');
+    return setError('cv', '');
+  }
+
+  document.getElementById('firstName').addEventListener('blur', function () { validateText('firstName', 'first name'); });
+  document.getElementById('lastName').addEventListener('blur', function () { validateText('lastName', 'last name'); });
+  document.getElementById('mobile').addEventListener('blur', validateMobile);
+  document.getElementById('email').addEventListener('blur', validateEmail);
+
+  /* ---------- submit ---------- */
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    // Evaluate every field so all messages appear at once
+    var checks = [
+      validateText('firstName', 'first name'),
+      validateText('lastName', 'last name'),
+      validateMobile(),
+      validateEmail(),
+      validateFile()
+    ];
+    var ok = checks.indexOf(false) === -1;
+
+    if (!ok) {
+      var firstBad = form.querySelector('[aria-invalid="true"]');
+      if (firstBad) firstBad.focus();
+      return;
+    }
+
+    successBox.hidden = true;
+    submitBtn.setAttribute('data-loading', 'true');
+    submitBtn.disabled = true;
+
+    var experience = [];
+    if (!expBlock.hidden) {
+      var picked = expBlock.querySelectorAll('input[type="checkbox"]:checked');
+      for (var i = 0; i < picked.length; i++) experience.push(picked[i].value);
+    }
+
+    var payload = {
+      position:   positionIn.value,
+      firstName:  document.getElementById('firstName').value.trim(),
+      lastName:   document.getElementById('lastName').value.trim(),
+      mobile:     document.getElementById('mobile').value.trim(),
+      email:      document.getElementById('email').value.trim(),
+      experience: experience,
+      cv:         fileInput.files[0] ? fileInput.files[0].name : null
+    };
+
+    // ---------------------------------------------------
+    // BACKEND INTEGRATION POINT
+    // Like the booking form, this has no server behind it yet.
+    // The file needs a real upload endpoint — send the form as
+    // multipart/form-data rather than JSON, for example:
+    //
+    //   fetch('https://your-backend.example.com/api/apply', {
+    //     method: 'POST',
+    //     body: new FormData(form)
+    //   })
+    //
+    // Until then this shows the confirmation locally so the flow
+    // can be demonstrated. NOTE: nothing is actually sent, and no
+    // one is notified of an application.
+    // ---------------------------------------------------
+    window.setTimeout(function () {
+      console.log('[Application submitted — no backend connected]', payload);
+      form.reset();
+      resetUpload();
+      successBox.hidden = false;
+      successBox.focus && successBox.focus();
+      submitBtn.removeAttribute('data-loading');
+      submitBtn.disabled = false;
+    }, 700);
+  });
+})();

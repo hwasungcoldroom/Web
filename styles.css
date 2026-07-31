@@ -62,7 +62,7 @@ body {
   color: var(--color-text);
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.72)),
-    url("assets/hero-bg.jpg");
+    url("hero-bg.jpg");
   background-repeat: no-repeat, no-repeat;
   background-size: cover, cover;
   background-position: top center, top center;
@@ -1225,4 +1225,340 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   .hero-title-row { align-items: flex-start; gap: 14px; }
   .cold-gauge svg { width: 60px; height: 193px; }
   .cold-gauge-label { font-size: 0.72rem; }
+}
+
+/* =========================================================
+   EMPLOYMENT PAGE
+   Job cards + the single role-aware application form.
+   Uses the existing colour, radius and shadow tokens so it
+   sits alongside the service cards without looking bolted on.
+   ========================================================= */
+
+.section--tight { padding-top: 0; }
+.section--apply { padding-top: 24px; }
+.container--narrow { max-width: 720px; }
+
+/* ---- Job cards ---- */
+.job-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.job-card {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 30px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+.job-card:not(.job-card--filled):hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-soft);
+  border-color: var(--color-ice);
+}
+/* The card whose form is currently open */
+.job-card.is-selected {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(30, 90, 140, 0.16), var(--shadow-soft);
+}
+
+.job-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+.job-card h3 { margin: 0; font-size: 1.18rem; }
+
+.job-status {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.job-status--open {
+  color: var(--color-success);
+  background: rgba(30, 140, 99, 0.12);
+}
+.job-status--filled {
+  color: var(--color-text-muted);
+  background: rgba(85, 112, 127, 0.12);
+}
+
+.job-card-desc {
+  color: var(--color-text-muted);
+  font-size: 0.94rem;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.job-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.job-meta li {
+  font-size: 0.76rem;
+  color: var(--color-text-muted);
+  background: var(--color-bg-alt);
+  border-radius: 999px;
+  padding: 5px 12px;
+}
+
+/* ---- Filled role: visibly unavailable ---- */
+.job-card--filled {
+  background: var(--color-bg-alt);
+  border-color: var(--color-border);
+  opacity: 0.72;
+}
+.job-card--filled h3,
+.job-card--filled .job-card-desc { color: var(--color-text-muted); }
+.job-card--filled .job-meta li { background: rgba(201, 211, 218, 0.5); }
+
+.btn-filled {
+  background: var(--color-silver);
+  color: #4A5B66;
+  border-color: transparent;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.btn-filled:hover { transform: none; box-shadow: none; }
+.btn:disabled { cursor: not-allowed; }
+.btn:disabled:hover { transform: none; }
+
+/* ---- Prompt shown before a role is chosen ---- */
+.apply-empty {
+  text-align: center;
+  padding: 40px 24px;
+  border: 1px dashed var(--color-silver);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--color-text-muted);
+}
+.apply-empty svg { color: var(--color-primary); margin-bottom: 10px; }
+.apply-empty p { margin: 0; }
+.apply-empty strong { color: var(--color-text); }
+.apply-empty-sub { font-size: 0.9rem; margin-top: 6px !important; }
+
+/* ---- The application panel ---- */
+.apply-panel {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 34px;
+}
+.apply-panel[hidden] { display: none; }
+
+.apply-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-bottom: 20px;
+  margin-bottom: 26px;
+  border-bottom: 1px solid var(--color-border);
+}
+.apply-for { margin: 0; font-size: 1.12rem; line-height: 1.4; }
+.apply-for-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+.apply-for strong { color: var(--color-text); font-size: 1.24rem; }
+
+.apply-change {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 8px 4px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: color var(--transition), border-color var(--transition);
+}
+.apply-change:hover {
+  color: var(--color-primary-dark);
+  border-bottom-color: var(--color-primary-dark);
+}
+
+/* ---- Fields ---- */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 20px;
+}
+
+/* ---- Relevant Experience: large clickable boxes ---- */
+.experience-block {
+  border: none;
+  padding: 0;
+  margin: 6px 0 26px;
+}
+.experience-block[hidden] { display: none; }
+.experience-block legend { padding: 0; }
+.experience-hint {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin: 0 0 14px;
+}
+.experience-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.experience-option { display: block; cursor: pointer; }
+/* Visually hidden but still focusable and reachable by screen readers */
+.experience-option input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+}
+.experience-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  height: 100%;
+  min-height: 118px;
+  padding: 18px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: #fff;
+  transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
+}
+.experience-option:hover .experience-box { border-color: var(--color-ice); }
+.experience-check {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  border: 2px solid var(--color-silver);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+  flex-shrink: 0;
+}
+.experience-text { font-weight: 600; font-size: 0.95rem; line-height: 1.35; }
+.experience-option input:checked + .experience-box {
+  border-color: var(--color-primary);
+  background: rgba(30, 90, 140, 0.06);
+}
+.experience-option input:checked + .experience-box .experience-check {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+.experience-option input:focus-visible + .experience-box {
+  box-shadow: 0 0 0 3px rgba(30, 90, 140, 0.25);
+}
+
+/* ---- Trainee note ---- */
+.training-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 6px 0 26px;
+  padding: 16px 18px;
+  border-radius: var(--radius-sm);
+  background: rgba(30, 90, 140, 0.07);
+  border-left: 3px solid var(--color-primary);
+  color: var(--color-text);
+  font-size: 0.94rem;
+}
+.training-note[hidden] { display: none; }
+.training-note svg { color: var(--color-primary); flex-shrink: 0; margin-top: 1px; }
+
+/* ---- CV upload ---- */
+.form-row--file { margin-bottom: 10px; }
+.upload-area { position: relative; }
+.upload-area input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.upload-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  border: 2px dashed var(--color-silver);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-alt);
+  transition: border-color var(--transition), background var(--transition);
+}
+.upload-area:hover .upload-inner,
+.upload-area input[type="file"]:focus-visible + .upload-inner {
+  border-color: var(--color-primary);
+  background: rgba(30, 90, 140, 0.06);
+}
+.upload-area.is-dragover .upload-inner {
+  border-color: var(--color-primary);
+  background: rgba(30, 90, 140, 0.1);
+}
+.upload-area.has-file .upload-inner {
+  border-style: solid;
+  border-color: var(--color-success);
+  background: rgba(30, 140, 99, 0.08);
+}
+.upload-inner svg { color: var(--color-primary); flex-shrink: 0; }
+.upload-area.has-file .upload-inner svg { color: var(--color-success); }
+.upload-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.upload-text strong { font-size: 0.96rem; }
+.upload-sub { font-size: 0.84rem; color: var(--color-text-muted); word-break: break-word; }
+.upload-hint { font-size: 0.8rem; color: var(--color-text-muted); margin: 10px 0 0; }
+
+#apply-submit { margin-top: 22px; }
+#apply-submit[data-loading="true"] .btn-label { opacity: 0.6; }
+#apply-submit[data-loading="true"] .btn-spinner { display: inline-block; }
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .job-grid { grid-template-columns: 1fr; gap: 18px; }
+  .experience-grid { grid-template-columns: 1fr; }
+  .experience-box {
+    min-height: 0;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+  }
+  .form-grid { grid-template-columns: 1fr; gap: 0; }
+  .apply-panel { padding: 26px 20px; }
+  .apply-panel-head { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 480px) {
+  .job-card { padding: 24px 20px; }
+  .job-card-top { flex-direction: column; gap: 8px; }
+  .upload-inner { flex-direction: column; text-align: center; gap: 10px; padding: 22px 16px; }
 }

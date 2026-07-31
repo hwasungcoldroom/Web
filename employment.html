@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Employment | Hwasung Refrigeration</title>
-  <meta name="description" content="Career opportunities at Hwasung Refrigeration. Openings will be posted here soon.">
+  <meta name="description" content="Join Hwasung Refrigeration. Openings for experienced and trainee technicians and office/admin staff. Apply online with your CV.">
   <meta name="keywords" content="commercial refrigeration, HVAC repair, walk-in cooler service, refrigeration maintenance, emergency HVAC">
   <meta name="author" content="Hwasung Refrigeration">
   <link rel="canonical" href="https://hwasung1996.com/employment.html">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Employment | Hwasung Refrigeration">
-  <meta property="og:description" content="Career opportunities at Hwasung Refrigeration. Openings will be posted here soon.">
+  <meta property="og:description" content="Join Hwasung Refrigeration. Openings for experienced and trainee technicians and office/admin staff. Apply online with your CV.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://hwasung1996.com/employment.html">
 
@@ -21,7 +21,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles.css">
-  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body data-page="employment">
 
@@ -31,14 +31,14 @@
   <canvas id="snow-canvas" aria-hidden="true"></canvas>
 
   <!-- ============ DECORATIVE SIDE SNOWFLAKE BORDERS (sit in front of the page) ============ -->
-  <div class="side-snow-border side-snow-left" aria-hidden="true" style="background-image: url('assets/snow-border.jpg');"></div>
-  <div class="side-snow-border side-snow-right" aria-hidden="true" style="background-image: url('assets/snow-border.jpg');"></div>
+  <div class="side-snow-border side-snow-left" aria-hidden="true" style="background-image: url('snow-border.jpg');"></div>
+  <div class="side-snow-border side-snow-right" aria-hidden="true" style="background-image: url('snow-border.jpg');"></div>
 
   <!-- ============ HEADER / NAV ============ -->
 <header class="site-header" id="top">
     <div class="container header-inner">
       <a href="index.html" class="brand" aria-label="Hwasung Refrigeration home">
-        <span class="brand-mark" aria-hidden="true"><img src="assets/logo.png" alt="Hwasung Refrigeration official logo" width="39" height="34" style="display:block;object-fit:contain;"></span>
+        <span class="brand-mark" aria-hidden="true"><img src="logo.png" alt="Hwasung Refrigeration official logo" width="39" height="34" style="display:block;object-fit:contain;"></span>
         <span class="brand-copy">
           <span class="brand-text">Hwasung<em>Refrigeration</em></span>
           <span class="brand-tagline">Building Management</span>
@@ -70,22 +70,265 @@
   </header>
 
   <main id="main">
-    <!-- ============ EMPLOYMENT (placeholder — content to come) ============ -->
+    <!-- ============ EMPLOYMENT ============ -->
     <section id="employment" class="section">
       <div class="container">
-        <p class="eyebrow">Careers</p>
-        <h2>Employment</h2>
-        <p class="section-sub">Openings will be posted here soon.</p>
+        <div class="section-head reveal">
+          <p class="eyebrow">Careers</p>
+          <h2>Employment</h2>
+          <p class="section-sub">Open positions are posted here.</p>
+        </div>
       </div>
     </section>
-    
+
+    <!-- ============ OPEN POSITIONS ============ -->
+    <section id="open-positions" class="section section--tight">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Now Hiring</p>
+          <h2>Open Positions</h2>
+          <p class="section-sub">
+            Pick a role to apply. Everything below the cards is one short form &mdash;
+            it changes to match the position you choose.
+          </p>
+        </div>
+
+        <ul class="job-grid reveal" id="job-grid">
+          <li class="job-card" data-role="Experienced Technician" data-variant="experienced">
+            <div class="job-card-top">
+              <h3 id="job-experienced-title">Experienced Technician</h3>
+              <span class="job-status job-status--open">Available</span>
+            </div>
+            <p class="job-card-desc">
+              Service, install, and troubleshoot commercial refrigeration and HVAC
+              systems on client sites. For technicians who have done this work before.
+            </p>
+            <ul class="job-meta">
+              <li>Full-time</li>
+              <li>Field-based</li>
+            </ul>
+            <button type="button" class="btn btn-primary btn-block js-apply"
+                    data-role="Experienced Technician" data-variant="experienced"
+                    aria-describedby="job-experienced-title">
+              Apply Now
+            </button>
+          </li>
+
+          <li class="job-card" data-role="No-Experience Technician" data-variant="trainee">
+            <div class="job-card-top">
+              <h3 id="job-trainee-title">No-Experience Technician</h3>
+              <span class="job-status job-status--open">Available</span>
+            </div>
+            <p class="job-card-desc">
+              Start from scratch and learn on the job. No background in refrigeration
+              needed &mdash; we train you on our own systems and sites.
+            </p>
+            <ul class="job-meta">
+              <li>Full-time</li>
+              <li>Training provided</li>
+            </ul>
+            <button type="button" class="btn btn-primary btn-block js-apply"
+                    data-role="No-Experience Technician" data-variant="trainee"
+                    aria-describedby="job-trainee-title">
+              Apply Now
+            </button>
+          </li>
+
+          <li class="job-card" data-role="Office / Admin" data-variant="office">
+            <div class="job-card-top">
+              <h3 id="job-office-title">Office / Admin</h3>
+              <span class="job-status job-status--open">Available</span>
+            </div>
+            <p class="job-card-desc">
+              Keep scheduling, records, and client communication running smoothly
+              from our office. Organised, steady, and good with people.
+            </p>
+            <ul class="job-meta">
+              <li>Full-time</li>
+              <li>Office-based</li>
+            </ul>
+            <button type="button" class="btn btn-primary btn-block js-apply"
+                    data-role="Office / Admin" data-variant="office"
+                    aria-describedby="job-office-title">
+              Apply Now
+            </button>
+          </li>
+
+          <li class="job-card job-card--filled" data-role="Service Coordinator" aria-disabled="true">
+            <div class="job-card-top">
+              <h3 id="job-coordinator-title">Service Coordinator</h3>
+              <span class="job-status job-status--filled">Filled</span>
+            </div>
+            <p class="job-card-desc">
+              Coordinates technician dispatch and job schedules. This role has been
+              filled &mdash; check back for future openings.
+            </p>
+            <ul class="job-meta">
+              <li>Full-time</li>
+              <li>Office-based</li>
+            </ul>
+            <button type="button" class="btn btn-block btn-filled" disabled
+                    aria-describedby="job-coordinator-title">
+              Position Full
+            </button>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ APPLICATION FORM (one form, adapts to the chosen role) ============ -->
+    <section id="apply" class="section section--apply">
+      <div class="container container--narrow">
+
+        <!-- Shown until a role is picked -->
+        <div class="apply-empty" id="apply-empty">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+          </svg>
+          <p><strong>Choose a position above to begin your application.</strong></p>
+          <p class="apply-empty-sub">The form will fill in the role you select.</p>
+        </div>
+
+        <!-- The single application form -->
+        <div class="apply-panel" id="apply-panel" hidden>
+          <div class="apply-panel-head">
+            <p class="apply-for">
+              <span class="apply-for-label">Applying for:</span>
+              <strong id="apply-role-name">&nbsp;</strong>
+            </p>
+            <button type="button" class="apply-change" id="apply-change">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              Change position
+            </button>
+          </div>
+
+          <form id="apply-form" novalidate enctype="multipart/form-data">
+            <input type="hidden" name="position" id="apply-position" value="">
+
+            <div class="form-grid">
+              <div class="form-row">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" autocomplete="given-name"
+                       required placeholder="Jose" aria-describedby="firstName-error">
+                <span class="field-error" id="firstName-error" role="alert"></span>
+              </div>
+              <div class="form-row">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" autocomplete="family-name"
+                       required placeholder="Santos" aria-describedby="lastName-error">
+                <span class="field-error" id="lastName-error" role="alert"></span>
+              </div>
+              <div class="form-row">
+                <label for="mobile">Mobile Number</label>
+                <input type="tel" id="mobile" name="mobile" autocomplete="tel"
+                       required placeholder="0917 314 6208" aria-describedby="mobile-error">
+                <span class="field-error" id="mobile-error" role="alert"></span>
+              </div>
+              <div class="form-row">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" autocomplete="email"
+                       required placeholder="you@example.com" aria-describedby="email-error">
+                <span class="field-error" id="email-error" role="alert"></span>
+              </div>
+            </div>
+
+            <!-- Experienced Technician only -->
+            <fieldset class="experience-block" id="experience-block" hidden>
+              <legend class="form-row-label">Relevant Experience</legend>
+              <p class="experience-hint" id="experience-hint">Select everything that applies.</p>
+              <div class="experience-grid" role="group" aria-describedby="experience-hint">
+                <label class="experience-option">
+                  <input type="checkbox" name="experience" value="Commercial Refrigeration">
+                  <span class="experience-box">
+                    <span class="experience-check" aria-hidden="true">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
+                    </span>
+                    <span class="experience-text">Commercial Refrigeration</span>
+                  </span>
+                </label>
+                <label class="experience-option">
+                  <input type="checkbox" name="experience" value="HVAC Installation / Maintenance">
+                  <span class="experience-box">
+                    <span class="experience-check" aria-hidden="true">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
+                    </span>
+                    <span class="experience-text">HVAC Installation / Maintenance</span>
+                  </span>
+                </label>
+                <label class="experience-option">
+                  <input type="checkbox" name="experience" value="TESDA NC2 / NC3">
+                  <span class="experience-box">
+                    <span class="experience-check" aria-hidden="true">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                           stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
+                    </span>
+                    <span class="experience-text">TESDA NC2 / NC3</span>
+                  </span>
+                </label>
+              </div>
+            </fieldset>
+
+            <!-- No-Experience Technician only -->
+            <p class="training-note" id="training-note" hidden>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+              </svg>
+              <span>No previous experience is required. Training will be provided.</span>
+            </p>
+
+            <!-- CV upload -->
+            <div class="form-row form-row--file">
+              <label for="cv" id="cv-label">Upload your CV (PDF or DOCX)</label>
+              <div class="upload-area" id="upload-area">
+                <input type="file" id="cv" name="cv" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                       required aria-describedby="cv-hint cv-error">
+                <span class="upload-inner">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                       stroke-width="1.8" aria-hidden="true">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                  </svg>
+                  <span class="upload-text" id="upload-text">
+                    <strong>Upload your CV (PDF or DOCX)</strong>
+                    <span class="upload-sub">Click to choose a file, or drag it here</span>
+                  </span>
+                </span>
+              </div>
+              <p class="upload-hint" id="cv-hint">Maximum file size: 10 MB</p>
+              <span class="field-error" id="cv-error" role="alert"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg btn-block" id="apply-submit">
+              <span class="btn-label">Submit Application</span>
+              <span class="btn-spinner" aria-hidden="true"></span>
+            </button>
+
+            <div id="apply-success" class="booking-success" role="status" hidden>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" aria-hidden="true">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/>
+              </svg>
+              <span>
+                <strong>Application received.</strong>
+                Thanks &mdash; we&rsquo;ll review it and get back to you by phone or email.
+              </span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
   </main>
 
 <footer class="site-footer">
     <div class="container footer-grid">
       <div class="footer-brand">
         <a href="index.html" class="brand" aria-label="Hwasung Refrigeration home">
-          <span class="brand-mark" aria-hidden="true"><img src="assets/logo.png" alt="Hwasung Refrigeration official logo" width="35" height="30" style="display:block;object-fit:contain;"></span>
+          <span class="brand-mark" aria-hidden="true"><img src="logo.png" alt="Hwasung Refrigeration official logo" width="35" height="30" style="display:block;object-fit:contain;"></span>
           <span class="brand-text">Hwasung<em>Refrigeration</em></span>
         </a>
         <p>Commercial refrigeration &amp; HVAC, done right.</p>
