@@ -73,16 +73,7 @@
     <!-- ============ OPEN POSITIONS ============ -->
     <section id="open-positions" class="section">
       <div class="container">
-        <div class="apply-sent" id="apply-sent" role="status" hidden>
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2" aria-hidden="true">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/>
-          </svg>
-          <span>
-            <strong>Application sent.</strong>
-            Thanks — we&rsquo;ve received it and will be in touch by phone or email.
-          </span>
-        </div>
+        
 
         <div class="section-head reveal">
           <p class="eyebrow">Now Hiring</p>
@@ -254,25 +245,17 @@
 
       <!-- ===================================================================
            WHERE APPLICATIONS ARE SENT
-           The `action` below is the only line that decides this. It posts the
-           form (CV attached) to FormSubmit, which forwards it to the address
-           in the URL. To change the recipient, change the address in `action`.
-           To move to your own backend later, swap the whole URL.
+           Submitted by script.js to /api/apply — the serverless function in
+           this project's api/ folder — which emails it on with the CV
+           attached. The recipient is set by the APPLY_TO environment
+           variable in Vercel, not here.
            =================================================================== -->
-          <form id="apply-form" novalidate
-                method="POST"
-                enctype="multipart/form-data"
-                action="https://formsubmit.co/hwasungcoldroom@gmail.com">
-
-            <!-- Settings read by FormSubmit, not shown to the applicant -->
-            <input type="hidden" name="_subject" value="New job application — Hwasung Refrigeration">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_next" value="https://www.hwasung1996.com/employment.html?sent=1">
-            <!-- Spam trap: real people never fill this in, bots usually do -->
-            <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
+          <form id="apply-form" novalidate data-endpoint="/api/apply">
 
             <input type="hidden" name="position" id="apply-position" value="">
+            <!-- Spam trap: real people never fill this in, bots usually do -->
+            <input type="text" name="honey" id="apply-honey" tabindex="-1"
+                   autocomplete="off" aria-hidden="true" style="display:none">
 
             <div class="form-grid">
               <div class="form-row">
@@ -365,7 +348,7 @@
                   </span>
                 </span>
               </div>
-              <p class="upload-hint" id="cv-hint">Maximum file size: 10 MB</p>
+              <p class="upload-hint" id="cv-hint">Maximum file size: 3 MB</p>
               <span class="field-error" id="cv-error" role="alert"></span>
             </div>
 
@@ -400,6 +383,14 @@
                 Thanks &mdash; we&rsquo;ll review it and get back to you by phone or email.
               </span>
             </div>
+
+            <div id="apply-error" class="booking-error" role="alert" hidden>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
+              </svg>
+              <span id="apply-error-text"></span>
+            </div>
           </form>
     </div>
   </div>
@@ -414,7 +405,10 @@
           <p class="hero-form-eyebrow">Free Consultation</p>
           <h2 id="booking-modal-title" class="hero-form-title">We'll call you back</h2>
 
-          <form id="booking-form" novalidate>
+          <form id="booking-form" novalidate data-endpoint="/api/booking">
+        <!-- Spam trap: real people never fill this in, bots usually do -->
+        <input type="text" name="honey" class="booking-honey" tabindex="-1"
+               autocomplete="off" aria-hidden="true" style="display:none">
         <div class="form-row form-row--checkboxes">
           <span class="form-row-label">Request Type</span>
           <div class="checkbox-group">

@@ -332,11 +332,10 @@
 
   /* -------------------------------------------------------
      Consultation booking form
-     Currently client-side only: on submit, it validates the
-     fields and shows the success message directly. There is
-     no backend in this project yet — see the comment marked
-     BACKEND INTEGRATION POINT below for where to add one
-     later (e.g. a POST to your own /api/booking endpoint).
+     On submit it validates the
+     fields, then posts to /api/booking — the serverless function in
+     this project's api/ folder — which emails the request on. The
+     endpoint comes from the form's data-endpoint attribute.
   ------------------------------------------------------- */
   var form = document.getElementById('booking-form');
 
@@ -380,54 +379,71 @@
 
       var isNameValid = validateName();
       var isPhoneValid = validatePhone();
-
-      if (!isNameValid || !isPhoneValid) return;
+      if (!isNameValid || !isPhoneValid) {
+        var firstBad = !isNameValid ? nameInput : phoneInput;
+        firstBad.focus();
+        return;
+      }
 
       successBox.hidden = true;
       errorBox.hidden = true;
       submitBtn.setAttribute('data-loading', 'true');
       submitBtn.disabled = true;
 
-      var requestTypes = Array.prototype.slice
-        .call(document.querySelectorAll('input[name="requestType"]:checked'))
-        .map(function (el) { return el.value; });
+      var requestType = [];
+      var picked = form.querySelectorAll('input[name="requestType"]:checked');
+      for (var i = 0; i < picked.length; i++) requestType.push(picked[i].value);
 
-      var payload = {
-  fullName: nameInput.value.trim(),
-  phone: phoneInput.value.trim(),
-  requestType: requestTypes
-};
+      var honeyField = form.querySelector('.booking-honey');
 
-      // ---------------------------------------------------
-      // BACKEND INTEGRATION POINT
-      // This project is currently plain HTML/CSS/JS with no
-      // server. To actually receive these submissions (store
-      // them, notify staff, or trigger an outbound call via
-      // Twilio/Vonage/Plivo), add your own backend endpoint
-      // and call it here, for example:
-      //
-      //   fetch('https://your-backend.example.com/api/booking', {
-      //     method: 'POST',
-      //     headers: { 'Content-Type': 'application/json' },
-      //     body: JSON.stringify(payload)
-      //   })
-      //     .then(function (response) {
-      //       if (!response.ok) throw new Error('Request failed');
-      //       showSuccess();
-      //     })
-      //     .catch(showError);
-      //
-      // Until then, this simulates a short delay and shows the
-      // success message directly so the form is fully demo-able.
-      // ---------------------------------------------------
-      window.setTimeout(function () {
-        console.log('[Booking submitted — no backend connected]', payload);
-        form.reset();
-        successBox.hidden = false;
-        successBox.focus && successBox.focus();
+      function finish() {
         submitBtn.removeAttribute('data-loading');
         submitBtn.disabled = false;
-      }, 600);
+      }
+
+      function fail(message) {
+        errorBox.textContent = '';
+        var span = document.createElement('span');
+        span.textContent = message + ' ';
+        var link = document.createElement('a');
+        link.href = 'tel:+639173146208';
+        link.textContent = '0917 314 6208';
+        span.appendChild(link);
+        errorBox.appendChild(span);
+        errorBox.hidden = false;
+      }
+
+      fetch(form.getAttribute('data-endpoint'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: nameInput.value.trim(),
+          phone: phoneInput.value.trim(),
+          requestType: requestType,
+          honey: honeyField ? honeyField.value : ''
+        })
+      })
+        .then(function (response) {
+          return response.json()
+            .catch(function () { return { ok: response.ok }; })
+            .then(function (payload) { return { response: response, payload: payload }; });
+        })
+        .then(function (result) {
+          finish();
+          if (result.response.ok && result.payload && result.payload.ok) {
+            form.reset();
+            successBox.hidden = false;
+            successBox.focus && successBox.focus();
+            return;
+          }
+          fail((result.payload && result.payload.error) ||
+               'Something went wrong. Please call us at');
+        })
+        .catch(function (error) {
+          finish();
+          console.error('Booking submit failed:', error);
+          fail('We could not reach the server. Please call us at');
+        });
     });
   }
 })();
@@ -525,6 +541,8 @@
   var trainNote   = document.getElementById('training-note');
   var submitBtn   = document.getElementById('apply-submit');
   var successBox  = document.getElementById('apply-success');
+  var errorBox    = document.getElementById('apply-error');
+  var errorText   = document.getElementById('apply-error-text');
 
   var details     = document.getElementById('details');
   var wordCount   = document.getElementById('details-count');
@@ -536,7 +554,9 @@
   var uploadTitle = uploadText.querySelector('strong');
 
   var MAX_CHARS = 300;
-  var MAX_BYTES = 10 * 1024 * 1024;               // 10 MB
+  // 3 MB ceiling: Vercel caps a serverless request body at 4.5 MB, and
+  // base64 encoding inflates a file by about a third.
+  var MAX_BYTES = 3 * 1024 * 1024;
   var ALLOWED = /\.(pdf|docx)$/i;
   var DEFAULT_TITLE = uploadTitle.textContent;
   var DEFAULT_SUB = uploadSub.textContent;
@@ -721,7 +741,7 @@
     var file = fileInput.files && fileInput.files[0];
     if (!file) return setError('cv', 'Please attach your CV.');
     if (!ALLOWED.test(file.name)) return setError('cv', 'Your CV must be a PDF or DOCX file.');
-    if (file.size > MAX_BYTES) return setError('cv', 'That file is larger than 10 MB. Please upload a smaller one.');
+    if (file.size > MAX_BYTES) return setError('cv', 'That file is larger than 3 MB. Please upload a smaller one.');
     return setError('cv', '');
   }
 
@@ -732,10 +752,31 @@
 
   /* ---------- submit ---------- */
 
+  function showError(message) {
+    successBox.hidden = true;
+    errorText.textContent = message;
+    errorBox.hidden = false;
+    errorBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  /* Read the CV as base64 so it can travel inside a JSON body. This is what
+     lets the serverless function run with no npm packages — no multipart
+     parser is needed on the server side. */
+  function readFileBase64(file) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var result = String(reader.result);
+        var comma = result.indexOf(',');
+        resolve(comma === -1 ? result : result.slice(comma + 1));
+      };
+      reader.onerror = function () { reject(new Error('Could not read the file.')); };
+      reader.readAsDataURL(file);
+    });
+  }
+
   form.addEventListener('submit', function (event) {
-    // Note: default is NOT prevented up here. It is prevented only when the
-    // form is invalid, or when no endpoint is configured — otherwise the
-    // browser must be allowed to POST, since that is what carries the CV.
+    event.preventDefault();
 
     // Evaluate every field so all messages appear at once
     var checks = [
@@ -746,28 +787,12 @@
       validateFile(),
       validateDetails()
     ];
-    var ok = checks.indexOf(false) === -1;
 
-    if (!ok) {
-      event.preventDefault();
+    if (checks.indexOf(false) !== -1) {
       var firstBad = form.querySelector('input[aria-invalid="true"], textarea[aria-invalid="true"]');
       if (firstBad) firstBad.focus();
       return;
     }
-
-    // Everything valid. If a real endpoint is configured, let the browser do a
-    // normal POST — that is what carries the CV file. The applicant lands on
-    // the `_next` URL afterwards, which shows the confirmation banner.
-    if (form.getAttribute('action')) {
-      successBox.hidden = true;
-      submitBtn.setAttribute('data-loading', 'true');
-      submitBtn.disabled = true;
-      return;                       // no preventDefault: the form submits
-    }
-
-    // No endpoint configured — fall back to a local confirmation so the flow
-    // can still be demonstrated. Nothing is sent in this branch.
-    event.preventDefault();
 
     var experience = [];
     if (!expBlock.hidden) {
@@ -775,40 +800,59 @@
       for (var i = 0; i < picked.length; i++) experience.push(picked[i].value);
     }
 
-    console.log('[Application not sent — no action set on the form]', {
-      position:   positionIn.value,
-      firstName:  document.getElementById('firstName').value.trim(),
-      lastName:   document.getElementById('lastName').value.trim(),
-      mobile:     document.getElementById('mobile').value.trim(),
-      email:      document.getElementById('email').value.trim(),
-      experience: experience,
-      details:    details.value.trim(),
-      cv:         fileInput.files[0] ? fileInput.files[0].name : null
-    });
-
+    successBox.hidden = true;
+    errorBox.hidden = true;
     submitBtn.setAttribute('data-loading', 'true');
     submitBtn.disabled = true;
-    window.setTimeout(function () {
-      form.reset();
-      resetUpload();
-      updateWordCount();
-      successBox.hidden = false;
-      successBox.focus && successBox.focus();
+
+    function finish() {
       submitBtn.removeAttribute('data-loading');
       submitBtn.disabled = false;
-    }, 700);
+    }
+
+    readFileBase64(fileInput.files[0])
+      .then(function (cvBase64) {
+        return fetch(form.getAttribute('data-endpoint'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            position:   positionIn.value,
+            firstName:  document.getElementById('firstName').value.trim(),
+            lastName:   document.getElementById('lastName').value.trim(),
+            mobile:     document.getElementById('mobile').value.trim(),
+            email:      document.getElementById('email').value.trim(),
+            details:    details.value.trim(),
+            experience: experience,
+            cvName:     fileInput.files[0].name,
+            cvBase64:   cvBase64,
+            honey:      (document.getElementById('apply-honey') || {}).value || ''
+          })
+        });
+      })
+      .then(function (response) {
+        return response.json()
+          .catch(function () { return { ok: response.ok }; })
+          .then(function (payload) { return { response: response, payload: payload }; });
+      })
+      .then(function (result) {
+        finish();
+        if (result.response.ok && result.payload && result.payload.ok) {
+          form.reset();
+          resetUpload();
+          updateWordCount();
+          successBox.hidden = false;
+          successBox.focus && successBox.focus();
+          return;
+        }
+        showError((result.payload && result.payload.error) ||
+          'We could not send your application. Please try again, or call us on 0917 314 6208.');
+      })
+      .catch(function (error) {
+        finish();
+        console.error('Application submit failed:', error);
+        showError('We could not reach the server. Please check your connection and ' +
+                  'try again, or call us on 0917 314 6208.');
+      });
   });
 
-  /* Applicant returning from the mail service: confirm, then tidy the URL so a
-     refresh does not show the message again. */
-  (function () {
-    if (window.location.search.indexOf('sent=1') === -1) return;
-    var sent = document.getElementById('apply-sent');
-    if (!sent) return;
-    sent.hidden = false;
-    sent.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    if (window.history && window.history.replaceState) {
-      window.history.replaceState({}, '', window.location.pathname);
-    }
-  })();
 })();

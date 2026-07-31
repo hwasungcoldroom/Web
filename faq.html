@@ -21,7 +21,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles.css">
-  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body data-page="faq">
 
@@ -31,14 +31,14 @@
   <canvas id="snow-canvas" aria-hidden="true"></canvas>
 
   <!-- ============ DECORATIVE SIDE SNOWFLAKE BORDERS (sit in front of the page) ============ -->
-  <div class="side-snow-border side-snow-left" aria-hidden="true" style="background-image: url('assets/snow-border.jpg');"></div>
-  <div class="side-snow-border side-snow-right" aria-hidden="true" style="background-image: url('assets/snow-border.jpg');"></div>
+  <div class="side-snow-border side-snow-left" aria-hidden="true" style="background-image: url('snow-border.jpg');"></div>
+  <div class="side-snow-border side-snow-right" aria-hidden="true" style="background-image: url('snow-border.jpg');"></div>
 
   <!-- ============ HEADER / NAV ============ -->
 <header class="site-header" id="top">
     <div class="container header-inner">
       <a href="index.html" class="brand" aria-label="Hwasung Refrigeration home">
-        <span class="brand-mark" aria-hidden="true"><img src="assets/logo.png" alt="Hwasung Refrigeration official logo" width="39" height="34" style="display:block;object-fit:contain;"></span>
+        <span class="brand-mark" aria-hidden="true"><img src="logo.png" alt="Hwasung Refrigeration official logo" width="39" height="34" style="display:block;object-fit:contain;"></span>
         <span class="brand-copy">
           <span class="brand-text">Hwasung<em>Refrigeration</em></span>
           <span class="brand-tagline">Building Management</span>
@@ -110,7 +110,7 @@
     <div class="container footer-grid">
       <div class="footer-brand">
         <a href="index.html" class="brand" aria-label="Hwasung Refrigeration home">
-          <span class="brand-mark" aria-hidden="true"><img src="assets/logo.png" alt="Hwasung Refrigeration official logo" width="35" height="30" style="display:block;object-fit:contain;"></span>
+          <span class="brand-mark" aria-hidden="true"><img src="logo.png" alt="Hwasung Refrigeration official logo" width="35" height="30" style="display:block;object-fit:contain;"></span>
           <span class="brand-text">Hwasung<em>Refrigeration</em></span>
         </a>
         <p>Commercial refrigeration &amp; HVAC, done right.</p>
@@ -171,7 +171,10 @@
           <p class="hero-form-eyebrow">Free Consultation</p>
           <h2 id="booking-modal-title" class="hero-form-title">We'll call you back</h2>
 
-          <form id="booking-form" novalidate>
+          <form id="booking-form" novalidate data-endpoint="/api/booking">
+        <!-- Spam trap: real people never fill this in, bots usually do -->
+        <input type="text" name="honey" class="booking-honey" tabindex="-1"
+               autocomplete="off" aria-hidden="true" style="display:none">
         <div class="form-row form-row--checkboxes">
           <span class="form-row-label">Request Type</span>
           <div class="checkbox-group">
