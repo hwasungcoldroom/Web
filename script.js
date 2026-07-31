@@ -76,6 +76,11 @@
     if (lastFocusedEl && lastFocusedEl.focus) lastFocusedEl.focus();
   }
 
+  /* Exposed so the Employment page can open its application modal after it
+     has configured the form for the chosen role — configuring first avoids
+     a flash of the previously selected position. */
+  window.HwasungModal = { open: openModal, close: closeModal };
+
   document.querySelectorAll('[data-open-modal]').forEach(function (trigger) {
     trigger.addEventListener('click', function (event) {
       event.preventDefault();
@@ -491,12 +496,11 @@
    element lookup is guarded so other pages skip it.
    --------------------------------------------------- */
 (function () {
-  var panel = document.getElementById('apply-panel');
+  var panel = document.getElementById('apply-modal');
   var form = document.getElementById('apply-form');
   if (!panel || !form) return;
 
   var grid        = document.getElementById('job-grid');
-  var empty       = document.getElementById('apply-empty');
   var roleName    = document.getElementById('apply-role-name');
   var positionIn  = document.getElementById('apply-position');
   var changeBtn   = document.getElementById('apply-change');
@@ -505,12 +509,16 @@
   var submitBtn   = document.getElementById('apply-submit');
   var successBox  = document.getElementById('apply-success');
 
+  var details     = document.getElementById('details');
+  var wordCount   = document.getElementById('details-count');
+
   var fileInput   = document.getElementById('cv');
   var uploadArea  = document.getElementById('upload-area');
   var uploadText  = document.getElementById('upload-text');
   var uploadSub   = uploadText.querySelector('.upload-sub');
   var uploadTitle = uploadText.querySelector('strong');
 
+  var MAX_WORDS = 300;
   var MAX_BYTES = 10 * 1024 * 1024;               // 10 MB
   var ALLOWED = /\.(pdf|docx)$/i;
   var DEFAULT_TITLE = uploadTitle.textContent;
@@ -542,8 +550,6 @@
       for (var i = 0; i < boxes.length; i++) boxes[i].checked = false;
     }
 
-    empty.hidden = true;
-    panel.hidden = false;
     successBox.hidden = true;
 
     // Highlight the card being applied for
@@ -552,17 +558,19 @@
       cards[c].classList.toggle('is-selected', cards[c].getAttribute('data-role') === role);
     }
 
-    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    // Move focus into the form so keyboard and screen-reader users follow along
-    window.setTimeout(function () {
-      var first = document.getElementById('firstName');
-      if (first) first.focus({ preventScroll: true });
-    }, 420);
+    // Open only after the form is configured, so the popup never shows the
+    // previously chosen role for a frame.
+    if (window.HwasungModal) {
+      window.HwasungModal.open(panel);
+      panel.scrollTop = 0;
+    } else {
+      panel.hidden = false;                       // fallback if the shared script is older
+    }
   }
 
   function clearRole() {
-    panel.hidden = true;
-    empty.hidden = false;
+    if (window.HwasungModal) window.HwasungModal.close(panel);
+    else panel.hidden = true;
     positionIn.value = '';
     roleName.textContent = '\u00a0';
 
@@ -664,6 +672,35 @@
     return setError('email', '');
   }
 
+  function countWords(text) {
+    var t = text.trim();
+    return t ? t.split(/\s+/).length : 0;
+  }
+
+  function updateWordCount() {
+    var n = countWords(details.value);
+    wordCount.textContent = n + ' / ' + MAX_WORDS + ' words';
+    wordCount.classList.toggle('is-near', n > MAX_WORDS * 0.9 && n <= MAX_WORDS);
+    wordCount.classList.toggle('is-over', n > MAX_WORDS);
+    details.classList.toggle('is-over', n > MAX_WORDS);
+    if (n <= MAX_WORDS) setError('details', '');
+    return n;
+  }
+
+  function validateDetails() {
+    // Optional field — only the length is enforced
+    var n = countWords(details.value);
+    if (n > MAX_WORDS) {
+      return setError('details', 'Please shorten this to ' + MAX_WORDS +
+        ' words or fewer. You are ' + (n - MAX_WORDS) + ' over.');
+    }
+    return setError('details', '');
+  }
+
+  details.addEventListener('input', updateWordCount);
+  details.addEventListener('blur', validateDetails);
+  updateWordCount();
+
   function validateFile() {
     var file = fileInput.files && fileInput.files[0];
     if (!file) return setError('cv', 'Please attach your CV.');
@@ -688,12 +725,13 @@
       validateText('lastName', 'last name'),
       validateMobile(),
       validateEmail(),
-      validateFile()
+      validateFile(),
+      validateDetails()
     ];
     var ok = checks.indexOf(false) === -1;
 
     if (!ok) {
-      var firstBad = form.querySelector('[aria-invalid="true"]');
+      var firstBad = form.querySelector('input[aria-invalid="true"], textarea[aria-invalid="true"]');
       if (firstBad) firstBad.focus();
       return;
     }
@@ -715,6 +753,7 @@
       mobile:     document.getElementById('mobile').value.trim(),
       email:      document.getElementById('email').value.trim(),
       experience: experience,
+      details:    details.value.trim(),
       cv:         fileInput.files[0] ? fileInput.files[0].name : null
     };
 
@@ -737,6 +776,7 @@
       console.log('[Application submitted — no backend connected]', payload);
       form.reset();
       resetUpload();
+      updateWordCount();
       successBox.hidden = false;
       successBox.focus && successBox.focus();
       submitBtn.removeAttribute('data-loading');
