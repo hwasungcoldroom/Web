@@ -1,472 +1,1632 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Employment | Hwasung Refrigeration</title>
-  <meta name="description" content="Join Hwasung Refrigeration. Openings for experienced and trainee technicians and office/admin staff. Apply online with your CV.">
-  <meta name="keywords" content="commercial refrigeration, HVAC repair, walk-in cooler service, refrigeration maintenance, emergency HVAC">
-  <meta name="author" content="Hwasung Refrigeration">
-  <link rel="canonical" href="https://hwasung1996.com/employment.html">
+/* =========================================================
+   HWASUNG REFRIGERATION — STYLES.CSS
+   Shared by every page. Extracted from the previous
+   single-file build so a change here applies site-wide.
+   ========================================================= */
+/* =========================================================
+   HWASUNG REFRIGERATION — STYLESHEET
+   Design tokens: winter / frost palette, Space Grotesk display,
+   Inter body, IBM Plex Mono for data & utility text.
+   ========================================================= */
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="Employment | Hwasung Refrigeration">
-  <meta property="og:description" content="Join Hwasung Refrigeration. Openings for experienced and trainee technicians and office/admin staff. Apply online with your CV.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://hwasung1996.com/employment.html">
+:root {
+  /* ---- Color tokens ---- */
+  --color-bg: #F6F9FB;            /* frost white */
+  --color-bg-alt: #EBF1F5;        /* pale ice panel */
+  --color-bg-deep: #0F1B26;       /* deep charcoal navy */
+  --color-primary: #1E5A8C;       /* steel blue */
+  --color-primary-dark: #123A5C;  /* deep frost navy */
+  --color-ice: #9FD8E8;           /* frost cyan accent */
+  --color-silver: #C9D3DA;        /* silver / cool grey */
+  --color-text: #14202B;
+  --color-text-muted: #55707F;
+  --color-text-inverse: #F6F9FB;
+  --color-border: #DCE4E9;
+  --color-success: #1E8C63;
+  --color-error: #B3352A;
 
-  <!-- Preconnect for performance -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  /* ---- Type tokens ---- */
+  --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
 
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" type="image/png" href="favicon.png">
-</head>
-<body data-page="employment">
+  /* ---- Layout tokens ---- */
+  --container-w: 1200px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 26px;
+  --shadow-soft: 0 8px 30px rgba(15, 27, 38, 0.08);
+  --shadow-card: 0 4px 18px rgba(15, 27, 38, 0.06);
+  --header-h: 112px;
+  --transition: 220ms cubic-bezier(.4,0,.2,1);
+}
 
-<a class="skip-link" href="#main">Skip to main content</a>
+/* ---------------------------------------------------------
+   Reset
+--------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+body, h1, h2, h3, p, ul, ol, figure, blockquote { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; }
+input { font: inherit; }
 
-  <!-- ============ SNOW CANVAS (decorative, lightweight) ============ -->
-  <canvas id="snow-canvas" aria-hidden="true"></canvas>
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.72)),
+    url('hero-bg.jpg');
+  background-repeat: no-repeat, no-repeat;
+  background-size: cover, cover;
+  background-position: top center, top center;
+  background-attachment: fixed, fixed;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
 
-  <!-- ============ DECORATIVE SIDE SNOWFLAKE BORDERS (sit in front of the page) ============ -->
-  <div class="side-snow-border side-snow-left" aria-hidden="true" style="background-image: url('snow-border.jpg');"></div>
-  <div class="side-snow-border side-snow-right" aria-hidden="true" style="background-image: url('snow-border.jpg');"></div>
+.container {
+  width: 100%;
+  max-width: var(--container-w);
+  margin-inline: auto;
+  padding-inline: 24px;
+}
 
-  <!-- ============ HEADER / NAV ============ -->
-<header class="site-header" id="top">
-    <div class="container header-inner">
-      <a href="index.html" class="brand" aria-label="Hwasung Refrigeration home">
-        <span class="brand-mark" aria-hidden="true"><img src="logo.png" alt="Hwasung Refrigeration official logo" width="39" height="34" style="display:block;object-fit:contain;"></span>
-        <span class="brand-copy">
-          <span class="brand-text">Hwasung<em>Refrigeration</em></span>
-          <span class="brand-tagline">Building Management</span>
-        </span>
-      </a>
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--color-primary-dark);
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 0 0 8px 0;
+  z-index: 1000;
+}
+.skip-link:focus {
+  left: 0;
+}
 
-      <nav class="main-nav" id="main-nav" aria-label="Primary">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="partners.html">Partners</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="why-choose-us.html">Why Choose Us</a></li>
-          <li><a href="faq.html">FAQ</a></li>
-          <li><a href="employment.html" aria-current="page">Employment</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </nav>
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
 
-      <div class="header-cta">
-        <!-- Mobile number moved to the home hero, under "View Special Promo" -->
-        <a href="#" data-open-modal="booking-modal" class="btn btn-primary btn-sm">Book Now</a>
-      </div>
+h1, h2, h3 {
+  font-family: var(--font-display);
+  color: var(--color-bg-deep);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+h1 { font-size: clamp(2.4rem, 5vw, 3.6rem); font-weight: 700; }
+h2 { font-size: clamp(1.8rem, 3.4vw, 2.5rem); font-weight: 600; }
+h3 { font-size: 1.15rem; font-weight: 600; }
 
-      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </header>
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 12px;
+}
 
-  <main id="main">
-    <!-- ============ OPEN POSITIONS ============ -->
-    <section id="open-positions" class="section">
-      <div class="container">
-        <div class="apply-sent" id="apply-sent" role="status" hidden>
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2" aria-hidden="true">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/>
-          </svg>
-          <span>
-            <strong>Application sent.</strong>
-            Thanks — we&rsquo;ve received it and will be in touch by phone or email.
-          </span>
-        </div>
+.section-sub {
+  color: var(--color-text-muted);
+  max-width: 60ch;
+  margin-top: 14px;
+  font-size: 1.05rem;
+}
 
-        <div class="section-head reveal">
-          <p class="eyebrow">Now Hiring</p>
-          <h2>Open Positions</h2>
-          <p class="section-sub">
-            Pick a role to apply. Everything below the cards is one short form &mdash;
-            it changes to match the position you choose.
-          </p>
-        </div>
+.text-accent { color: var(--color-primary); }
 
-        <ul class="job-grid reveal" id="job-grid">
-          <li class="job-card" data-role="Experienced Technician" data-variant="experienced">
-            <div class="job-card-top">
-              <h3 id="job-experienced-title">Experienced Technician</h3>
-              <span class="job-status job-status--open">Available</span>
-            </div>
-            <p class="job-card-desc">
-              Service, install, and troubleshoot commercial refrigeration and HVAC
-              systems on client sites. For technicians who have done this work before.
-            </p>
-            <ul class="job-meta">
-              <li>Full-time</li>
-              <li>Field-based</li>
-            </ul>
-            <button type="button" class="btn btn-primary btn-block js-apply"
-                    data-role="Experienced Technician" data-variant="experienced"
-                    aria-describedby="job-experienced-title">
-              Apply Now
-            </button>
-          </li>
+/* ---------------------------------------------------------
+   Buttons
+--------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  padding: 13px 24px;
+  font-size: 0.95rem;
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition), color var(--transition);
+  white-space: nowrap;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
 
-          <li class="job-card" data-role="No-Experience Technician" data-variant="trainee">
-            <div class="job-card-top">
-              <h3 id="job-trainee-title">No-Experience Technician</h3>
-              <span class="job-status job-status--open">Available</span>
-            </div>
-            <p class="job-card-desc">
-              Start from scratch and learn on the job. No background in refrigeration
-              needed &mdash; we train you on our own systems and sites.
-            </p>
-            <ul class="job-meta">
-              <li>Full-time</li>
-              <li>Training provided</li>
-            </ul>
-            <button type="button" class="btn btn-primary btn-block js-apply"
-                    data-role="No-Experience Technician" data-variant="trainee"
-                    aria-describedby="job-trainee-title">
-              Apply Now
-            </button>
-          </li>
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(18, 58, 92, 0.28);
+}
+.btn-primary:hover { box-shadow: 0 14px 30px rgba(18, 58, 92, 0.36); }
 
-          <li class="job-card" data-role="Office / Admin" data-variant="office">
-            <div class="job-card-top">
-              <h3 id="job-office-title">Office / Admin</h3>
-              <span class="job-status job-status--open">Available</span>
-            </div>
-            <p class="job-card-desc">
-              Keep scheduling, records, and client communication running smoothly
-              from our office. Organised, steady, and good with people.
-            </p>
-            <ul class="job-meta">
-              <li>Full-time</li>
-              <li>Office-based</li>
-            </ul>
-            <button type="button" class="btn btn-primary btn-block js-apply"
-                    data-role="Office / Admin" data-variant="office"
-                    aria-describedby="job-office-title">
-              Apply Now
-            </button>
-          </li>
+.btn-outline {
+  background: transparent;
+  border-color: var(--color-primary);
+  color: var(--color-primary-dark);
+}
+.btn-outline:hover { background: rgba(30, 90, 140, 0.08); }
 
-          <li class="job-card job-card--filled" data-role="Service Coordinator" aria-disabled="true">
-            <div class="job-card-top">
-              <h3 id="job-coordinator-title">Service Coordinator</h3>
-              <span class="job-status job-status--filled">Filled</span>
-            </div>
-            <p class="job-card-desc">
-              Coordinates technician dispatch and job schedules. This role has been
-              filled &mdash; check back for future openings.
-            </p>
-            <ul class="job-meta">
-              <li>Full-time</li>
-              <li>Office-based</li>
-            </ul>
-            <button type="button" class="btn btn-block btn-filled" disabled
-                    aria-describedby="job-coordinator-title">
-              Position Full
-            </button>
-          </li>
-        </ul>
-      </div>
-    </section>
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text);
+}
+.btn-ghost:hover { color: var(--color-primary); }
 
-</main>
+.btn-lg { padding: 16px 30px; font-size: 1rem; }
+.btn-sm { padding: 9px 16px; font-size: 0.85rem; }
+.btn-block { width: 100%; }
 
-<footer class="site-footer">
-    <div class="container footer-grid">
-      <div class="footer-brand">
-        <a href="index.html" class="brand" aria-label="Hwasung Refrigeration home">
-          <span class="brand-mark" aria-hidden="true"><img src="logo.png" alt="Hwasung Refrigeration official logo" width="35" height="30" style="display:block;object-fit:contain;"></span>
-          <span class="brand-text">Hwasung<em>Refrigeration</em></span>
-        </a>
-        <p>Commercial refrigeration &amp; HVAC, done right.</p>
-        <div class="social-icons" aria-label="Social media">
-          <a href="#" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.6c0-.9.3-1.6 1.6-1.6h1.7V3.1C16.5 3 15.4 3 14.2 3c-2.5 0-4.2 1.5-4.2 4.3v2.5H7.3v3.2H10V21h3.5Z"/></svg></a>
-          <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
-          <a href="#" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.6c0-1.35-.02-3.08-1.88-3.08-1.88 0-2.17 1.47-2.17 2.98V21h-4V9Z"/></svg></a>
-        </div>
-      </div>
+/* ---------------------------------------------------------
+   Header
+--------------------------------------------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(246, 249, 251, 0.78);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  border-bottom: 1px solid rgba(220, 228, 233, 0.7);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  height: var(--header-h);
+  max-width: 1320px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--color-bg-deep);
+  margin-right: auto;
+}
+.brand-mark { color: var(--color-primary); display: inline-flex; flex-shrink: 0; }
+.brand-mark img { width: 58px; height: 58px; object-fit: contain; }
+/* Header logo larger than the footer one */
+.site-header .brand-mark img { width: 96px; height: 96px; }
+.brand-text em { font-style: normal; color: var(--color-primary); font-weight: 500; }
+/* Name stacked above the tagline */
+.brand-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.1;
+  min-width: 0;
+}
+.brand-tagline {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  /* Same colour as the nav links */
+  color: var(--color-text);
+  margin-top: 4px;
+}
 
-      <nav class="footer-nav" aria-label="Footer">
-        <h3>Navigate</h3>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="partners.html">Partners</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="why-choose-us.html">Why Choose Us</a></li>
-          <li><a href="faq.html">FAQ</a></li>
-          <li><a href="employment.html" aria-current="page">Employment</a></li>
-          <li><a href="#" data-open-modal="booking-modal">Book Now</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </nav>
+.main-nav { flex: 0 1 auto; min-width: 0; }
+.main-nav ul {
+  display: flex;
+  gap: 18px;
+  flex-wrap: nowrap;
+}
+.main-nav a {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--color-text);
+  position: relative;
+  padding: 8px 2px;
+  display: inline-block;
+  white-space: nowrap;
+  transition: color var(--transition), transform var(--transition);
+}
+.main-nav a::after {
+  content: '';
+  position: absolute;
+  left: 4px; right: 4px; bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-ice));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 260ms cubic-bezier(.4,0,.2,1);
+}
+.main-nav a:hover,
+.main-nav a:focus-visible {
+  color: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+.main-nav a:hover::after,
+.main-nav a:focus-visible::after { transform: scaleX(1); }
 
-      <div class="footer-hours">
-        <h3>Business Hours</h3>
-        <ul>
-          <li><span>Mon – Fri</span><span>8:30 AM – 5:30 PM</span></li>
-          <li><span>Saturday</span><span>Closed</span></li>
-          <li><span>Sunday</span><span>Closed</span></li>
-  
-        </ul>
-      </div>
+.header-cta { display: flex; align-items: center; gap: 10px; }
 
-      <div class="footer-contact">
-        <h3>Contact</h3>
-        <p><a href="tel:+6332505232">(032) 505 2322</a></p>
-        <p><a href="tel:+639173146208">0917 314 6208</a></p>
-        <p>232A Sacris Rd, Mandaue City, Cebu</p>
-        <p><a href="mailto:hwasungcoldroom@gmail.com">hwasungcoldroom@gmail.com</a></p>
-        <a href="#" data-open-modal="booking-modal" class="btn btn-outline btn-sm">Book Now</a>
-      </div>
-    </div>
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+}
+.nav-toggle span {
+  display: block;
+  height: 2px;
+  background: var(--color-bg-deep);
+  border-radius: 2px;
+  transition: transform var(--transition), opacity var(--transition);
+}
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-    <div class="container footer-bottom">
-      <p>&copy; <span id="year"></span> Hwasung Refrigeration. All rights reserved.</p>
-    </div>
-  </footer>
+/* ---------------------------------------------------------
+   Snow canvas
+--------------------------------------------------------- */
+#snow-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 1;
+}
 
-<div class="modal-overlay" id="apply-modal" hidden>
-    <div class="modal-panel modal-panel--apply" role="dialog" aria-modal="true"
-         aria-labelledby="apply-modal-title">
-      <button type="button" class="modal-close" data-close-modal aria-label="Close application form">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </button>
+/* Decorative side snowflake borders — fixed in front of the whole page */
+.side-snow-border {
+  position: fixed;
+  top: 0;
+  width: 90px;
+  height: 100vh;
+  background-repeat: repeat-y;
+  background-position: top center;
+  background-size: 90px auto;
+  pointer-events: none;
+  z-index: 500;
+  box-shadow: 0 0 24px rgba(15, 27, 38, 0.35);
+}
+.side-snow-left { left: 0; }
+.side-snow-right { right: 0; transform: scaleX(-1); }
 
-      <div class="apply-panel-head">
-        <p class="apply-for" id="apply-modal-title">
-          <span class="apply-for-label">Applying for:</span>
-          <strong id="apply-role-name">&nbsp;</strong>
-        </p>
-        <button type="button" class="apply-change" id="apply-change">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          Change position
-        </button>
-      </div>
+@media (max-width: 1300px) {
+  .side-snow-border { width: 64px; background-size: 64px auto; }
+}
+@media (max-width: 980px) {
+  .side-snow-border { display: none; }
+}
 
-      <!-- ===================================================================
-           WHERE APPLICATIONS ARE SENT
-           The `action` below is the only line that decides this. It posts the
-           form (CV attached) to FormSubmit, which forwards it to the address
-           in the URL. To change the recipient, change the address in `action`.
-           To move to your own backend later, swap the whole URL.
-           =================================================================== -->
-          <form id="apply-form" novalidate
-                method="POST"
-                enctype="multipart/form-data"
-                action="https://formsubmit.co/hwasungcoldroom@gmail.com">
+/* ---------------------------------------------------------
+   Hero
+--------------------------------------------------------- */
+.hero {
+  position: relative;
+  padding: 56px 0 64px;
+  background: radial-gradient(ellipse at top right, rgba(159, 216, 232, 0.35), transparent 55%);
+  overflow: hidden;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 40px;
+  align-items: center;
+}
+.hero-copy {
+  max-width: 620px;
+}
+.hero-title-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.hero-title-row h1 {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.cold-gauge {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  z-index: 2;
+}
+.cold-gauge-label-wrap {
+  position: relative;
+  width: 100%;
+  min-height: 2.5em;
+}
+.cold-gauge-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+/* Captions are switched by the gauge script, not by their own keyframes,
+   so the number on screen can never disagree with the mercury level. */
+.cold-gauge-label {
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+.cold-gauge-label.is-current { opacity: 1; }
+.cold-gauge-label {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  text-align: center;
+  line-height: 1.3;
+}
+.cold-gauge-label span {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
 
-            <!-- Settings read by FormSubmit, not shown to the applicant -->
-            <input type="hidden" name="_subject" value="New job application — Hwasung Refrigeration">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_next" value="https://www.hwasung1996.com/employment.html?sent=1">
-            <!-- Spam trap: real people never fill this in, bots usually do -->
-            <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
+.hero-sub {
+  margin-top: 14px;
+  font-size: 1.05rem;
+  color: var(--color-text-muted);
+  max-width: 58ch;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 26px;
+}
+.hero-trust {
+  display: flex;
+  gap: 24px;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+  flex-wrap: wrap;
+}
+.hero-trust li {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+.hero-trust strong {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  color: var(--color-bg-deep);
+}
 
-            <input type="hidden" name="position" id="apply-position" value="">
+/* Hero side: nationwide partners map */
+.hero-map-side { display: flex; justify-content: center; }
+.hero-map-card {
+  width: 100%;
+  max-width: 400px;
+  background: linear-gradient(180deg, var(--color-bg-deep), #0a141c);
+  border-radius: var(--radius-lg);
+  padding: 24px 26px 26px;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.hero-map-card svg { max-width: 260px; width: 100%; height: auto; }
+.hero-map-caption {
+  font-size: 0.7rem;
+  color: rgba(246, 249, 251, 0.5);
+}
+.hero-map-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-bg-deep);
+  background: var(--color-ice);
+  margin-top: 6px;
+  padding: 13px 20px;
+  border-radius: 999px;
+  box-shadow: 0 8px 22px rgba(159, 216, 232, 0.35);
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+}
+.hero-map-link:hover {
+  text-decoration: none;
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(159, 216, 232, 0.45);
+}
 
-            <div class="form-grid">
-              <div class="form-row">
-                <label for="firstName">First Name</label>
-                <input type="text" id="firstName" name="firstName" autocomplete="given-name"
-                       required placeholder="Jose" aria-describedby="firstName-error">
-                <span class="field-error" id="firstName-error" role="alert"></span>
-              </div>
-              <div class="form-row">
-                <label for="lastName">Last Name</label>
-                <input type="text" id="lastName" name="lastName" autocomplete="family-name"
-                       required placeholder="Santos" aria-describedby="lastName-error">
-                <span class="field-error" id="lastName-error" role="alert"></span>
-              </div>
-              <div class="form-row">
-                <label for="mobile">Mobile Number</label>
-                <input type="tel" id="mobile" name="mobile" autocomplete="tel"
-                       required placeholder="0917 314 6208" aria-describedby="mobile-error">
-                <span class="field-error" id="mobile-error" role="alert"></span>
-              </div>
-              <div class="form-row">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" autocomplete="email"
-                       required placeholder="you@example.com" aria-describedby="email-error">
-                <span class="field-error" id="email-error" role="alert"></span>
-              </div>
-            </div>
+/* ---------------------------------------------------------
+   Modal system (Special Promo / Booking form)
+--------------------------------------------------------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 20, 28, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+.modal-overlay[hidden] { display: none; }
+.modal-overlay.is-open { opacity: 1; }
+.modal-panel {
+  position: relative;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);
+  max-width: 480px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 28px;
+  transform: translateY(16px) scale(0.98);
+  transition: transform 220ms ease;
+}
+.modal-overlay.is-open .modal-panel { transform: translateY(0) scale(1); }
+.modal-panel--booking {
+  max-width: 480px;
+  padding: 28px;
+  /* Hairline tracing the panel edge, corner to corner */
+  border: 1px solid rgba(30, 90, 140, 0.3);
+}
+.booking-modal-promo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.booking-modal-promo img {
+  width: 100%;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  display: block;
+}
+.booking-modal-form { min-width: 0; }
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(15, 27, 38, 0.08);
+  color: var(--color-bg-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--transition);
+  z-index: 2;
+}
+.modal-close:hover { background: rgba(15, 27, 38, 0.16); }
+.modal-panel--promo .modal-close {
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  top: 10px;
+  right: 10px;
+}
 
-            <!-- Experienced Technician only -->
-            <fieldset class="experience-block" id="experience-block" hidden>
-              <legend class="form-row-label">Relevant Experience</legend>
-              <p class="experience-hint" id="experience-hint">Select everything that applies.</p>
-              <div class="experience-grid" role="group" aria-describedby="experience-hint">
-                <label class="experience-option">
-                  <input type="checkbox" name="experience" value="Commercial Refrigeration">
-                  <span class="experience-box">
-                    <span class="experience-check" aria-hidden="true">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                           stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
-                    </span>
-                    <span class="experience-text">Commercial Refrigeration</span>
-                  </span>
-                </label>
-                <label class="experience-option">
-                  <input type="checkbox" name="experience" value="HVAC Installation / Maintenance">
-                  <span class="experience-box">
-                    <span class="experience-check" aria-hidden="true">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                           stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
-                    </span>
-                    <span class="experience-text">HVAC Installation / Maintenance</span>
-                  </span>
-                </label>
-                <label class="experience-option">
-                  <input type="checkbox" name="experience" value="TESDA NC2 / NC3">
-                  <span class="experience-box">
-                    <span class="experience-check" aria-hidden="true">
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                           stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
-                    </span>
-                    <span class="experience-text">TESDA NC2 / NC3</span>
-                  </span>
-                </label>
-              </div>
-            </fieldset>
+/* Promo modal: artwork only — no white card behind the image */
+.modal-panel--promo {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0 !important;
+  width: auto;
+  max-width: min(520px, 100%);
+  max-height: none;
+  overflow: visible;
+}
+.modal-panel--promo .booking-modal-promo { gap: 0; }
+/* Heading kept for screen readers / aria-labelledby, hidden visually */
+.modal-panel--promo .hero-form-eyebrow {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.modal-panel--promo .hero-promo-img {
+  width: auto;
+  max-width: 100%;
+  max-height: 86vh;
+  object-fit: contain;
+  margin: 0 auto;
+  border-radius: var(--radius-md);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.45);
+}
+/* Welcome overlay — promo on the far left, booking form on the far right,
+   with a wide gap so the two cards never touch each other. */
+.modal-overlay--stack {
+  align-items: center;
+  overflow-y: auto;
+  padding: 24px 16px;
+}
+.modal-stack {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(32px, 6vw, 96px);
+  width: 100%;
+  max-width: 1180px;
+  margin: auto;
+}
+.modal-stack > .modal-panel {
+  max-height: none;
+  overflow: visible;
+}
+.modal-stack .modal-panel--promo { flex: 0 1 auto; }
+.modal-stack .modal-panel--promo .hero-promo-img { max-height: 82vh; }
+.modal-stack .modal-panel--booking {
+  flex: 0 0 360px;
+  width: 360px;
+  max-width: 100%;
+}
 
-            <!-- No-Experience Technician only -->
-            <p class="training-note" id="training-note" hidden>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
-              </svg>
-              <span>No previous experience is required. Training will be provided.</span>
-            </p>
+/* Wide screens: promo sits in the middle, form hugs the lower-right edge.
+   The narrower form lets this start at 1320px without the two overlapping. */
+@media (min-width: 1320px) {
+  .modal-overlay--stack { padding: 20px; }
+  .modal-stack {
+    display: block;
+    position: relative;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    margin: 0;
+  }
+  .modal-stack .modal-panel--promo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+  }
+  .modal-overlay--stack.is-open .modal-stack .modal-panel--promo {
+    transform: translate(-50%, -50%);
+  }
+  .modal-stack .modal-panel--booking {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    z-index: 3;
+  }
+}
 
-            <!-- CV upload -->
-            <div class="form-row form-row--file">
-              <label for="cv" id="cv-label">Upload your CV (PDF or DOCX)</label>
-              <div class="upload-area" id="upload-area">
-                <input type="file" id="cv" name="cv" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                       required aria-describedby="cv-hint cv-error">
-                <span class="upload-inner">
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                       stroke-width="1.8" aria-hidden="true">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
-                  </svg>
-                  <span class="upload-text" id="upload-text">
-                    <strong>Upload your CV (PDF or DOCX)</strong>
-                    <span class="upload-sub">Click to choose a file, or drag it here</span>
-                  </span>
-                </span>
-              </div>
-              <p class="upload-hint" id="cv-hint">Maximum file size: 10 MB</p>
-              <span class="field-error" id="cv-error" role="alert"></span>
-            </div>
+/* Not enough room for two columns — fall back to one above the other */
+@media (max-width: 900px) {
+  .modal-overlay--stack { align-items: flex-start; padding: 20px 12px 48px; }
+  .modal-stack { flex-direction: column; gap: 20px; max-width: 480px; }
+  .modal-stack .modal-panel--booking { flex: none; width: 100%; }
+  /* Use the full width so the promo details stay readable — the overlay
+     scrolls down to the form rather than shrinking the artwork. */
+  .modal-stack .modal-panel--promo { flex: none; width: 100%; max-width: 100%; }
+  .modal-stack .modal-panel--promo .hero-promo-img {
+    width: 100%;
+    max-width: 100%;
+    max-height: none;
+  }
+}
 
-            <!-- Free-text detail, capped at 300 words -->
-            <div class="form-row form-row--notes">
-              <label for="details">Additional Information</label>
-              <p class="notes-hint" id="details-hint">
-                Tell us about your experience, availability, or anything else
-                you would like us to know. Optional.
-              </p>
-              <textarea id="details" name="details" rows="4" maxlength="1000"
-                        placeholder="For example: three years servicing walk-in freezers for a supermarket chain, comfortable with brazing and vacuum pump work, available to start immediately."
-                        aria-describedby="details-hint details-count details-error"></textarea>
-              <div class="notes-footer">
-                <span class="word-count" id="details-count" aria-live="polite">0 / 300 words</span>
-              </div>
-              <span class="field-error" id="details-error" role="alert"></span>
-            </div>
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
 
-            <button type="submit" class="btn btn-primary btn-lg btn-block" id="apply-submit">
-              <span class="btn-label">Submit Application</span>
-              <span class="btn-spinner" aria-hidden="true"></span>
-            </button>
+.form-row--checkboxes { margin-bottom: 18px; }
+.form-row-label { font-weight: 600; font-size: 0.9rem; display: block; margin-bottom: 8px; }
+.checkbox-group { display: flex; gap: 18px; flex-wrap: wrap; }
+.checkbox-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.92rem;
+  color: var(--color-text);
+  cursor: pointer;
+}
+.checkbox-option input[type="checkbox"] {
+  width: 18px; height: 18px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+/* Request Type labels: New Order in red, After Service in blue */
+.checkbox-option--new-order span {
+  color: #C62828;
+  font-weight: 600;
+}
+.checkbox-option--new-order input[type="checkbox"] { accent-color: #C62828; }
+.checkbox-option--after-service span {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+.checkbox-option--after-service input[type="checkbox"] { accent-color: var(--color-primary); }
 
-            <div id="apply-success" class="booking-success" role="status" hidden>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" aria-hidden="true">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/>
-              </svg>
-              <span>
-                <strong>Application received.</strong>
-                Thanks &mdash; we&rsquo;ll review it and get back to you by phone or email.
-              </span>
-            </div>
-          </form>
-    </div>
-  </div>
+/* ---------------------------------------------------------
+   Partners map
+--------------------------------------------------------- */
+.partners-map {
+  background: linear-gradient(180deg, var(--color-bg-deep), #0a141c);
+}
+.partners-grid {
+  display: grid;
+  grid-template-columns: 1fr 260px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+.partners-col { display: flex; flex-direction: column; gap: 16px; }
+.partners-map-visual svg {
+  width: 100%;
+  height: auto;      /* set here rather than as an SVG attribute, where it is invalid */
+  display: block;
+}
+.partners-map-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  position: sticky;
+  top: 100px;
+}
+.partners-map-caption {
+  font-size: 0.72rem;
+  color: rgba(246, 249, 251, 0.5);
+}
+.partner-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(246, 249, 251, 0.14);
+  border-left: 4px solid var(--color-ice);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+}
+.partner-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.partner-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+.partner-card ul { display: flex; flex-direction: column; gap: 4px; }
+.partner-card li {
+  font-size: 0.84rem;
+  color: rgba(246, 249, 251, 0.75);
+  line-height: 1.4;
+}
+.partner-card--r1 { border-left-color: #B3455B; }
+.partner-card--r3 { border-left-color: #C23B8E; }
+.partner-card--r4a { border-left-color: #7A4FC2; }
+.partner-card--r6 { border-left-color: #5B6FD6; }
+.partner-card--r8 { border-left-color: #2E9E9E; }
+.partner-card--r9 { border-left-color: #2E6FD6; }
+.partner-card--r10 { border-left-color: #3FA34D; }
+.partner-card--r11 { border-left-color: #6E8F2E; }
+.partner-card--ncr { border-left-color: #8A8A8A; }
+.partner-card--car { border-left-color: #B3452F; }
 
-<div class="modal-overlay" id="booking-modal" hidden>
-    <div class="modal-panel modal-panel--booking" role="dialog" aria-modal="true" aria-labelledby="booking-modal-title">
-      <button type="button" class="modal-close" data-close-modal aria-label="Close">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </button>
+/* ---------------------------------------------------------
+   Feature strip
+--------------------------------------------------------- */
+.clients-strip {
+  margin: 0 0 96px;
+  padding: 22px 0;
+  background: linear-gradient(180deg, var(--color-bg-deep), #0a141c);
+  overflow: hidden;
+}
+.clients-marquee {
+  overflow: hidden;
+  width: 100%;
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.clients-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  white-space: nowrap;
+  animation: clients-scroll 55s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .clients-track { animation: none; }
+}
+.client-name {
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: #F2F7FA;
+  padding: 0 10px;
+}
+.client-dot {
+  color: #E64A3B;
+  font-size: 0.7rem;
+  margin: 0 10px 0 0;
+}
+@keyframes clients-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
 
-        <div class="booking-modal-form">
-          <p class="hero-form-eyebrow">Free Consultation</p>
-          <h2 id="booking-modal-title" class="hero-form-title">We'll call you back</h2>
+/* ---------------------------------------------------------
+   Generic section spacing
+--------------------------------------------------------- */
+.section { padding: 96px 0; }
+.section-head { max-width: 640px; margin-bottom: 48px; }
 
-          <form id="booking-form" novalidate>
-        <div class="form-row form-row--checkboxes">
-          <span class="form-row-label">Request Type</span>
-          <div class="checkbox-group">
-            <label class="checkbox-option checkbox-option--new-order">
-              <input type="checkbox" id="requestNewOrder" name="requestType" value="New Order">
-              <span>New Order</span>
-            </label>
-            <label class="checkbox-option checkbox-option--after-service">
-              <input type="checkbox" id="requestAfterService" name="requestType" value="After Service">
-              <span>After Service</span>
-            </label>
-          </div>
-        </div>
+/* About */
+.about { background: var(--color-bg-alt); }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 64px;
+  align-items: center;
+}
+.about p { color: var(--color-text-muted); margin-top: 16px; }
+.about-stats {
+  display: flex;
+  gap: 36px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+}
+.stat-num {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 1.8rem;
+  color: var(--color-primary-dark);
+}
+.stat-label { font-size: 0.82rem; color: var(--color-text-muted); }
 
-        <div class="form-row">
-          <label for="fullName">Full Name</label>
-          <input type="text" id="fullName" name="fullName" autocomplete="name" required
-                 placeholder="Jane Park" aria-describedby="fullName-error">
-          <span class="field-error" id="fullName-error" role="alert"></span>
-        </div>
+.frost-panel {
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+.frost-panel--wide { aspect-ratio: 16 / 9; }
 
-        <div class="form-row">
-          <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" name="phone" autocomplete="tel" required
-                 placeholder="0917 314 6208" aria-describedby="phone-error">
-          <span class="field-error" id="phone-error" role="alert"></span>
-        </div>
+.frost-panel--logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-bg-deep));
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.frost-panel--logo img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.35));
+  transition: transform 320ms cubic-bezier(.4,0,.2,1);
+}
+.frost-panel--logo:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(15, 27, 38, 0.28);
+}
+.frost-panel--logo:hover img {
+  transform: scale(1.06) rotate(-1deg);
+}
 
-        <button type="submit" class="btn btn-primary btn-block" id="booking-submit">
-          <span class="btn-label">Request Free Consultation</span>
-          <span class="btn-spinner" aria-hidden="true"></span>
-        </button>
+/* Services */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.service-card {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 32px 28px;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-soft);
+  border-color: var(--color-ice);
+}
+.service-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: rgba(30, 90, 140, 0.08);
+  color: var(--color-primary);
+  margin-bottom: 18px;
+}
+.service-card h3 { margin-bottom: 10px; }
+.service-card p { color: var(--color-text-muted); font-size: 0.94rem; margin-bottom: 18px; }
+.link-more {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-primary-dark);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap var(--transition);
+}
+.link-more:hover { gap: 10px; }
 
-        <p class="form-note">No email needed — just name and number.</p>
+/* Why choose us */
+.why-us { background: var(--color-bg-deep); color: var(--color-text-inverse); }
+.why-us h2, .why-us .eyebrow { color: #fff; }
+.why-us .eyebrow { color: var(--color-ice); }
+.why-us .section-sub { color: rgba(246, 249, 251, 0.7); }
+.why-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+}
+.why-list li {
+  padding: 20px 0;
+  border-top: 1px solid rgba(246, 249, 251, 0.14);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.why-list li:last-child { border-bottom: 1px solid rgba(246, 249, 251, 0.14); }
+.why-list strong { font-family: var(--font-display); font-size: 1.05rem; }
+.why-list span { color: rgba(246, 249, 251, 0.65); font-size: 0.92rem; }
 
-        <div id="booking-success" class="booking-success" role="status" hidden>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
-          <div>
-            <strong>Request received.</strong>
-            <span>We'll call you shortly.</span>
-          </div>
-        </div>
+.testimonials { display: flex; flex-direction: column; gap: 18px; }
+.testimonial-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(246, 249, 251, 0.14);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  backdrop-filter: blur(6px);
+}
+.testimonial-card p { font-size: 0.98rem; line-height: 1.6; }
+.testimonial-card footer {
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-ice);
+}
 
-        <div id="booking-error" class="booking-error" role="alert" hidden>
-          <span>Something went wrong. Please call us at
-          <a href="tel:+639173146208">0917 314 6208</a>.</span>
-        </div>
-          </form>
-        </div>
-    </div>
-  </div>
+/* FAQ */
+.accordion { max-width: 760px; display: flex; flex-direction: column; gap: 12px; }
+.accordion-item {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 6px 24px;
+}
+.accordion-item summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 18px 0;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.accordion-item summary::-webkit-details-marker { display: none; }
+.accordion-item summary::after {
+  content: '+';
+  font-size: 1.3rem;
+  color: var(--color-primary);
+  transition: transform var(--transition);
+  font-weight: 400;
+}
+.accordion-item[open] summary::after { transform: rotate(45deg); }
+.accordion-body {
+  color: var(--color-text-muted);
+  padding-bottom: 20px;
+  font-size: 0.95rem;
+}
 
-  <script src="script.js"></script>
-</body>
-</html>
+/* Booking form (now lives inside the booking modal) */
+.hero-form-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+.hero-form-title {
+  font-size: 1.2rem;
+  margin-bottom: 14px;
+}
+.modal-panel--booking .form-row { margin-bottom: 12px; }
+.modal-panel--booking .form-row input { padding: 11px 14px; }
+.modal-panel--booking .form-note { margin-top: 10px; font-size: 0.74rem; }
+.form-row { margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px; }
+.form-row label { font-weight: 600; font-size: 0.9rem; }
+.form-row input {
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: #fff;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.form-row input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(30, 90, 140, 0.15);
+}
+.form-row input:invalid[data-touched="true"] { border-color: var(--color-error); }
+.field-error {
+  font-size: 0.8rem;
+  color: var(--color-error);
+  min-height: 1em;
+}
+
+.btn-spinner {
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,0.5);
+  border-top-color: #fff;
+  border-radius: 50%;
+  display: none;
+  animation: spin 0.7s linear infinite;
+}
+#booking-submit[data-loading="true"] .btn-label { opacity: 0.6; }
+#booking-submit[data-loading="true"] .btn-spinner { display: inline-block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.form-note { font-size: 0.78rem; color: var(--color-text-muted); margin-top: 14px; }
+
+.booking-success, .booking-error {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 0.92rem;
+}
+/* Without this, the [hidden] attribute gets overridden by the "display: flex"
+   rule above (same specificity, but author CSS beats the browser default),
+   so both boxes show up on load instead of staying hidden until JS reveals
+   one of them. This re-asserts display:none whenever [hidden] is present. */
+.booking-success[hidden], .booking-error[hidden] { display: none; }
+.booking-success { background: rgba(30, 140, 99, 0.1); color: var(--color-success); }
+.booking-success strong { display: block; color: var(--color-bg-deep); }
+.booking-error { background: rgba(179, 53, 42, 0.1); color: var(--color-error); }
+.booking-error a { white-space: nowrap; }
+
+/* Contact */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.contact-list { margin-top: 28px; display: flex; flex-direction: column; gap: 18px; }
+.contact-list li { display: flex; align-items: center; gap: 14px; color: var(--color-text-muted); }
+.contact-list svg { color: var(--color-primary); flex-shrink: 0; }
+.contact-list a { font-weight: 600; color: var(--color-bg-deep); }
+
+/* Final CTA */
+.final-cta {
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-bg-deep));
+  padding: 88px 0;
+}
+.final-cta-inner {
+  text-align: center;
+  max-width: 640px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.final-cta h2 { color: #fff; }
+.final-cta p { color: rgba(246, 249, 251, 0.75); }
+
+/* ---------------------------------------------------------
+   Footer
+--------------------------------------------------------- */
+.site-footer {
+  background: var(--color-bg-deep);
+  color: rgba(246, 249, 251, 0.75);
+  padding: 72px 0 0;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(246, 249, 251, 0.1);
+}
+.footer-brand .brand { color: #fff; margin-bottom: 12px; }
+.footer-brand p { font-size: 0.9rem; margin-bottom: 20px; }
+.social-icons { display: flex; gap: 12px; }
+.social-icons a {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(246, 249, 251, 0.08);
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition);
+}
+.social-icons a:hover { background: var(--color-primary); }
+.site-footer h3 {
+  color: #fff;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 18px;
+}
+.footer-nav ul, .footer-hours ul { display: flex; flex-direction: column; gap: 10px; }
+.footer-nav a { font-size: 0.9rem; transition: color var(--transition); }
+.footer-nav a:hover { color: var(--color-ice); }
+.footer-hours li { display: flex; justify-content: space-between; font-size: 0.85rem; gap: 12px; font-family: var(--font-mono); }
+.footer-contact p { margin-bottom: 10px; font-size: 0.9rem; }
+.footer-contact a { font-weight: 600; color: #fff; }
+.footer-contact .btn { margin-top: 12px; }
+
+.footer-bottom {
+  padding: 24px 0;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* ---------------------------------------------------------
+   Page router (each nav destination is its own "page")
+--------------------------------------------------------- */
+.main-nav a[aria-current="page"] {
+  color: var(--color-primary);
+}
+.main-nav a[aria-current="page"]::after { transform: scaleX(1); }
+
+/* ---------------------------------------------------------
+   Scroll reveal animations
+--------------------------------------------------------- */
+/* Scoped to html.js so the page is never blank when JavaScript is
+   unavailable or fails to load. The class is set at the top of script.js. */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------------------------------------------------------
+   Responsive
+--------------------------------------------------------- */
+@media (max-width: 980px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+  .hero-copy { max-width: 100%; }
+  .feature-grid { grid-template-columns: repeat(2, 1fr); }
+  .about-grid, .why-grid, .contact-grid { grid-template-columns: 1fr; }
+  .about-visual, .contact-map { order: -1; max-width: 380px; margin-inline: auto; }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .partners-grid { grid-template-columns: 1fr 1fr; }
+  .partners-map-visual { grid-column: 1 / -1; order: -1; max-width: 260px; margin: 0 auto 12px; position: static; }
+}
+
+/* Hamburger menu from 900px down. Below this the seven bold nav links plus
+   the Book Now button overflow the header and force sideways page scroll. */
+@media (max-width: 900px) {
+  .main-nav, .header-cta { display: none; }
+  .nav-toggle { display: flex; }
+
+  /* The header height is fixed, so it must relax when the menu expands,
+     otherwise the open panel spills outside the header box. */
+  .site-header.nav-open .header-inner {
+    flex-wrap: wrap;
+    height: auto;
+    align-items: center;
+  }
+  .brand { order: 1; }
+  .nav-toggle { order: 2; }
+
+  .site-header.nav-open .main-nav {
+    display: block;
+    order: 3;
+    flex-basis: 100%;
+    width: 100%;
+    background: var(--color-bg);
+    border-top: 1px solid var(--color-border);
+    /* .container already pads 24px, so no horizontal padding here */
+    padding: 16px 0 8px;
+  }
+  .site-header.nav-open .main-nav ul { flex-direction: column; gap: 4px; }
+  .site-header.nav-open .main-nav a {
+    display: block;
+    padding: 12px 4px;
+    font-size: 1rem;
+  }
+  .site-header.nav-open .header-cta {
+    display: flex;
+    order: 4;
+    flex-basis: 100%;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    background: var(--color-bg);
+    padding: 8px 0 20px;
+    border-bottom: 1px solid var(--color-border);
+  }
+  /* Book Now: full width, comfortable tap target */
+  .site-header.nav-open .header-cta .btn {
+    width: 100%;
+    min-height: 50px;
+    justify-content: center;
+    text-align: center;
+    font-size: 1rem;
+    padding: 13px 20px;
+  }
+}
+
+@media (max-width: 720px) {
+  /* Keep the enlarged logo in proportion on small screens */
+  .header-inner { height: 92px; }
+  .site-header .brand-mark img { width: 76px; height: 76px; }
+
+  .feature-grid { grid-template-columns: 1fr; }
+  .services-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .section { padding: 64px 0; }
+  .hero { padding: 48px 0 64px; }
+  .partners-grid { grid-template-columns: 1fr; }
+  .modal-panel { padding: 22px; }
+  .cold-gauge svg { width: 72px; height: 232px; }
+  .cold-gauge-label { font-size: 0.8rem; }
+  .cold-gauge-label span { font-size: 0.58rem; }
+}
+
+@media (max-width: 480px) {
+  .hero-title-row { align-items: flex-start; gap: 14px; }
+  .cold-gauge svg { width: 60px; height: 193px; }
+  .cold-gauge-label { font-size: 0.72rem; }
+}
+
+/* =========================================================
+   EMPLOYMENT PAGE
+   Job cards + the single role-aware application form.
+   Uses the existing colour, radius and shadow tokens so it
+   sits alongside the service cards without looking bolted on.
+   ========================================================= */
+
+.section--tight { padding-top: 0; }
+.section--apply { padding-top: 24px; }
+.container--narrow { max-width: 720px; }
+
+/* ---- Job cards ---- */
+.job-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.job-card {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 30px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+.job-card:not(.job-card--filled):hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-soft);
+  border-color: var(--color-ice);
+}
+/* The card whose form is currently open */
+.job-card.is-selected {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(30, 90, 140, 0.16), var(--shadow-soft);
+}
+
+.job-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+.job-card h3 { margin: 0; font-size: 1.18rem; }
+
+.job-status {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.job-status--open {
+  color: var(--color-success);
+  background: rgba(30, 140, 99, 0.12);
+}
+.job-status--filled {
+  color: var(--color-text-muted);
+  background: rgba(85, 112, 127, 0.12);
+}
+
+.job-card-desc {
+  color: var(--color-text-muted);
+  font-size: 0.94rem;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.job-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.job-meta li {
+  font-size: 0.76rem;
+  color: var(--color-text-muted);
+  background: var(--color-bg-alt);
+  border-radius: 999px;
+  padding: 5px 12px;
+}
+
+/* ---- Filled role: visibly unavailable ---- */
+.job-card--filled {
+  background: var(--color-bg-alt);
+  border-color: var(--color-border);
+  opacity: 0.72;
+}
+.job-card--filled h3,
+.job-card--filled .job-card-desc { color: var(--color-text-muted); }
+.job-card--filled .job-meta li { background: rgba(201, 211, 218, 0.5); }
+
+.btn-filled {
+  background: var(--color-silver);
+  color: #4A5B66;
+  border-color: transparent;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.btn-filled:hover { transform: none; box-shadow: none; }
+.btn:disabled { cursor: not-allowed; }
+.btn:disabled:hover { transform: none; }
+
+/* ---- Confirmation shown after the application is emailed ---- */
+.apply-sent {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 30px;
+  padding: 18px 22px;
+  border-radius: var(--radius-md);
+  background: rgba(30, 140, 99, 0.1);
+  border-left: 4px solid var(--color-success);
+  color: var(--color-text);
+}
+.apply-sent[hidden] { display: none; }
+.apply-sent svg { color: var(--color-success); flex-shrink: 0; margin-top: 1px; }
+
+/* ---- Application modal ----
+   The form is a popup now, so the page itself stays compact. The base
+   .modal-panel already caps height at 90vh and scrolls, which the taller
+   application form needs. */
+.modal-panel--apply {
+  max-width: 640px;
+  padding: 32px;
+  text-align: left;
+}
+.modal-panel--apply .apply-panel-head { margin-top: 4px; padding-right: 44px; }
+.modal-panel--apply .form-row:last-of-type { margin-bottom: 0; }
+
+/* ---- Free-text detail field ---- */
+.form-row--notes { margin-bottom: 4px; }
+.notes-hint {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin: -2px 0 2px;
+}
+.form-row textarea {
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: #fff;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--color-text);
+  line-height: 1.55;
+  resize: vertical;
+  min-height: 104px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.form-row textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(30, 90, 140, 0.15);
+}
+.notes-footer { display: flex; justify-content: flex-end; }
+.word-count {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--color-text-muted);
+}
+.word-count.is-near { color: #B26A00; }
+.word-count.is-over { color: var(--color-error); font-weight: 600; }
+.form-row textarea.is-over {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 3px rgba(179, 53, 42, 0.14);
+}
+
+/* ---- Prompt shown before a role is chosen ---- */
+.apply-empty {
+  text-align: center;
+  padding: 40px 24px;
+  border: 1px dashed var(--color-silver);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--color-text-muted);
+}
+.apply-empty svg { color: var(--color-primary); margin-bottom: 10px; }
+.apply-empty p { margin: 0; }
+.apply-empty strong { color: var(--color-text); }
+.apply-empty-sub { font-size: 0.9rem; margin-top: 6px !important; }
+
+/* ---- The application panel ---- */
+.apply-panel {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 34px;
+}
+.apply-panel[hidden] { display: none; }
+
+.apply-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-bottom: 20px;
+  margin-bottom: 26px;
+  border-bottom: 1px solid var(--color-border);
+}
+.apply-for { margin: 0; font-size: 1.12rem; line-height: 1.4; }
+.apply-for-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+.apply-for strong { color: var(--color-text); font-size: 1.24rem; }
+
+.apply-change {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 8px 4px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: color var(--transition), border-color var(--transition);
+}
+.apply-change:hover {
+  color: var(--color-primary-dark);
+  border-bottom-color: var(--color-primary-dark);
+}
+
+/* ---- Fields ---- */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 20px;
+}
+
+/* ---- Relevant Experience: large clickable boxes ---- */
+.experience-block {
+  border: none;
+  padding: 0;
+  margin: 6px 0 26px;
+}
+.experience-block[hidden] { display: none; }
+.experience-block legend { padding: 0; }
+.experience-hint {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin: 0 0 14px;
+}
+.experience-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.experience-option { display: block; cursor: pointer; }
+/* Visually hidden but still focusable and reachable by screen readers */
+.experience-option input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+}
+.experience-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  height: 100%;
+  min-height: 118px;
+  padding: 18px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: #fff;
+  transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
+}
+.experience-option:hover .experience-box { border-color: var(--color-ice); }
+.experience-check {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  border: 2px solid var(--color-silver);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+  flex-shrink: 0;
+}
+.experience-text { font-weight: 600; font-size: 0.95rem; line-height: 1.35; }
+.experience-option input:checked + .experience-box {
+  border-color: var(--color-primary);
+  background: rgba(30, 90, 140, 0.06);
+}
+.experience-option input:checked + .experience-box .experience-check {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+.experience-option input:focus-visible + .experience-box {
+  box-shadow: 0 0 0 3px rgba(30, 90, 140, 0.25);
+}
+
+/* ---- Trainee note ---- */
+.training-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 6px 0 26px;
+  padding: 16px 18px;
+  border-radius: var(--radius-sm);
+  background: rgba(30, 90, 140, 0.07);
+  border-left: 3px solid var(--color-primary);
+  color: var(--color-text);
+  font-size: 0.94rem;
+}
+.training-note[hidden] { display: none; }
+.training-note svg { color: var(--color-primary); flex-shrink: 0; margin-top: 1px; }
+
+/* ---- CV upload ---- */
+.form-row--file { margin-bottom: 10px; }
+.upload-area { position: relative; }
+.upload-area input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.upload-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  border: 2px dashed var(--color-silver);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-alt);
+  transition: border-color var(--transition), background var(--transition);
+}
+.upload-area:hover .upload-inner,
+.upload-area input[type="file"]:focus-visible + .upload-inner {
+  border-color: var(--color-primary);
+  background: rgba(30, 90, 140, 0.06);
+}
+.upload-area.is-dragover .upload-inner {
+  border-color: var(--color-primary);
+  background: rgba(30, 90, 140, 0.1);
+}
+.upload-area.has-file .upload-inner {
+  border-style: solid;
+  border-color: var(--color-success);
+  background: rgba(30, 140, 99, 0.08);
+}
+.upload-inner svg { color: var(--color-primary); flex-shrink: 0; }
+.upload-area.has-file .upload-inner svg { color: var(--color-success); }
+.upload-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.upload-text strong { font-size: 0.96rem; }
+.upload-sub { font-size: 0.84rem; color: var(--color-text-muted); word-break: break-word; }
+.upload-hint { font-size: 0.8rem; color: var(--color-text-muted); margin: 10px 0 0; }
+
+#apply-submit { margin-top: 22px; }
+#apply-submit[data-loading="true"] .btn-label { opacity: 0.6; }
+#apply-submit[data-loading="true"] .btn-spinner { display: inline-block; }
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .job-grid { grid-template-columns: 1fr; gap: 18px; }
+  .experience-grid { grid-template-columns: 1fr; }
+  .experience-box {
+    min-height: 0;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+  }
+  .form-grid { grid-template-columns: 1fr; gap: 0; }
+  .apply-panel { padding: 26px 20px; }
+  .apply-panel-head { flex-direction: column; align-items: flex-start; }
+  .modal-panel--apply { padding: 24px 18px; max-height: 92vh; }
+}
+
+@media (max-width: 480px) {
+  .job-card { padding: 24px 20px; }
+  .job-card-top { flex-direction: column; gap: 8px; }
+  .upload-inner { flex-direction: column; text-align: center; gap: 10px; padding: 22px 16px; }
+}
