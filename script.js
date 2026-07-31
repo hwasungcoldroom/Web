@@ -518,7 +518,7 @@
   var uploadSub   = uploadText.querySelector('.upload-sub');
   var uploadTitle = uploadText.querySelector('strong');
 
-  var MAX_WORDS = 300;
+  var MAX_CHARS = 300;
   var MAX_BYTES = 10 * 1024 * 1024;               // 10 MB
   var ALLOWED = /\.(pdf|docx)$/i;
   var DEFAULT_TITLE = uploadTitle.textContent;
@@ -672,27 +672,26 @@
     return setError('email', '');
   }
 
-  function countWords(text) {
-    var t = text.trim();
-    return t ? t.split(/\s+/).length : 0;
+  function countChars(text) {
+    return text.length;
   }
 
   function updateWordCount() {
-    var n = countWords(details.value);
-    wordCount.textContent = n + ' / ' + MAX_WORDS + ' words';
-    wordCount.classList.toggle('is-near', n > MAX_WORDS * 0.9 && n <= MAX_WORDS);
-    wordCount.classList.toggle('is-over', n > MAX_WORDS);
-    details.classList.toggle('is-over', n > MAX_WORDS);
-    if (n <= MAX_WORDS) setError('details', '');
+    var n = countChars(details.value);
+    wordCount.textContent = n + ' / ' + MAX_CHARS + ' characters';
+    wordCount.classList.toggle('is-near', n > MAX_CHARS * 0.9 && n <= MAX_CHARS);
+    wordCount.classList.toggle('is-over', n > MAX_CHARS);
+    details.classList.toggle('is-over', n > MAX_CHARS);
+    if (n <= MAX_CHARS) setError('details', '');
     return n;
   }
 
   function validateDetails() {
     // Optional field — only the length is enforced
-    var n = countWords(details.value);
-    if (n > MAX_WORDS) {
-      return setError('details', 'Please shorten this to ' + MAX_WORDS +
-        ' words or fewer. You are ' + (n - MAX_WORDS) + ' over.');
+    var n = countChars(details.value);
+    if (n > MAX_CHARS) {
+      return setError('details', 'Please shorten this to ' + MAX_CHARS +
+        ' characters or fewer. You are ' + (n - MAX_CHARS) + ' over.');
     }
     return setError('details', '');
   }
