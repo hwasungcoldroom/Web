@@ -1713,9 +1713,11 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   grid-template-columns: 1.1fr 1fr;
   gap: clamp(28px, 5vw, 56px);
   align-items: center;
-  margin-top: clamp(48px, 7vw, 88px);
-  padding-top: clamp(40px, 6vw, 72px);
-  border-top: 1px solid var(--color-border);
+  /* History leads the section now, so the rule sits underneath it,
+     separating it from the company copy below. */
+  margin-bottom: clamp(48px, 7vw, 88px);
+  padding-bottom: clamp(40px, 6vw, 72px);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .history-figure { margin: 0; }
@@ -1734,7 +1736,7 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   font-style: italic;
 }
 
-.history-copy h3 {
+.history-copy h2 {
   margin: 6px 0 16px;
   font-size: clamp(1.4rem, 2.4vw, 1.85rem);
   line-height: 1.25;
