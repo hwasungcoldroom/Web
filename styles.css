@@ -1289,31 +1289,30 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   white-space: nowrap;
   flex-shrink: 0;
 }
-/* "Available" pulses to draw the eye. Kept in the green family rather than
-   flashing red — red on an open role would read as "unavailable". The ring
-   expanding outwards is what makes it register as live. Same 1.6s easing as
-   the nav link, well clear of the 3-flashes-per-second seizure threshold. */
+/* "Available" pulses between the brand blue and red, matching the Employment
+   nav link. Smooth 1.6s fade rather than a hard blink — anything flashing more
+   than three times a second is a seizure risk (WCAG 2.3.1). Reduced-motion
+   visitors get solid red so it still stands out without moving. */
 .job-status--open {
-  color: var(--color-success);
-  background: rgba(30, 140, 99, 0.12);
+  color: var(--color-primary);
+  background: rgba(30, 90, 140, 0.14);
   animation: availablePulse 1.6s ease-in-out infinite;
 }
 @keyframes availablePulse {
   0%, 100% {
-    background: rgba(30, 140, 99, 0.12);
-    color: var(--color-success);
-    box-shadow: 0 0 0 0 rgba(30, 140, 99, 0.5);
+    color: var(--color-primary);
+    background: rgba(30, 90, 140, 0.14);
   }
   50% {
-    background: rgba(30, 140, 99, 0.32);
-    color: #10553A;
-    box-shadow: 0 0 0 6px rgba(30, 140, 99, 0);
+    color: #D32F2F;
+    background: rgba(211, 47, 47, 0.14);
   }
 }
 @media (prefers-reduced-motion: reduce) {
   .job-status--open {
     animation: none;
-    background: rgba(30, 140, 99, 0.22);
+    color: #D32F2F;
+    background: rgba(211, 47, 47, 0.16);
   }
 }
 .job-status--filled {
