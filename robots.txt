@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://hwasung1996.com/sitemap.xml
+Sitemap: https://www.hwasung1996.com/sitemap.xml
