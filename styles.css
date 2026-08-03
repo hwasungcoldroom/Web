@@ -1701,3 +1701,52 @@ h3 { font-size: 1.15rem; font-weight: 600; }
     color: #D32F2F;
   }
 }
+
+
+/* =========================================================
+   ABOUT — HISTORY BLOCK
+   Archive photo beside the origin story. Photo first on mobile so the
+   image leads, since it is the reason the section exists.
+   ========================================================= */
+.history {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(28px, 5vw, 56px);
+  align-items: center;
+  margin-top: clamp(48px, 7vw, 88px);
+  padding-top: clamp(40px, 6vw, 72px);
+  border-top: 1px solid var(--color-border);
+}
+
+.history-figure { margin: 0; }
+.history-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--color-border);
+}
+.history-figure figcaption {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.history-copy h3 {
+  margin: 6px 0 16px;
+  font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+  line-height: 1.25;
+}
+.history-copy p { color: var(--color-text-muted); }
+.history-copy p + p { margin-top: 14px; }
+.history-copy [lang="ko"] {
+  color: var(--color-text);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+@media (max-width: 860px) {
+  .history { grid-template-columns: 1fr; gap: 26px; }
+}
