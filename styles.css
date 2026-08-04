@@ -1752,3 +1752,78 @@ h3 { font-size: 1.15rem; font-weight: 600; }
 @media (max-width: 860px) {
   .history { grid-template-columns: 1fr; gap: 26px; }
 }
+
+
+/* =========================================================
+   ABOUT — EQUIPMENT BLOCK
+   Sits between the history and the company copy. Text on the left,
+   catalogue page on the right; the image is a scan with fine print,
+   so it is capped rather than stretched, which would blur it.
+   ========================================================= */
+.equipment {
+  display: grid;
+  grid-template-columns: 1fr 0.8fr;
+  gap: clamp(28px, 5vw, 56px);
+  align-items: center;
+  margin-bottom: clamp(48px, 7vw, 88px);
+  padding-bottom: clamp(40px, 6vw, 72px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.equipment-copy h2 {
+  margin: 6px 0 16px;
+  font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+  line-height: 1.25;
+}
+.equipment-copy p { color: var(--color-text-muted); }
+
+.equipment-list {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.equipment-list li {
+  position: relative;
+  padding-left: 26px;
+  color: var(--color-text);
+  font-size: 0.95rem;
+}
+.equipment-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--color-primary);
+}
+
+.equipment-figure {
+  margin: 0;
+  text-align: center;
+}
+.equipment-figure img {
+  display: block;
+  width: 100%;
+  max-width: 420px;      /* source is only 544px wide — do not upscale */
+  height: auto;
+  margin: 0 auto;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--color-border);
+  background: #fff;
+}
+.equipment-figure figcaption {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+@media (max-width: 860px) {
+  .equipment { grid-template-columns: 1fr; gap: 26px; }
+  .equipment-figure { order: -1; }   /* picture leads on mobile */
+}
