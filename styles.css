@@ -1748,7 +1748,7 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   position: relative;
   /* horizontal padding leaves room for the tilted corners, which a rotation
      pushes outside the element's own box */
-  padding: 10px 12px 132px 12px;
+  padding: 10px 12px 200px 12px;
 }
 
 /* shared print look */
@@ -1777,7 +1777,7 @@ h3 { font-size: 1.15rem; font-weight: 600; }
 .photo-stack-front {
   position: absolute;
   right: 14px;          /* clears the extra width the tilt adds to the bounding box */
-  bottom: 0;            /* sits low, so the shop photo stays largely uncovered */
+  bottom: 0;            /* hangs low, so the shop photo stays almost fully visible */
   width: 46%;
   max-width: 300px;
   transform: rotate(3deg);
