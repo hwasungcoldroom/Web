@@ -1720,22 +1720,6 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   border-bottom: 1px solid var(--color-border);
 }
 
-.history-figure { margin: 0; }
-.history-figure img {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-soft);
-  border: 1px solid var(--color-border);
-}
-.history-figure figcaption {
-  margin-top: 12px;
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
-  font-style: italic;
-}
-
 .history-copy h2 {
   margin: 6px 0 16px;
   font-size: clamp(1.4rem, 2.4vw, 1.85rem);
@@ -1755,34 +1739,81 @@ h3 { font-size: 1.15rem; font-weight: 600; }
 
 
 /* =========================================================
-   ABOUT — EQUIPMENT BLOCK
-   Catalogue page on its own, centred. No grid, so nothing sits
-   beside it and the image stays in the middle of the column.
+   ABOUT — PHOTO STACK
+   The archive shop photo with the equipment catalogue page laid over
+   it, like two prints dropped on a desk. Both are tilted slightly and
+   given a white print border so the overlap reads as deliberate.
    ========================================================= */
-.equipment {
-  margin-bottom: clamp(48px, 7vw, 88px);
-  padding-bottom: clamp(40px, 6vw, 72px);
-  border-bottom: 1px solid var(--color-border);
-  text-align: center;
+.photo-stack {
+  position: relative;
+  /* horizontal padding leaves room for the tilted corners, which a rotation
+     pushes outside the element's own box */
+  padding: 10px 12px 64px 12px;
 }
 
-.equipment-figure { margin: 0; }
-.equipment-figure img {
+/* shared print look */
+.photo-stack figure {
+  margin: 0;
+  background: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 14px 34px rgba(15, 27, 38, 0.22);
+  transition: transform var(--transition);
+}
+.photo-stack img {
   display: block;
   width: 100%;
-  max-width: 544px;      /* the source is 544px wide — never upscale a scan */
   height: auto;
-  margin: 0 auto;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-soft);
-  border: 1px solid var(--color-border);
-  background: #fff;
+  border-radius: 2px;
 }
-.equipment-figure figcaption {
-  margin-top: 18px;
+
+/* the shop photo sits underneath, tilted left */
+.photo-stack-back {
+  transform: rotate(-2.5deg);
+  width: 88%;
+}
+
+/* the catalogue page overlaps it from the lower right, tilted the other way */
+.photo-stack-front {
+  position: absolute;
+  right: 14px;          /* clears the extra width the tilt adds to the bounding box */
+  bottom: 8px;
+  width: 46%;
+  max-width: 300px;
+  transform: rotate(3deg);
+  z-index: 2;
+}
+.photo-stack-front figcaption {
+  margin: 8px 2px 2px;
+  text-align: center;
   font-family: var(--font-display);
-  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  font-size: 0.82rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
   color: var(--color-primary);
+}
+
+/* lift whichever one the cursor is over, so the overlap feels physical */
+.photo-stack:hover .photo-stack-back  { transform: rotate(-3.5deg) translateY(-4px); }
+.photo-stack:hover .photo-stack-front { transform: rotate(4.5deg) translateY(-6px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-stack figure { transition: none; }
+  .photo-stack:hover .photo-stack-back  { transform: rotate(-2.5deg); }
+  .photo-stack:hover .photo-stack-front { transform: rotate(3deg); }
+}
+
+/* Narrow screens: the catalogue page would be too small to read as an
+   overlay, so the stack unstacks and both sit full width. */
+@media (max-width: 620px) {
+  .photo-stack { padding: 6px 8px 0; }
+  .photo-stack-back { width: 100%; transform: rotate(-1.5deg); }
+  .photo-stack-front {
+    position: static;
+    width: 78%;
+    max-width: 340px;
+    margin: 22px auto 0;
+    transform: rotate(1.5deg);
+  }
+  .photo-stack:hover .photo-stack-back  { transform: rotate(-1.5deg); }
+  .photo-stack:hover .photo-stack-front { transform: rotate(1.5deg); }
 }
