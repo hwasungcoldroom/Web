@@ -1704,27 +1704,41 @@ h3 { font-size: 1.15rem; font-weight: 600; }
 
 
 /* =========================================================
-   ABOUT — HISTORY BLOCK
-   Archive photo beside the origin story. Photo first on mobile so the
-   image leads, since it is the reason the section exists.
+   ABOUT PAGE — HISTORY & EQUIPMENT
+   Both blocks deliberately reuse the same grid as .about-grid below
+   them (same columns, same 64px gap, same vertical alignment) so the
+   three sections line up down the page instead of each having its own
+   proportions. Headings inherit the global h2 scale — an earlier
+   override here made them smaller than the heading below, which is
+   what made the page look inconsistent.
    ========================================================= */
 .history {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: clamp(28px, 5vw, 56px);
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 64px;
   align-items: center;
-  /* History leads the section now, so the rule sits underneath it,
-     separating it from the company copy below. */
-  margin-bottom: clamp(48px, 7vw, 88px);
-  padding-bottom: clamp(40px, 6vw, 72px);
+  margin-bottom: 72px;
+  padding-bottom: 72px;
   border-bottom: 1px solid var(--color-border);
 }
 
-.history-copy h2 {
-  margin: 6px 0 16px;
-  font-size: clamp(1.4rem, 2.4vw, 1.85rem);
-  line-height: 1.25;
+.history-figure { margin: 0; }
+.history-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--color-border);
 }
+.history-figure figcaption {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.history-copy h2 { margin: 0 0 18px; }
 .history-copy p { color: var(--color-text-muted); }
 .history-copy p + p { margin-top: 14px; }
 .history-copy [lang="ko"] {
@@ -1733,87 +1747,37 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   white-space: nowrap;
 }
 
-@media (max-width: 860px) {
-  .history { grid-template-columns: 1fr; gap: 26px; }
+/* ---- Equipment: heading and image stacked, both centred ---- */
+.equipment {
+  text-align: center;
+  margin-bottom: 72px;
+  padding-bottom: 72px;
+  border-bottom: 1px solid var(--color-border);
 }
+.equipment h2 { margin: 0 0 32px; }
 
-
-/* =========================================================
-   ABOUT — PHOTO STACK
-   The archive shop photo with the equipment catalogue page laid over
-   it, like two prints dropped on a desk. Both are tilted slightly and
-   given a white print border so the overlap reads as deliberate.
-   ========================================================= */
-.photo-stack {
-  position: relative;
-  /* horizontal padding leaves room for the tilted corners, which a rotation
-     pushes outside the element's own box */
-  padding: 10px 12px 200px 12px;
-}
-
-/* shared print look */
-.photo-stack figure {
-  margin: 0;
-  background: #fff;
-  padding: 10px;
-  border-radius: 4px;
-  box-shadow: 0 14px 34px rgba(15, 27, 38, 0.22);
-  transition: transform var(--transition);
-}
-.photo-stack img {
+.equipment-figure { margin: 0; }
+.equipment-figure img {
   display: block;
   width: 100%;
+  /* file is 1088px wide, so drawing it at 720 samples DOWN — stays sharp */
+  max-width: 720px;
   height: auto;
-  border-radius: 2px;
+  margin: 0 auto;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--color-border);
+  background: #fff;
 }
 
-/* the shop photo sits underneath, tilted left */
-.photo-stack-back {
-  transform: rotate(-2.5deg);
-  width: 88%;
-}
-
-/* the catalogue page overlaps it from the lower right, tilted the other way */
-.photo-stack-front {
-  position: absolute;
-  right: 14px;          /* clears the extra width the tilt adds to the bounding box */
-  bottom: 0;            /* hangs low, so the shop photo stays almost fully visible */
-  width: 46%;
-  max-width: 300px;
-  transform: rotate(3deg);
-  z-index: 2;
-}
-.photo-stack-front figcaption {
-  margin: 8px 2px 2px;
-  text-align: center;
-  font-family: var(--font-display);
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--color-primary);
-}
-
-/* lift whichever one the cursor is over, so the overlap feels physical */
-.photo-stack:hover .photo-stack-back  { transform: rotate(-3.5deg) translateY(-4px); }
-.photo-stack:hover .photo-stack-front { transform: rotate(4.5deg) translateY(-6px); }
-
-@media (prefers-reduced-motion: reduce) {
-  .photo-stack figure { transition: none; }
-  .photo-stack:hover .photo-stack-back  { transform: rotate(-2.5deg); }
-  .photo-stack:hover .photo-stack-front { transform: rotate(3deg); }
-}
-
-/* Narrow screens: the catalogue page would be too small to read as an
-   overlay, so the stack unstacks and both sit full width. */
-@media (max-width: 620px) {
-  .photo-stack { padding: 6px 8px 0; }
-  .photo-stack-back { width: 100%; transform: rotate(-1.5deg); }
-  .photo-stack-front {
-    position: static;
-    width: 78%;
-    max-width: 340px;
-    margin: 22px auto 0;
-    transform: rotate(1.5deg);
+/* 980px matches where .about-grid collapses, so the two never disagree */
+@media (max-width: 980px) {
+  .history {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-bottom: 48px;
+    padding-bottom: 48px;
   }
-  .photo-stack:hover .photo-stack-back  { transform: rotate(-1.5deg); }
-  .photo-stack:hover .photo-stack-front { transform: rotate(1.5deg); }
+  .equipment { margin-bottom: 48px; padding-bottom: 48px; }
+  .equipment h2 { margin-bottom: 24px; }
 }
