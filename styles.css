@@ -1714,7 +1714,8 @@ h3 { font-size: 1.15rem; font-weight: 600; }
    ========================================================= */
 .history {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  /* photo on the left, copy on the right */
+  grid-template-columns: 1fr 1fr;
   gap: 64px;
   align-items: center;
   margin-bottom: 72px;
@@ -1760,8 +1761,8 @@ h3 { font-size: 1.15rem; font-weight: 600; }
 .equipment-figure img {
   display: block;
   width: 100%;
-  /* file is 1088px wide, so drawing it at 720 samples DOWN — stays sharp */
-  max-width: 720px;
+  /* file is 1088px wide, so drawing it at 620 samples DOWN — stays sharp */
+  max-width: 620px;
   height: auto;
   margin: 0 auto;
   border-radius: var(--radius-md);
