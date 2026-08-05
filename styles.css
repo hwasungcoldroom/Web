@@ -1777,6 +1777,67 @@ h3 { font-size: 1.15rem; font-weight: 600; }
 
 .equipment-copy h2 { margin: 0; }
 
+/* ---- "Only made in Korea" ----
+   The word Korea takes the flag's red with a thick underline behind it, and a
+   badge below carries the taegeuk. Colours are the actual flag values
+   (#CD2E3A red, #0047A0 blue) so it reads as a country mark, not decoration. */
+.korea-line { line-height: 1.2; }
+.korea-word {
+  position: relative;
+  color: #CD2E3A;
+  white-space: nowrap;
+}
+/* thick highlight sitting behind the word rather than under it */
+.korea-word::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  bottom: 0.06em;
+  height: 0.34em;
+  background: rgba(205, 46, 58, 0.16);
+  border-radius: 2px;
+  z-index: -1;
+}
+
+.korea-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 22px 0 0;
+  padding: 10px 18px 10px 12px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  box-shadow: 0 6px 18px rgba(15, 27, 38, 0.1);
+  font-family: var(--font-display);
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: var(--color-text);
+  animation: koreaBadge 2.4s ease-in-out infinite;
+}
+.korea-mark {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  display: inline-flex;
+}
+.korea-mark svg {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(15, 27, 38, 0.25);
+}
+
+/* slow ring pulse — draws the eye without flashing */
+@keyframes koreaBadge {
+  0%, 100% { box-shadow: 0 6px 18px rgba(15,27,38,0.10), 0 0 0 0 rgba(205,46,58,0.34); }
+  55%      { box-shadow: 0 6px 18px rgba(15,27,38,0.10), 0 0 0 12px rgba(205,46,58,0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .korea-badge { animation: none; border-color: rgba(205, 46, 58, 0.45); }
+}
+
 /* 980px matches where .about-grid collapses, so the two never disagree */
 @media (max-width: 980px) {
   .history {
