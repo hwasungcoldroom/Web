@@ -1082,6 +1082,12 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   border-bottom: 1px solid rgba(246, 249, 251, 0.1);
 }
 .footer-brand .brand { color: #fff; margin-bottom: 12px; }
+.footer-brand .brand-tagline {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: rgba(246, 249, 251, 0.62);
+  text-align: left;
+}
 .footer-brand p { font-size: 0.9rem; margin-bottom: 20px; }
 .social-icons { display: flex; gap: 12px; }
 .social-icons a {
@@ -1099,7 +1105,10 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   letter-spacing: 0.08em;
   margin-bottom: 18px;
 }
-.footer-nav ul, .footer-hours ul { display: flex; flex-direction: column; gap: 10px; }
+.footer-hours ul { display: flex; flex-direction: column; gap: 10px; }
+/* Nine links stacked in one column made the footer far taller than the columns
+   beside it. Two columns brings its height back in line without dropping any. */
+.footer-nav ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 22px; }
 .footer-nav a { font-size: 0.9rem; transition: color var(--transition); }
 .footer-nav a:hover { color: var(--color-ice); }
 .footer-hours li { display: flex; justify-content: space-between; font-size: 0.85rem; gap: 12px; font-family: var(--font-mono); }
@@ -1757,8 +1766,6 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   gap: 64px;
   align-items: center;
   margin-bottom: 72px;
-  padding-bottom: 72px;
-  border-bottom: 1px solid var(--color-border);
 }
 
 .equipment-figure { margin: 0; }
