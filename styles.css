@@ -901,7 +901,11 @@ h3 { font-size: 1.15rem; font-weight: 600; }
 
 /* Why choose us */
 .why-us { background: var(--color-bg-deep); color: var(--color-text-inverse); }
-.why-us h2, .why-us .eyebrow { color: #fff; }
+.why-us h1, .why-us h2, .why-us .eyebrow { color: #fff; }
+/* These section headings became H1s for SEO. Keep them at the h2 visual scale
+   so the page still looks like a section, not a hero. */
+.why-us h1, .final-cta h1, .partners-hero h1,
+.section h1:not(.hero h1) { font-size: clamp(1.8rem, 3.4vw, 2.5rem); font-weight: 600; }
 .why-us .eyebrow { color: var(--color-ice); }
 .why-us .section-sub { color: rgba(246, 249, 251, 0.7); }
 .why-grid {
@@ -1063,7 +1067,7 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   align-items: center;
   gap: 18px;
 }
-.final-cta h2 { color: #fff; }
+.final-cta h1, .final-cta h2 { color: #fff; }
 .final-cta p { color: rgba(246, 249, 251, 0.75); }
 
 /* ---------------------------------------------------------
