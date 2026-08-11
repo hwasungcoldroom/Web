@@ -1959,3 +1959,63 @@ h3 { font-size: 1.15rem; font-weight: 600; }
 @media (max-width: 620px) {
   .faq-checks li, .faq-list li { padding-left: 26px; }
 }
+
+
+/* =========================================================
+   WHY CHOOSE US — checklist
+   Two columns of ticked points on the dark band. Ticks are drawn in CSS
+   so they render identically everywhere and stay silent to screen readers.
+   ========================================================= */
+.why-checks {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px 44px;
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+.why-checks li {
+  position: relative;
+  padding: 0 0 22px 42px;
+  border-bottom: 1px solid rgba(246, 249, 251, 0.14);
+}
+.why-checks li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--color-success);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+  background-size: 15px 15px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.why-checks strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.06rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.35;
+}
+.why-checks span {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.9rem;
+  color: rgba(246, 249, 251, 0.62);
+}
+
+.why-footnote {
+  margin: 40px 0 0;
+  font-size: 0.98rem;
+  color: rgba(246, 249, 251, 0.72);
+}
+.why-footnote a { color: var(--color-ice); font-weight: 600; }
+.why-footnote a:hover { text-decoration: underline; }
+
+@media (max-width: 760px) {
+  .why-checks { grid-template-columns: 1fr; gap: 18px; }
+}
