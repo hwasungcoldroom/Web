@@ -1907,3 +1907,55 @@ h3 { font-size: 1.15rem; font-weight: 600; }
 @media (max-width: 620px) {
   .home-services { grid-template-columns: 1fr; }
 }
+
+
+/* =========================================================
+   FAQ — answer body lists
+   Green ticks are drawn in CSS rather than pasted emoji, so they render
+   identically on every device and stay readable to screen readers.
+   ========================================================= */
+.accordion-body p + p,
+.accordion-body p + ul { margin-top: 12px; }
+
+.faq-list,
+.faq-checks {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 9px;
+}
+.faq-list li,
+.faq-checks li {
+  position: relative;
+  padding-left: 28px;
+  line-height: 1.5;
+}
+.faq-list li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0.55em;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--color-primary);
+}
+.faq-checks li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.2em;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--color-success);
+  /* white tick, drawn as a background image so no extra markup is needed */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+  background-size: 11px 11px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+@media (max-width: 620px) {
+  .faq-checks li, .faq-list li { padding-left: 26px; }
+}
