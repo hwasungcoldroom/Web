@@ -889,21 +889,8 @@
           });
         });
 
-        // Office dropdown — office role only
+        // Office dropdown — office role only (items open the /office workspace)
         if (me.role === 'office' && officeItem) {
-          if (me.officeLinks) {
-            Object.keys(me.officeLinks).forEach(function (key) {
-              var a = officeItem.querySelector('[data-office-link="' + key + '"]');
-              if (!a) return;
-              var url = me.officeLinks[key];
-              a.setAttribute('href', url);
-              if (url === '#') {           // placeholder until real links are set
-                a.removeAttribute('target');
-                a.removeAttribute('rel');
-                a.addEventListener('click', function (e) { e.preventDefault(); });
-              }
-            });
-          }
           officeItem.hidden = false;
         }
       })
@@ -998,4 +985,80 @@
       if (e.key === 'Enter') { e.preventDefault(); doLogin(); }
     });
   });
+})();
+
+
+/* =========================================================
+   OFFICE WORKSPACE PAGE (/office)
+   Embeds the office Google Sheets so staff edit them directly
+   on the site. The page shell contains no URLs — /api/me only
+   hands the sheet links to office sessions; everyone else sees
+   the access-denied card.
+   ========================================================= */
+(function () {
+  'use strict';
+
+  var frame = document.getElementById('office-frame');
+  if (!frame) return;
+
+  var loading   = document.getElementById('office-loading');
+  var denied    = document.getElementById('office-denied');
+  var workspace = document.getElementById('office-workspace');
+  var external  = document.getElementById('office-open-external');
+  var tabs      = Array.prototype.slice.call(document.querySelectorAll('.office-tab'));
+
+  var LABELS = { pettyCash: 'Petty Cash', project: 'Project', bankStatement: 'Bank Statement' };
+
+  fetch('/api/me', { credentials: 'same-origin' })
+    .then(function (r) { return r.json(); })
+    .then(function (me) {
+      loading.hidden = true;
+      if (!me || !me.loggedIn || me.role !== 'office' || !me.officeLinks) {
+        denied.hidden = false;
+        return;
+      }
+
+      var links = me.officeLinks;
+
+      function select(doc) {
+        var url = links[doc];
+        tabs.forEach(function (t) { t.classList.toggle('active', t.getAttribute('data-doc') === doc); });
+
+        if (!url || url === '#') {
+          frame.srcdoc = '<div style="font-family:Arial;padding:40px;text-align:center;color:#55707F">' +
+            'The ' + (LABELS[doc] || doc) + ' link has not been set up yet. ' +
+            'Add the OFFICE_LINK env var in Vercel and redeploy.</div>';
+          external.style.display = 'none';
+          return;
+        }
+        frame.removeAttribute('srcdoc');
+        frame.src = url;
+        external.href = url;
+        external.style.display = '';
+
+        // remember the choice in the address bar (no reload)
+        try {
+          var q = new URLSearchParams(window.location.search);
+          q.set('doc', doc);
+          history.replaceState(null, '', window.location.pathname + '?' + q.toString());
+        } catch (e) { /* ignore */ }
+      }
+
+      tabs.forEach(function (t) {
+        t.addEventListener('click', function () { select(t.getAttribute('data-doc')); });
+      });
+
+      var initial = 'pettyCash';
+      try {
+        var want = new URLSearchParams(window.location.search).get('doc');
+        if (want && links.hasOwnProperty(want)) initial = want;
+      } catch (e) { /* ignore */ }
+
+      workspace.hidden = false;
+      select(initial);
+    })
+    .catch(function () {
+      loading.hidden = true;
+      denied.hidden = false;
+    });
 })();
