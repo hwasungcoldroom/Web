@@ -2217,7 +2217,13 @@ h3 { font-size: 1.15rem; font-weight: 600; }
    drop the container width cap, and trim vertical padding so the
    spreadsheet gets maximum room. */
 .office-page .side-snow-border { display: none; }
-.office-section { padding-top: 16px; padding-bottom: 20px; }
+/* Lock the page itself: the workspace fits exactly in the viewport, the
+   footer is hidden, and the body cannot scroll — so the mouse wheel only
+   ever scrolls the spreadsheet, never the page behind it. */
+html:has(body.office-page) { overflow: hidden; }
+body.office-page { overflow: hidden; height: 100vh; }
+body.office-page .site-footer { display: none; }
+.office-section { padding-top: 12px; padding-bottom: 0; }
 .office-wrap { max-width: none; width: calc(100% - 32px); margin: 0 auto; padding: 0; }
 
 .office-state {
@@ -2271,8 +2277,9 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-card);
   overflow: hidden;
-  height: calc(100vh - var(--header-h) - 128px);
-  min-height: 560px;
+  height: calc(100vh - var(--header-h) - 118px);
+  min-height: 0;
+  overscroll-behavior: contain;   /* sheet scroll never chains to the page */
 }
 #office-frame { width: 100%; height: 100%; border: 0; display: block; }
 
@@ -2283,5 +2290,5 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   text-align: center;
 }
 @media (max-width: 700px) {
-  .office-frame-wrap { height: 70vh; }
+  .office-frame-wrap { height: calc(100vh - var(--header-h) - 150px); }
 }
