@@ -910,35 +910,30 @@
       .catch(function () { /* stay in logged-out state */ });
   }
 
-  /* ---------- dropdown open/close ---------- */
+  /* ---------- dropdown open/close ----------
+     Desktop: pure CSS :hover shows the menu (see styles.css), so it
+     appears on hover and disappears when the mouse leaves — no stuck-
+     open menu while scrolling. The click toggle below is for mobile
+     and touch screens, where hover doesn't exist. */
   if (officeItem) {
     var toggle = officeItem.querySelector('[data-office-toggle]');
     var menu   = officeItem.querySelector('[data-office-menu]');
 
     function setOpen(open) {
-      menu.hidden = !open;
+      menu.classList.toggle('open', open);
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     }
 
     toggle.addEventListener('click', function (e) {
       e.stopPropagation();
-      setOpen(menu.hidden);
-    });
-
-    // Desktop hover convenience
-    var hoverable = window.matchMedia('(hover: hover) and (min-width: 1081px)');
-    officeItem.addEventListener('mouseenter', function () {
-      if (hoverable.matches) setOpen(true);
-    });
-    officeItem.addEventListener('mouseleave', function () {
-      if (hoverable.matches) setOpen(false);
+      setOpen(!menu.classList.contains('open'));
     });
 
     document.addEventListener('click', function (e) {
-      if (!menu.hidden && !officeItem.contains(e.target)) setOpen(false);
+      if (menu.classList.contains('open') && !officeItem.contains(e.target)) setOpen(false);
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && !menu.hidden) { setOpen(false); toggle.focus(); }
+      if (e.key === 'Escape' && menu.classList.contains('open')) { setOpen(false); toggle.focus(); }
     });
   }
 

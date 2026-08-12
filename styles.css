@@ -2051,7 +2051,10 @@ h3 { font-size: 1.15rem; font-weight: 600; }
 }
 .nav-office-toggle[aria-expanded="true"] .office-caret { transform: rotate(180deg); }
 
-.office-menu {
+.main-nav ul.office-menu {
+  display: none;                 /* opens on hover (desktop) or .open (mobile) */
+  flex-direction: column;
+  gap: 0;
   position: absolute;
   top: calc(100% + 10px);
   left: 50%;
@@ -2063,6 +2066,12 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   box-shadow: var(--shadow-soft);
   padding: 8px;
   z-index: 60;
+}
+.main-nav ul.office-menu > li { display: block; }
+.main-nav ul.office-menu.open { display: block; }
+@media (min-width: 1081px) and (hover: hover) {
+  .nav-office:hover > ul.office-menu,
+  .nav-office:focus-within > ul.office-menu { display: block; }
 }
 .office-menu::before {           /* hover bridge so the menu doesn't close in the gap */
   content: "";
@@ -2096,7 +2105,7 @@ h3 { font-size: 1.15rem; font-weight: 600; }
 
 /* ---- Mobile nav: dropdown becomes an inline sub-list ---- */
 @media (max-width: 1080px) {
-  .office-menu {
+  .main-nav ul.office-menu {
     position: static;
     transform: none;
     box-shadow: none;
