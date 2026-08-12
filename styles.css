@@ -2213,8 +2213,12 @@ h3 { font-size: 1.15rem; font-weight: 600; }
 }
 
 /* ---- Office workspace page ---- */
-.office-section { padding-top: 34px; padding-bottom: 60px; }
-.office-wrap { max-width: 1400px; }
+/* Use nearly the whole screen: hide the decorative snow side borders,
+   drop the container width cap, and trim vertical padding so the
+   spreadsheet gets maximum room. */
+.office-page .side-snow-border { display: none; }
+.office-section { padding-top: 16px; padding-bottom: 20px; }
+.office-wrap { max-width: none; width: calc(100% - 32px); margin: 0 auto; padding: 0; }
 
 .office-state {
   max-width: 480px;
@@ -2241,7 +2245,7 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   justify-content: space-between;
   gap: 14px;
   flex-wrap: wrap;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 .office-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
 .office-tab {
@@ -2267,15 +2271,16 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-card);
   overflow: hidden;
-  height: calc(100vh - var(--header-h) - 190px);
-  min-height: 480px;
+  height: calc(100vh - var(--header-h) - 128px);
+  min-height: 560px;
 }
 #office-frame { width: 100%; height: 100%; border: 0; display: block; }
 
 .office-hint {
-  margin-top: 12px;
-  font-size: 0.85rem;
+  margin-top: 8px;
+  font-size: 0.78rem;
   color: var(--color-text-muted);
+  text-align: center;
 }
 @media (max-width: 700px) {
   .office-frame-wrap { height: 70vh; }
