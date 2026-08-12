@@ -855,3 +855,152 @@
   });
 
 })();
+
+/* =========================================================
+   AUTH NAV + OFFICE MENU + LOGIN PAGE
+   - Asks /api/me who is signed in.
+   - Office accounts: reveals the Office dropdown and fills its
+     links (the server only ever sends those links to office
+     sessions, so normal users cannot dig them out of the page).
+   - Any signed-in account: nav Login becomes Logout.
+   ========================================================= */
+(function () {
+  'use strict';
+
+  var officeItem = document.querySelector('[data-nav-office]');
+  var authLink   = document.querySelector('[data-nav-auth]');
+
+  /* ---------- session check ---------- */
+  if (authLink || officeItem) {
+    fetch('/api/me', { credentials: 'same-origin' })
+      .then(function (r) { return r.json(); })
+      .then(function (me) {
+        if (!me || !me.loggedIn) return;
+
+        // Login -> Logout
+        if (authLink) {
+          authLink.innerHTML = '<span class="auth-name">' +
+            String(me.name || '').replace(/[<>&"]/g, '') + '</span>Logout';
+          authLink.setAttribute('href', '#');
+          authLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            fetch('/api/logout', { method: 'POST', credentials: 'same-origin' })
+              .finally(function () { window.location.href = '/'; });
+          });
+        }
+
+        // Office dropdown — office role only
+        if (me.role === 'office' && officeItem) {
+          if (me.officeLinks) {
+            Object.keys(me.officeLinks).forEach(function (key) {
+              var a = officeItem.querySelector('[data-office-link="' + key + '"]');
+              if (!a) return;
+              var url = me.officeLinks[key];
+              a.setAttribute('href', url);
+              if (url === '#') {           // placeholder until real links are set
+                a.removeAttribute('target');
+                a.removeAttribute('rel');
+                a.addEventListener('click', function (e) { e.preventDefault(); });
+              }
+            });
+          }
+          officeItem.hidden = false;
+        }
+      })
+      .catch(function () { /* stay in logged-out state */ });
+  }
+
+  /* ---------- dropdown open/close ---------- */
+  if (officeItem) {
+    var toggle = officeItem.querySelector('[data-office-toggle]');
+    var menu   = officeItem.querySelector('[data-office-menu]');
+
+    function setOpen(open) {
+      menu.hidden = !open;
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      setOpen(menu.hidden);
+    });
+
+    // Desktop hover convenience
+    var hoverable = window.matchMedia('(hover: hover) and (min-width: 1081px)');
+    officeItem.addEventListener('mouseenter', function () {
+      if (hoverable.matches) setOpen(true);
+    });
+    officeItem.addEventListener('mouseleave', function () {
+      if (hoverable.matches) setOpen(false);
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!menu.hidden && !officeItem.contains(e.target)) setOpen(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !menu.hidden) { setOpen(false); toggle.focus(); }
+    });
+  }
+
+  /* ---------- login page ---------- */
+  var form = document.getElementById('login-form');
+  if (!form) return;
+
+  var userIn   = document.getElementById('login-username');
+  var passIn   = document.getElementById('login-password');
+  var errorBox = document.getElementById('login-error');
+  var okBox    = document.getElementById('login-success');
+  var submit   = document.getElementById('login-submit');
+
+  function showError(msg) {
+    errorBox.textContent = msg;
+    errorBox.hidden = false;
+  }
+
+  function doLogin() {
+    errorBox.hidden = true;
+
+    var username = userIn.value.trim();
+    var password = passIn.value;
+    if (!username || !password) {
+      showError('Please enter your username and password.');
+      return;
+    }
+
+    submit.disabled = true;
+    submit.textContent = 'Signing in\u2026';
+
+    fetch('/api/login', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: username, password: password })
+    })
+      .then(function (r) {
+        return r.json().catch(function () { return { ok: false }; });
+      })
+      .then(function (data) {
+        if (data && data.ok) {
+          form.hidden = true;
+          okBox.hidden = false;
+          setTimeout(function () { window.location.href = '/'; }, 900);
+          return;
+        }
+        submit.disabled = false;
+        submit.textContent = 'Sign in';
+        showError((data && data.error) || 'Sign in failed. Please try again.');
+      })
+      .catch(function () {
+        submit.disabled = false;
+        submit.textContent = 'Sign in';
+        showError('Could not reach the server. Please check your connection and try again.');
+      });
+  }
+
+  submit.addEventListener('click', doLogin);
+  [userIn, passIn].forEach(function (el) {
+    el.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); doLogin(); }
+    });
+  });
+})();

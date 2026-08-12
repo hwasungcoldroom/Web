@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Us | Hwasung Refrigeration Cebu</title>
-  <meta name="description" content="Built by refrigeration engineers and run like a service company. Learn how Hwasung Refrigeration approaches commercial cooling.">
+  <title>Login | Hwasung Refrigeration Cebu</title>
+  <meta name="description" content="Sign in to your Hwasung Refrigeration account.">
   <meta name="keywords" content="commercial refrigeration, HVAC repair, walk-in cooler service, refrigeration maintenance, cold storage Cebu, walk-in freezer Mandaue">
   <meta name="author" content="Hwasung Refrigeration">
-  <link rel="canonical" href="https://www.hwasung1996.com/about">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="canonical" href="https://hwasung1996.com/login">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="About Us | Hwasung Refrigeration Cebu">
-  <meta property="og:description" content="Built by refrigeration engineers and run like a service company. Learn how Hwasung Refrigeration approaches commercial cooling.">
+  <meta property="og:title" content="Login | Hwasung Refrigeration">
+  <meta property="og:description" content="Sign in to your Hwasung Refrigeration account.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://www.hwasung1996.com/og-image.jpg">
   <meta property="og:image:width" content="1200">
@@ -19,7 +20,7 @@
   <meta property="og:site_name" content="Hwasung Refrigeration">
   <meta property="og:locale" content="en_PH">
   <meta name="twitter:card" content="summary_large_image">
-  <meta property="og:url" content="https://www.hwasung1996.com/about">
+  <meta property="og:url" content="https://hwasung1996.com/login">
 
   <!-- Preconnect for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,8 +29,11 @@
 
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/png" href="favicon.png">
+  <!-- Tells Google exactly who and where this business is, rather than
+       leaving it to guess from the page text. Keep in step with the
+       address, phone and hours shown in the footer. -->
 </head>
-<body data-page="about">
+<body data-page="contact">
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
@@ -55,7 +59,7 @@
         <ul>
           <li><a href="/">Home</a></li>
           <li><a href="/partners">Partners</a></li>
-          <li><a href="/about" aria-current="page">About</a></li>
+          <li><a href="/about">About</a></li>
           <li><a href="/services">Services</a></li>
           <li><a href="/why-choose-us">Why Choose Us</a></li>
           <li><a href="/faq">FAQ</a></li>
@@ -87,85 +91,39 @@
   </header>
 
   <main id="main">
-    <!-- ============ ABOUT ============ -->
-    <section id="about" class="section about">
-      <!-- ============ HISTORY ============ -->
+    <!-- ============ LOGIN ============ -->
+    <section class="section login-section">
       <div class="container">
-        <div class="history reveal">
-          <figure class="history-figure">
-            <img src="history.jpg" width="1200" height="857" loading="lazy"
-                 alt="The original Hwasung Refrigeration workshop in Korea. Its signage reads
-                      Hwasung Refrigeration Company in Korean, with cold-storage units and
-                      insulated panels stacked outside.">
-            <figcaption>The original Hwasung Refrigeration workshop.</figcaption>
-          </figure>
-          <div class="history-copy">
-            <p class="eyebrow">Our History</p>
-            <h1>Three decades of cold storage</h1>
-            <p>
-              Hwasung Refrigeration began in Korea in 1996 as
-              <span lang="ko">&#54868;&#49457;&#45257;&#46041;&#44277;&#49324;</span> &mdash;
-              a workshop building and servicing cold rooms, chillers, and industrial
-              refrigeration for local businesses.
-            </p>
-            <p>
-              The same trade, and the same standards, carried over when the work moved to
-              the Philippines. Thirty years on we are still doing what that first shop
-              did: designing, installing, and keeping cold storage running.
-            </p>
+        <div class="login-card reveal">
+          <div class="login-head">
+            <img src="logo.png" alt="" width="46" height="40" style="object-fit:contain;">
+            <h1>Account login</h1>
+            <p class="login-sub">Sign in with the username and password given to you by the office.</p>
           </div>
-        </div>
-      </div>
 
-      <!-- ============ EQUIPMENT ============ -->
-      <div class="container">
-        <div class="equipment reveal">
-          <figure class="equipment-figure">
-            <img src="equipment.jpg" width="1088" height="1212" loading="lazy"
-                 alt="Hwasung Refrigeration equipment catalogue page showing unit coolers and
-                      condensers: air-cooled and water-cooled condensing units, ceiling and
-                      wall-mounted evaporators, and semi-hermetic compressors.">
-          </figure>
-          <div class="equipment-copy">
-            <p class="eyebrow">Equipment We Supply</p>
-            <h2 class="korea-line">Only made in <span class="korea-word">Korea</span></h2>
-            <p class="korea-badge">
-              <span class="korea-mark" aria-hidden="true">
-                <svg viewBox="0 0 100 100">
-                  <circle cx="50" cy="50" r="50" fill="#CD2E3A"/>
-                  <path d="M0,50 a25,25 0 0,1 50,0 a25,25 0 0,0 50,0 a50,50 0 0,1 -100,0 z" fill="#0047A0"/>
-                </svg>
-              </span>
-              <span>100% Korean-manufactured units</span>
-            </p>
-          </div>
-        </div>
-      </div>
+          <div id="login-form" novalidate>
+            <div class="form-field">
+              <label for="login-username">Username</label>
+              <input type="text" id="login-username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+            </div>
+            <div class="form-field">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" name="password" autocomplete="current-password" required>
+            </div>
 
-      <div class="container about-grid">
-        <div class="reveal">
-          <p class="eyebrow">About Hwasung</p>
-          <h2>Built by refrigeration engineers, run like a service company.</h2>
-          <p>
-            Hwasung Refrigeration started as a two-person repair crew and grew into a
-            full-service commercial refrigeration and HVAC contractor. We work with
-            restaurants, grocers, cold-storage warehouses, and property managers who
-            can&rsquo;t afford a system going down.
-          </p>
-          <p>
-            Every technician we send out is factory-trained, background-checked, and
-            equipped to diagnose the problem on the first visit &mdash; not the third.
-          </p>
-        </div>
-        <div class="about-visual reveal">
-          <div class="frost-panel frost-panel--logo">
-            <img src="logo-large.png" alt="Hwasung Refrigeration official logo">
+            <p class="login-error" id="login-error" role="alert" hidden></p>
+
+            <button type="button" class="btn btn-primary login-submit" id="login-submit">Sign in</button>
           </div>
+
+          <div class="login-success" id="login-success" hidden>
+            <p><strong>Signed in.</strong> Taking you to the homepage…</p>
+          </div>
+
+          <p class="login-note">No account? Accounts are issued by the Hwasung office. If you forgot your password, contact the office.</p>
         </div>
       </div>
     </section>
-
-    
   </main>
 
 <footer class="site-footer">
@@ -193,7 +151,7 @@
         <ul>
           <li><a href="/">Home</a></li>
           <li><a href="/partners">Partners</a></li>
-          <li><a href="/about" aria-current="page">About</a></li>
+          <li><a href="/about">About</a></li>
           <li><a href="/services">Services</a></li>
           <li><a href="/why-choose-us">Why Choose Us</a></li>
           <li><a href="/faq">FAQ</a></li>
