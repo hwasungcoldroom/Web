@@ -868,17 +868,17 @@
   'use strict';
 
   var officeItem = document.querySelector('[data-nav-office]');
-  var authLink   = document.querySelector('[data-nav-auth]');
+  var authLinks  = Array.prototype.slice.call(document.querySelectorAll('[data-nav-auth]'));
 
   /* ---------- session check ---------- */
-  if (authLink || officeItem) {
+  if (authLinks.length || officeItem) {
     fetch('/api/me', { credentials: 'same-origin' })
       .then(function (r) { return r.json(); })
       .then(function (me) {
         if (!me || !me.loggedIn) return;
 
-        // Login -> Logout
-        if (authLink) {
+        // Login -> Logout (header button + mobile nav item)
+        authLinks.forEach(function (authLink) {
           authLink.innerHTML = '<span class="auth-name">' +
             String(me.name || '').replace(/[<>&"]/g, '') + '</span>Logout';
           authLink.setAttribute('href', '#');
@@ -887,7 +887,7 @@
             fetch('/api/logout', { method: 'POST', credentials: 'same-origin' })
               .finally(function () { window.location.href = '/'; });
           });
-        }
+        });
 
         // Office dropdown — office role only
         if (me.role === 'office' && officeItem) {

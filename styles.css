@@ -2190,3 +2190,15 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   color: var(--color-text-muted);
   text-align: center;
 }
+
+/* ---- Header Login button replaces Book Now; the nav Login item
+        is kept only for the mobile hamburger menu ---- */
+@media (min-width: 1081px) {
+  .nav-auth-mobile { display: none; }
+}
+.header-cta [data-nav-auth] .auth-name {
+  color: rgba(246, 249, 251, 0.75);
+  font-weight: 500;
+  margin-right: 6px;
+  font-size: 0.86em;
+}
