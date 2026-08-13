@@ -2311,31 +2311,59 @@ body.office-page .site-footer { display: none; }
 .partner-del:hover { color: #E8604C; }
 .partner-del[disabled] { opacity: 0.4; cursor: wait; }
 
-.partner-admin {
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px dashed rgba(246, 249, 251, 0.35);
-  border-radius: var(--radius-sm);
-  padding: 16px;
-  margin-bottom: 16px;
+/* Bottom "+ Add Partner" row (office logins only) */
+.partners-admin-row {
+  text-align: center;
+  margin-top: 34px;
 }
-.partner-admin-title {
-  color: #fff;
-  font-weight: 600;
-  margin-bottom: 10px;
+
+/* Add Partner popup */
+.modal-panel--partner {
+  max-width: 420px;
+  padding: 34px 30px 28px;
 }
-.partner-admin select,
-.partner-admin input {
-  display: block;
-  width: 100%;
-  margin-bottom: 8px;
-  padding: 9px 11px;
-  border-radius: 8px;
-  border: 1px solid rgba(246, 249, 251, 0.25);
-  background: rgba(255, 255, 255, 0.92);
+.partner-modal-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--color-primary-dark);
+  margin-bottom: 4px;
+}
+.partner-modal-sub {
+  color: var(--color-text-muted);
   font-size: 0.92rem;
+  margin-bottom: 18px;
 }
-.partner-admin-error {
-  color: #FFB4A6;
-  font-size: 0.85rem;
-  margin-bottom: 8px;
+.partner-modal-form label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.88rem;
+  margin-bottom: 5px;
+  color: var(--color-text);
 }
+.partner-modal-form input,
+.partner-modal-form select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  font-size: 0.95rem;
+}
+.partner-modal-form input:focus,
+.partner-modal-form select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(30, 90, 140, 0.15);
+}
+.partner-modal-error {
+  color: var(--color-error);
+  background: rgba(179, 53, 42, 0.08);
+  border: 1px solid rgba(179, 53, 42, 0.25);
+  border-radius: var(--radius-sm);
+  padding: 9px 11px;
+  font-size: 0.88rem;
+  margin-bottom: 12px;
+}
+.partner-modal-submit { width: 100%; }
+.partner-modal-submit[disabled] { opacity: 0.6; cursor: wait; }

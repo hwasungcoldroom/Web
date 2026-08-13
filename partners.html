@@ -132,6 +132,10 @@
 
           <div class="partners-col" data-partners-col="right"></div>
         </div>
+
+        <div class="partners-admin-row" id="partners-admin-row" hidden>
+          <button type="button" class="btn btn-primary" id="partner-add-open">+ Add Partner</button>
+        </div>
       </div>
     </section>
 
@@ -267,7 +271,32 @@
     </div>
   </footer>
 
-<div class="modal-overlay" id="booking-modal" hidden>
+<div class="modal-overlay" id="partner-modal" hidden>
+    <div class="modal-panel modal-panel--partner" role="dialog" aria-modal="true" aria-labelledby="partner-modal-title">
+      <button type="button" class="modal-close" data-close-modal aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <h2 id="partner-modal-title" class="partner-modal-title">Add a partner</h2>
+      <p class="partner-modal-sub">The new partner appears on this page right away.</p>
+
+      <div class="partner-modal-form">
+        <label for="partner-region">Region</label>
+        <select id="partner-region"></select>
+
+        <label for="partner-name">Company name</label>
+        <input type="text" id="partner-name" maxlength="120" placeholder="e.g. Cebu Cold Chain Corp.">
+
+        <label for="partner-location">Location</label>
+        <input type="text" id="partner-location" maxlength="120" placeholder="e.g. Cebu City">
+
+        <p class="partner-modal-error" id="partner-error" role="alert" hidden></p>
+
+        <button type="button" class="btn btn-primary partner-modal-submit" id="partner-submit">Add partner</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="booking-modal" hidden>
     <div class="modal-panel modal-panel--booking" role="dialog" aria-modal="true" aria-labelledby="booking-modal-title">
       <button type="button" class="modal-close" data-close-modal aria-label="Close">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>

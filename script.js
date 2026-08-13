@@ -1154,35 +1154,50 @@
       if (target === leftCol) leftCount += byRegion[r].length; else rightCount += byRegion[r].length;
     });
 
-    if (isOffice) leftCol.insertBefore(buildAddForm(), leftCol.firstChild);
   }
 
-  /* ---------- office admin: add form ---------- */
-  function buildAddForm() {
-    var box = el('div', 'partner-admin');
-    box.appendChild(el('p', 'partner-admin-title', 'Add a partner'));
+  /* ---------- office admin: Add Partner button + popup ---------- */
+  function setupAdminUI() {
+    var row    = document.getElementById('partners-admin-row');
+    var openBt = document.getElementById('partner-add-open');
+    var modal  = document.getElementById('partner-modal');
+    var sel    = document.getElementById('partner-region');
+    var nameIn = document.getElementById('partner-name');
+    var locIn  = document.getElementById('partner-location');
+    var err    = document.getElementById('partner-error');
+    var submit = document.getElementById('partner-submit');
+    if (!row || !openBt || !modal || !sel || !submit) return;
 
-    var sel = document.createElement('select');
+    // region choices
     Object.keys(REGION_LABELS).forEach(function (r) {
       var o = document.createElement('option');
       o.value = r;
-      o.textContent = REGION_LABELS[r] + (REGION_LABELS[r].indexOf('Region') === 0 ? '' : ' (' + r + ')');
+      o.textContent = REGION_LABELS[r].indexOf('Region') === 0
+        ? REGION_LABELS[r]
+        : REGION_LABELS[r] + ' (' + r + ')';
       sel.appendChild(o);
     });
 
-    var nameIn = document.createElement('input');
-    nameIn.type = 'text'; nameIn.placeholder = 'Company name'; nameIn.maxLength = 120;
-    var locIn = document.createElement('input');
-    locIn.type = 'text'; locIn.placeholder = 'Location (e.g. Cebu City)'; locIn.maxLength = 120;
+    row.hidden = false;
 
-    var err = el('p', 'partner-admin-error'); err.hidden = true;
-    var btn = el('button', 'btn btn-primary btn-sm', 'Add partner');
-    btn.type = 'button';
-
-    btn.addEventListener('click', function () {
+    openBt.addEventListener('click', function () {
       err.hidden = true;
-      if (!nameIn.value.trim()) { err.textContent = 'Enter the company name.'; err.hidden = false; return; }
-      btn.disabled = true; btn.textContent = 'Adding\u2026';
+      if (window.HwasungModal) window.HwasungModal.open(modal);
+      else { modal.hidden = false; modal.classList.add('is-open'); }
+      window.setTimeout(function () { nameIn.focus(); }, 250);
+    });
+
+    function closeThis() {
+      if (window.HwasungModal) window.HwasungModal.close(modal);
+      else { modal.classList.remove('is-open'); modal.hidden = true; }
+    }
+
+    function submitPartner() {
+      err.hidden = true;
+      if (!nameIn.value.trim()) {
+        err.textContent = 'Enter the company name.'; err.hidden = false; return;
+      }
+      submit.disabled = true; submit.textContent = 'Adding\u2026';
       fetch('/api/partners', {
         method: 'POST',
         credentials: 'same-origin',
@@ -1191,26 +1206,28 @@
       })
         .then(function (r) { return r.json(); })
         .then(function (data) {
-          btn.disabled = false; btn.textContent = 'Add partner';
+          submit.disabled = false; submit.textContent = 'Add partner';
           if (data && data.ok && data.partner) {
             partners.push(data.partner);
             render();
+            nameIn.value = ''; locIn.value = '';
+            closeThis();
           } else {
             err.textContent = (data && data.error) || 'Could not save.'; err.hidden = false;
           }
         })
         .catch(function () {
-          btn.disabled = false; btn.textContent = 'Add partner';
+          submit.disabled = false; submit.textContent = 'Add partner';
           err.textContent = 'Could not reach the server.'; err.hidden = false;
         });
-    });
+    }
 
-    box.appendChild(sel);
-    box.appendChild(nameIn);
-    box.appendChild(locIn);
-    box.appendChild(err);
-    box.appendChild(btn);
-    return box;
+    submit.addEventListener('click', submitPartner);
+    [nameIn, locIn].forEach(function (elm) {
+      elm.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); submitPartner(); }
+      });
+    });
   }
 
   function removePartner(p, btn) {
@@ -1241,5 +1258,6 @@
     isOffice = !!(me && me.loggedIn && me.role === 'office');
     partners = (list && list.ok && list.partners) ? list.partners : FALLBACK.slice();
     render();
+    if (isOffice) setupAdminUI();
   });
 })();
