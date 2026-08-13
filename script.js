@@ -868,13 +868,15 @@
   'use strict';
 
   var officeItem = document.querySelector('[data-nav-office]');
-  var authLinks  = Array.prototype.slice.call(document.querySelectorAll('[data-nav-auth]'));
 
-  /* ---------- session check ----------
-     The signed-in state is cached in sessionStorage and applied
-     immediately on page load, so the header doesn't flash from
-     Login to Logout while /api/me is checked in the background. */
+  /* ---------- session state ----------
+     The head snippet already applied cached classes to <html> before
+     paint, so there is no flicker. Here we fill in the name, wire the
+     logout buttons, and verify with the server in the background. */
   var AUTH_CACHE_KEY = 'hwAuthState';
+  var root = document.documentElement;
+  var logoutLinks = Array.prototype.slice.call(document.querySelectorAll('[data-auth-logout]'));
+  var nameSpans   = Array.prototype.slice.call(document.querySelectorAll('[data-auth-name]'));
 
   function readAuthCache() {
     try { return JSON.parse(window.sessionStorage.getItem(AUTH_CACHE_KEY) || 'null'); }
@@ -884,50 +886,38 @@
     try {
       window.sessionStorage.setItem(AUTH_CACHE_KEY, JSON.stringify({
         loggedIn: !!(me && me.loggedIn),
-        role: me && me.role || null,
-        name: me && me.name || null
+        role: (me && me.role) || null,
+        name: (me && me.name) || null
       }));
     } catch (e) { /* private mode etc. */ }
   }
-
-  function showLoggedIn(me) {
-    authLinks.forEach(function (authLink) {
-      authLink.innerHTML = '<span class="auth-name">' +
-        String(me.name || '').replace(/[<>&"]/g, '') + '</span>Logout';
-      authLink.setAttribute('href', '#');
-      if (!authLink.hwBound) {
-        authLink.hwBound = true;
-        authLink.addEventListener('click', function (e) {
-          e.preventDefault();
-          try { window.sessionStorage.removeItem(AUTH_CACHE_KEY); } catch (err) {}
-          fetch('/api/logout', { method: 'POST', credentials: 'same-origin' })
-            .finally(function () { window.location.href = '/'; });
-        });
-      }
-    });
-    if (officeItem) officeItem.hidden = me.role !== 'office';
+  function applyAuth(me) {
+    var isIn = !!(me && me.loggedIn);
+    root.classList.toggle('auth-in', isIn);
+    root.classList.toggle('auth-office', isIn && me.role === 'office');
+    nameSpans.forEach(function (sp) { sp.textContent = isIn && me.name ? me.name : ''; });
   }
 
-  function showLoggedOut() {
-    authLinks.forEach(function (authLink) {
-      authLink.textContent = 'Login';
-      authLink.setAttribute('href', '/login');
+  if (logoutLinks.length) {
+    logoutLinks.forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        try { window.sessionStorage.removeItem(AUTH_CACHE_KEY); } catch (err) {}
+        fetch('/api/logout', { method: 'POST', credentials: 'same-origin' })
+          .finally(function () { window.location.href = '/'; });
+      });
     });
-    if (officeItem) officeItem.hidden = true;
-  }
 
-  if (authLinks.length || officeItem) {
-    // 1. instant: apply the cached state from this browser session
+    // fill the name from cache right away
     var cached = readAuthCache();
-    if (cached && cached.loggedIn) showLoggedIn(cached);
+    if (cached && cached.loggedIn) applyAuth(cached);
 
-    // 2. background: verify with the server and correct if needed
+    // background verification with the server
     fetch('/api/me', { credentials: 'same-origin' })
       .then(function (r) { return r.json(); })
       .then(function (me) {
         writeAuthCache(me);
-        if (me && me.loggedIn) showLoggedIn(me);
-        else if (cached && cached.loggedIn) showLoggedOut();
+        applyAuth(me);
       })
       .catch(function () { /* keep whatever is showing */ });
   }

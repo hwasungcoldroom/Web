@@ -2432,3 +2432,14 @@ body.office-page .site-footer { display: none; }
 .jobs-manage-btn:hover { border-color: var(--color-primary); color: var(--color-primary-dark); }
 
 
+
+
+/* ---- Pre-paint auth visibility (classes set by the head snippet) ---- */
+[data-auth-logout] { display: none; }
+html.auth-in [data-auth-login] { display: none; }
+html.auth-in .header-cta [data-auth-logout] { display: inline-flex; align-items: center; }
+html.auth-in .nav-auth [data-auth-logout] { display: inline-block; }
+
+/* Office menu: hidden unless the office class is on <html> */
+.main-nav .nav-office { display: none; }
+html.auth-office .main-nav .nav-office { display: block; }
