@@ -870,31 +870,66 @@
   var officeItem = document.querySelector('[data-nav-office]');
   var authLinks  = Array.prototype.slice.call(document.querySelectorAll('[data-nav-auth]'));
 
-  /* ---------- session check ---------- */
+  /* ---------- session check ----------
+     The signed-in state is cached in sessionStorage and applied
+     immediately on page load, so the header doesn't flash from
+     Login to Logout while /api/me is checked in the background. */
+  var AUTH_CACHE_KEY = 'hwAuthState';
+
+  function readAuthCache() {
+    try { return JSON.parse(window.sessionStorage.getItem(AUTH_CACHE_KEY) || 'null'); }
+    catch (e) { return null; }
+  }
+  function writeAuthCache(me) {
+    try {
+      window.sessionStorage.setItem(AUTH_CACHE_KEY, JSON.stringify({
+        loggedIn: !!(me && me.loggedIn),
+        role: me && me.role || null,
+        name: me && me.name || null
+      }));
+    } catch (e) { /* private mode etc. */ }
+  }
+
+  function showLoggedIn(me) {
+    authLinks.forEach(function (authLink) {
+      authLink.innerHTML = '<span class="auth-name">' +
+        String(me.name || '').replace(/[<>&"]/g, '') + '</span>Logout';
+      authLink.setAttribute('href', '#');
+      if (!authLink.hwBound) {
+        authLink.hwBound = true;
+        authLink.addEventListener('click', function (e) {
+          e.preventDefault();
+          try { window.sessionStorage.removeItem(AUTH_CACHE_KEY); } catch (err) {}
+          fetch('/api/logout', { method: 'POST', credentials: 'same-origin' })
+            .finally(function () { window.location.href = '/'; });
+        });
+      }
+    });
+    if (officeItem) officeItem.hidden = me.role !== 'office';
+  }
+
+  function showLoggedOut() {
+    authLinks.forEach(function (authLink) {
+      authLink.textContent = 'Login';
+      authLink.setAttribute('href', '/login');
+    });
+    if (officeItem) officeItem.hidden = true;
+  }
+
   if (authLinks.length || officeItem) {
+    // 1. instant: apply the cached state from this browser session
+    var cached = readAuthCache();
+    if (cached && cached.loggedIn) showLoggedIn(cached);
+
+    // 2. background: verify with the server and correct if needed
     fetch('/api/me', { credentials: 'same-origin' })
       .then(function (r) { return r.json(); })
       .then(function (me) {
-        if (!me || !me.loggedIn) return;
-
-        // Login -> Logout (header button + mobile nav item)
-        authLinks.forEach(function (authLink) {
-          authLink.innerHTML = '<span class="auth-name">' +
-            String(me.name || '').replace(/[<>&"]/g, '') + '</span>Logout';
-          authLink.setAttribute('href', '#');
-          authLink.addEventListener('click', function (e) {
-            e.preventDefault();
-            fetch('/api/logout', { method: 'POST', credentials: 'same-origin' })
-              .finally(function () { window.location.href = '/'; });
-          });
-        });
-
-        // Office dropdown — office role only (items open the /office workspace)
-        if (me.role === 'office' && officeItem) {
-          officeItem.hidden = false;
-        }
+        writeAuthCache(me);
+        if (me && me.loggedIn) showLoggedIn(me);
+        else if (cached && cached.loggedIn) showLoggedOut();
       })
-      .catch(function () { /* stay in logged-out state */ });
+      .catch(function () { /* keep whatever is showing */ });
   }
 
   /* ---------- dropdown open/close ----------
@@ -963,6 +998,11 @@
       })
       .then(function (data) {
         if (data && data.ok) {
+          try {
+            window.sessionStorage.setItem('hwAuthState', JSON.stringify({
+              loggedIn: true, role: data.role, name: data.name
+            }));
+          } catch (err) { /* ignore */ }
           form.hidden = true;
           okBox.hidden = false;
           setTimeout(function () { window.location.href = '/'; }, 900);

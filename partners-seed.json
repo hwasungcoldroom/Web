@@ -1,0 +1,230 @@
+[
+ {
+  "region": "1",
+  "name": "San Miguel Chicken",
+  "location": "Pangasinan",
+  "id": "f9fbf245-7e4e-4266-b010-7c274b7554a2"
+ },
+ {
+  "region": "3",
+  "name": "San Miguel Brewery Inc.",
+  "location": "Pampanga",
+  "id": "6a128fc0-f4c9-4e85-9572-0863e3fc8bee"
+ },
+ {
+  "region": "3",
+  "name": "Korean Restaurant",
+  "location": "Clark",
+  "id": "8fd1e063-f4f3-4768-ae46-495e06d5c0eb"
+ },
+ {
+  "region": "3",
+  "name": "Southpole Trading",
+  "location": "Tawi-Tawi",
+  "id": "757294a5-7be5-451f-8725-048ed6576766"
+ },
+ {
+  "region": "4A",
+  "name": "Metivire Farms",
+  "location": "Batangas",
+  "id": "ec8d58c8-c14f-494e-aea4-b89c6dda93d1"
+ },
+ {
+  "region": "4A",
+  "name": "San Miguel Brewery",
+  "location": "Sta. Rosa",
+  "id": "417be2c3-84c5-42e9-8c44-1be736d8662b"
+ },
+ {
+  "region": "8",
+  "name": "Jelo's Place",
+  "location": "Naval, Biliran",
+  "id": "1fde082f-ff17-4847-acc5-6c77a69e8a9b"
+ },
+ {
+  "region": "8",
+  "name": "Tacloban Hosp.",
+  "location": "Tacloban",
+  "id": "12196926-7b7e-4cff-9276-4ee569434330"
+ },
+ {
+  "region": "8",
+  "name": "Estong Lechon Manok",
+  "location": "Ormoc",
+  "id": "4e605cc0-c0eb-4fcc-9d24-5c62bca9bfea"
+ },
+ {
+  "region": "9",
+  "name": "Phil-Union Frozen Food, Inc.",
+  "location": "Zamboanga",
+  "id": "a665f4d0-64d0-4366-9165-b5ebf4d6824d"
+ },
+ {
+  "region": "9",
+  "name": "Dipolog Meatshop",
+  "location": "Dipolog",
+  "id": "2804376d-8dfb-4347-bc95-0c59db3d89a6"
+ },
+ {
+  "region": "10",
+  "name": "Merry Muffet",
+  "location": "Iligan",
+  "id": "23c4b551-5aaf-4c86-b009-be00383cd662"
+ },
+ {
+  "region": "10",
+  "name": "CDO Foodsphere Inc.",
+  "location": "Cagayan",
+  "id": "9c9a113c-776f-40e9-8876-2684c2fcf8cc"
+ },
+ {
+  "region": "10",
+  "name": "Benbulben Irish Pub",
+  "location": "Cagayan",
+  "id": "0fad3b06-f8da-4f41-8497-125114b8fa20"
+ },
+ {
+  "region": "10",
+  "name": "San Miguel Brewery Inc.",
+  "location": "Cagayan",
+  "id": "41ba4bc0-bbd8-495a-b698-76bf436dc7f2"
+ },
+ {
+  "region": "10",
+  "name": "PrimeFresh Distribution Corp.",
+  "location": "Ozamis",
+  "id": "080eb69f-c7a3-4fa5-8e1f-4575bcc87642"
+ },
+ {
+  "region": "6",
+  "name": "AJ Factor Inc.",
+  "location": "Bacolod",
+  "id": "f21beebb-00be-4791-81a5-ac2ccd298855"
+ },
+ {
+  "region": "6",
+  "name": "Bancon Marketing",
+  "location": "Boracay",
+  "id": "b3fc863c-cf81-4d6a-8da6-f3b2ed074cd0"
+ },
+ {
+  "region": "6",
+  "name": "Ribshack Commissary",
+  "location": "Bacolod",
+  "id": "6fbf24dc-ad7d-4181-a3f7-c115484cdb56"
+ },
+ {
+  "region": "6",
+  "name": "San Miguel Brewery Inc.",
+  "location": "Bacolod",
+  "id": "db082d48-1f2e-4597-80ea-c5d8a2b719b0"
+ },
+ {
+  "region": "6",
+  "name": "Seachamp Int'l Export Corp.",
+  "location": "Bacolod",
+  "id": "bbad3b05-d810-44d6-82fd-be2d926e0e2b"
+ },
+ {
+  "region": "6",
+  "name": "Henann Crystal Sands Resort",
+  "location": "Boracay",
+  "id": "d51cfbc0-8285-4b34-ae58-03f05d3e7d2f"
+ },
+ {
+  "region": "6",
+  "name": "Henann Regency Resort & Spa",
+  "location": "Boracay",
+  "id": "fd7ef97a-b1bb-4a27-bbda-5c1db52d7ace"
+ },
+ {
+  "region": "6",
+  "name": "Navarra Meatshop & Food Prod. Inc.",
+  "location": "Aklan",
+  "id": "dcb3ba7b-ea7d-4a40-bde5-a7c5dcac2ba3"
+ },
+ {
+  "region": "6",
+  "name": "Qorban Distribution Inc.",
+  "location": "Iloilo",
+  "id": "ae770e9b-2b13-4215-a7e2-b6bb7ead7973"
+ },
+ {
+  "region": "6",
+  "name": "Ilo-Ilo Midtown Hotel",
+  "location": "Iloilo",
+  "id": "00da988b-bd64-4bac-b139-df78a676eb64"
+ },
+ {
+  "region": "6",
+  "name": "Inter Island Food",
+  "location": "Boracay",
+  "id": "128f020b-e271-484c-87d6-4e95ca1d58af"
+ },
+ {
+  "region": "6",
+  "name": "RCC Enterprises Inc.",
+  "location": "Iloilo",
+  "id": "889405ab-3426-483f-8094-24eb8623d0f3"
+ },
+ {
+  "region": "6",
+  "name": "Filbake Food Corp.",
+  "location": "Aklan",
+  "id": "4ad3ab19-1dd7-442a-8bab-0fdfda20efb0"
+ },
+ {
+  "region": "6",
+  "name": "JNC Foods Inc.",
+  "location": "Bacolod",
+  "id": "6d562b4b-7f79-4cb1-8f09-8ab978ec7508"
+ },
+ {
+  "region": "6",
+  "name": "Snow Queen Ice",
+  "location": "Iloilo",
+  "id": "03b28c57-a577-4593-a558-962b560171cb"
+ },
+ {
+  "region": "6",
+  "name": "Belcris Foods",
+  "location": "Boracay",
+  "id": "8fb20855-5250-4900-9409-ec263abe7963"
+ },
+ {
+  "region": "6",
+  "name": "CDO",
+  "location": "Panay Island",
+  "id": "42487f0d-7691-4798-9a99-3652adbd268d"
+ },
+ {
+  "region": "6",
+  "name": "CDO",
+  "location": "Boracay",
+  "id": "cf81de7f-49a6-428b-9d4f-c9726699f1aa"
+ },
+ {
+  "region": "6",
+  "name": "CDO",
+  "location": "Iloilo",
+  "id": "be5741c0-0857-4bc3-946b-eb62915b2ccd"
+ },
+ {
+  "region": "11",
+  "name": "Del Monte",
+  "location": "Davao",
+  "id": "389ab65c-a5b4-4d94-9bcb-abb2dc29c316"
+ },
+ {
+  "region": "NCR",
+  "name": "Majestic Ham & Food Inc.",
+  "location": "Pasig City",
+  "id": "27e89df6-7c24-4dca-8777-ceac150737e2"
+ },
+ {
+  "region": "CAR",
+  "name": "San Miguel Chicken",
+  "location": "Baguio",
+  "id": "519b678d-aeb5-4229-98b9-f10b085b85be"
+ }
+]

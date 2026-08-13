@@ -1,0 +1,58 @@
+[
+ {
+  "role": "Freelancer / Part-Timer",
+  "variant": "experienced",
+  "status": "open",
+  "desc": "Take on jobs as they come, around your own schedule. Suited to technicians already working who want extra site work.",
+  "meta": [
+   "Part-time",
+   "Flexible hours",
+   "Per-project"
+  ],
+  "id": "6e4abeeb-8589-44be-a6be-15005154bfc4"
+ },
+ {
+  "role": "Office / Admin",
+  "variant": "office",
+  "status": "open",
+  "desc": "Keep scheduling, records, and client communication running smoothly from our office. Organised, steady, and good with people.",
+  "meta": [
+   "Full-time",
+   "Office-based"
+  ],
+  "id": "bd03758e-69ca-48ec-b517-5a2d026af69a"
+ },
+ {
+  "role": "Experienced Technician",
+  "variant": "experienced",
+  "status": "open",
+  "desc": "Service, install, and troubleshoot commercial refrigeration and HVAC systems on client sites. For technicians who have done this work before.",
+  "meta": [
+   "Full-time",
+   "Field-based"
+  ],
+  "id": "9c362567-7102-484f-be0d-593f32b5993f"
+ },
+ {
+  "role": "No-Experience Technician",
+  "variant": "trainee",
+  "status": "open",
+  "desc": "Start from scratch and learn on the job. No background in refrigeration needed — we train you on our own systems and sites.",
+  "meta": [
+   "Full-time",
+   "Training provided"
+  ],
+  "id": "7c61313f-9568-447c-8261-38b26cc4a48f"
+ },
+ {
+  "role": "Branch Manager",
+  "variant": "office",
+  "status": "filled",
+  "desc": "Runs day-to-day operations, staffing, and client accounts for a branch. This role has been filled — check back for future openings.",
+  "meta": [
+   "Full-time",
+   "Office-based"
+  ],
+  "id": "fca1083e-ea96-4742-8565-b010c2bad829"
+ }
+]
