@@ -2292,3 +2292,50 @@ body.office-page .site-footer { display: none; }
 @media (max-width: 700px) {
   .office-frame-wrap { height: calc(100vh - var(--header-h) - 150px); }
 }
+
+/* ---- Partners page: office admin controls ---- */
+.partners-loading { color: rgba(246, 249, 251, 0.7); }
+
+.partner-card ul li { position: relative; }
+.partner-del {
+  background: none;
+  border: 0;
+  color: rgba(246, 249, 251, 0.45);
+  font-size: 1.05rem;
+  line-height: 1;
+  padding: 0 4px;
+  margin-left: 6px;
+  cursor: pointer;
+  vertical-align: middle;
+}
+.partner-del:hover { color: #E8604C; }
+.partner-del[disabled] { opacity: 0.4; cursor: wait; }
+
+.partner-admin {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px dashed rgba(246, 249, 251, 0.35);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.partner-admin-title {
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.partner-admin select,
+.partner-admin input {
+  display: block;
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 9px 11px;
+  border-radius: 8px;
+  border: 1px solid rgba(246, 249, 251, 0.25);
+  background: rgba(255, 255, 255, 0.92);
+  font-size: 0.92rem;
+}
+.partner-admin-error {
+  color: #FFB4A6;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}

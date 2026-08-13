@@ -1062,3 +1062,184 @@
       denied.hidden = false;
     });
 })();
+
+
+/* =========================================================
+   PARTNERS PAGE — database-driven partner list
+   Everyone sees the partner cards (loaded from /api/partners).
+   Office logins additionally get an "Add partner" form and a
+   remove button on every entry. If the database isn't set up
+   yet, the page falls back to the built-in list below.
+   ========================================================= */
+(function () {
+  'use strict';
+
+  var leftCol  = document.querySelector('[data-partners-col="left"]');
+  var rightCol = document.querySelector('[data-partners-col="right"]');
+  if (!leftCol || !rightCol) return;
+
+  var FALLBACK = [{"region": "1", "name": "San Miguel Chicken", "location": "Pangasinan"}, {"region": "3", "name": "San Miguel Brewery Inc.", "location": "Pampanga"}, {"region": "3", "name": "Korean Restaurant", "location": "Clark"}, {"region": "3", "name": "Southpole Trading", "location": "Tawi-Tawi"}, {"region": "4A", "name": "Metivire Farms", "location": "Batangas"}, {"region": "4A", "name": "San Miguel Brewery", "location": "Sta. Rosa"}, {"region": "8", "name": "Jelo's Place", "location": "Naval, Biliran"}, {"region": "8", "name": "Tacloban Hosp.", "location": "Tacloban"}, {"region": "8", "name": "Estong Lechon Manok", "location": "Ormoc"}, {"region": "9", "name": "Phil-Union Frozen Food, Inc.", "location": "Zamboanga"}, {"region": "9", "name": "Dipolog Meatshop", "location": "Dipolog"}, {"region": "10", "name": "Merry Muffet", "location": "Iligan"}, {"region": "10", "name": "CDO Foodsphere Inc.", "location": "Cagayan"}, {"region": "10", "name": "Benbulben Irish Pub", "location": "Cagayan"}, {"region": "10", "name": "San Miguel Brewery Inc.", "location": "Cagayan"}, {"region": "10", "name": "PrimeFresh Distribution Corp.", "location": "Ozamis"}, {"region": "6", "name": "AJ Factor Inc.", "location": "Bacolod"}, {"region": "6", "name": "Bancon Marketing", "location": "Boracay"}, {"region": "6", "name": "Ribshack Commissary", "location": "Bacolod"}, {"region": "6", "name": "San Miguel Brewery Inc.", "location": "Bacolod"}, {"region": "6", "name": "Seachamp Int'l Export Corp.", "location": "Bacolod"}, {"region": "6", "name": "Henann Crystal Sands Resort", "location": "Boracay"}, {"region": "6", "name": "Henann Regency Resort & Spa", "location": "Boracay"}, {"region": "6", "name": "Navarra Meatshop & Food Prod. Inc.", "location": "Aklan"}, {"region": "6", "name": "Qorban Distribution Inc.", "location": "Iloilo"}, {"region": "6", "name": "Ilo-Ilo Midtown Hotel", "location": "Iloilo"}, {"region": "6", "name": "Inter Island Food", "location": "Boracay"}, {"region": "6", "name": "RCC Enterprises Inc.", "location": "Iloilo"}, {"region": "6", "name": "Filbake Food Corp.", "location": "Aklan"}, {"region": "6", "name": "JNC Foods Inc.", "location": "Bacolod"}, {"region": "6", "name": "Snow Queen Ice", "location": "Iloilo"}, {"region": "6", "name": "Belcris Foods", "location": "Boracay"}, {"region": "6", "name": "CDO", "location": "Panay Island"}, {"region": "6", "name": "CDO", "location": "Boracay"}, {"region": "6", "name": "CDO", "location": "Iloilo"}, {"region": "11", "name": "Del Monte", "location": "Davao"}, {"region": "NCR", "name": "Majestic Ham & Food Inc.", "location": "Pasig City"}, {"region": "CAR", "name": "San Miguel Chicken", "location": "Baguio"}];
+
+  var REGION_LABELS = {
+    '1':'Region 1','2':'Region 2','3':'Region 3','4A':'Region 4A','4B':'Region 4B',
+    '5':'Region 5','6':'Region 6','7':'Region 7','8':'Region 8','9':'Region 9',
+    '10':'Region 10','11':'Region 11','12':'Region 12','13':'Region 13',
+    'NCR':'Metro Manila','CAR':'Cordillera','BARMM':'BARMM'
+  };
+  // Region cards keep their current column positions; new regions go
+  // to whichever column is shorter.
+  var LEFT_ORDER  = ['1','2','3','4A','4B','5','8','9','10','12'];
+  var RIGHT_ORDER = ['6','7','11','13','NCR','CAR','BARMM'];
+  var CSS_CLASS = {
+    '1':'r1','3':'r3','4A':'r4a','6':'r6','8':'r8','9':'r9','10':'r10','11':'r11',
+    'NCR':'ncr','CAR':'car'
+  };
+
+  var isOffice = false;
+  var partners = [];
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text) e.textContent = text;
+    return e;
+  }
+
+  function buildCard(region, items) {
+    var card = el('div', 'partner-card' + (CSS_CLASS[region] ? ' partner-card--' + CSS_CLASS[region] : ''));
+    var head = el('div', 'partner-card-head');
+    head.appendChild(el('span', 'partner-badge', region));
+    head.appendChild(el('span', null, REGION_LABELS[region] || ('Region ' + region)));
+    card.appendChild(head);
+
+    var ul = el('ul');
+    items.forEach(function (p) {
+      var li = el('li');
+      li.appendChild(document.createTextNode(p.name + (p.location ? ' \u2014 ' + p.location : '')));
+      if (isOffice && p.id) {
+        var del = el('button', 'partner-del');
+        del.type = 'button';
+        del.title = 'Remove this partner';
+        del.setAttribute('aria-label', 'Remove ' + p.name);
+        del.textContent = '\u00d7';
+        del.addEventListener('click', function () { removePartner(p, del); });
+        li.appendChild(del);
+      }
+      ul.appendChild(li);
+    });
+    card.appendChild(ul);
+    return card;
+  }
+
+  function render() {
+    var byRegion = {};
+    partners.forEach(function (p) {
+      var r = String(p.region || '').toUpperCase();
+      (byRegion[r] = byRegion[r] || []).push(p);
+    });
+
+    leftCol.innerHTML = '';
+    rightCol.innerHTML = '';
+
+    var leftCount = 0, rightCount = 0;
+    LEFT_ORDER.forEach(function (r) {
+      if (byRegion[r]) { leftCol.appendChild(buildCard(r, byRegion[r])); leftCount += byRegion[r].length; delete byRegion[r]; }
+    });
+    RIGHT_ORDER.forEach(function (r) {
+      if (byRegion[r]) { rightCol.appendChild(buildCard(r, byRegion[r])); rightCount += byRegion[r].length; delete byRegion[r]; }
+    });
+    Object.keys(byRegion).sort().forEach(function (r) {
+      var target = leftCount <= rightCount ? leftCol : rightCol;
+      target.appendChild(buildCard(r, byRegion[r]));
+      if (target === leftCol) leftCount += byRegion[r].length; else rightCount += byRegion[r].length;
+    });
+
+    if (isOffice) leftCol.insertBefore(buildAddForm(), leftCol.firstChild);
+  }
+
+  /* ---------- office admin: add form ---------- */
+  function buildAddForm() {
+    var box = el('div', 'partner-admin');
+    box.appendChild(el('p', 'partner-admin-title', 'Add a partner'));
+
+    var sel = document.createElement('select');
+    Object.keys(REGION_LABELS).forEach(function (r) {
+      var o = document.createElement('option');
+      o.value = r;
+      o.textContent = REGION_LABELS[r] + (REGION_LABELS[r].indexOf('Region') === 0 ? '' : ' (' + r + ')');
+      sel.appendChild(o);
+    });
+
+    var nameIn = document.createElement('input');
+    nameIn.type = 'text'; nameIn.placeholder = 'Company name'; nameIn.maxLength = 120;
+    var locIn = document.createElement('input');
+    locIn.type = 'text'; locIn.placeholder = 'Location (e.g. Cebu City)'; locIn.maxLength = 120;
+
+    var err = el('p', 'partner-admin-error'); err.hidden = true;
+    var btn = el('button', 'btn btn-primary btn-sm', 'Add partner');
+    btn.type = 'button';
+
+    btn.addEventListener('click', function () {
+      err.hidden = true;
+      if (!nameIn.value.trim()) { err.textContent = 'Enter the company name.'; err.hidden = false; return; }
+      btn.disabled = true; btn.textContent = 'Adding\u2026';
+      fetch('/api/partners', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ region: sel.value, name: nameIn.value.trim(), location: locIn.value.trim() })
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          btn.disabled = false; btn.textContent = 'Add partner';
+          if (data && data.ok && data.partner) {
+            partners.push(data.partner);
+            render();
+          } else {
+            err.textContent = (data && data.error) || 'Could not save.'; err.hidden = false;
+          }
+        })
+        .catch(function () {
+          btn.disabled = false; btn.textContent = 'Add partner';
+          err.textContent = 'Could not reach the server.'; err.hidden = false;
+        });
+    });
+
+    box.appendChild(sel);
+    box.appendChild(nameIn);
+    box.appendChild(locIn);
+    box.appendChild(err);
+    box.appendChild(btn);
+    return box;
+  }
+
+  function removePartner(p, btn) {
+    if (!window.confirm('Remove "' + p.name + '" from the partners list?')) return;
+    btn.disabled = true;
+    fetch('/api/partners?id=' + encodeURIComponent(p.id), { method: 'DELETE', credentials: 'same-origin' })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data && data.ok) {
+          partners = partners.filter(function (x) { return x.id !== p.id; });
+          render();
+        } else {
+          btn.disabled = false;
+          window.alert((data && data.error) || 'Could not delete.');
+        }
+      })
+      .catch(function () { btn.disabled = false; window.alert('Could not reach the server.'); });
+  }
+
+  /* ---------- load ---------- */
+  Promise.all([
+    fetch('/api/partners', { credentials: 'same-origin' })
+      .then(function (r) { return r.json(); }).catch(function () { return null; }),
+    fetch('/api/me', { credentials: 'same-origin' })
+      .then(function (r) { return r.json(); }).catch(function () { return null; })
+  ]).then(function (results) {
+    var list = results[0], me = results[1];
+    isOffice = !!(me && me.loggedIn && me.role === 'office');
+    partners = (list && list.ok && list.partners) ? list.partners : FALLBACK.slice();
+    render();
+  });
+})();
