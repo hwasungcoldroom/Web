@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=20260813c">
+  <link rel="stylesheet" href="styles.css?v=20260813d">
   <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body data-page="employment">
@@ -61,7 +61,7 @@
           <li><a href="/faq">FAQ</a></li>
           <li><a href="/employment" aria-current="page">Employment</a></li>
           <li><a href="/contact">Contact</a></li>
-          <!-- Office menu: hidden by default; script.js?v=20260813c reveals it ONLY when
+          <!-- Office menu: hidden by default; script.js?v=20260813d reveals it ONLY when
                /api/me confirms an office login. Links come from the server. -->
           <li class="nav-office" data-nav-office hidden>
             <button type="button" class="nav-office-toggle" data-office-toggle aria-haspopup="true" aria-expanded="false">Office <span class="office-caret" aria-hidden="true">&#9662;</span></button>
@@ -109,92 +109,6 @@
         <ul class="job-grid reveal" id="job-grid">
           <li class="jobs-loading">Loading open positions&hellip;</li>
         </ul>
-            <button type="button" class="btn btn-primary btn-block js-apply"
-                    data-role="Freelancer / Part-Timer" data-variant="experienced"
-                    aria-describedby="job-freelance-title">
-              Apply Now
-            </button>
-          </li>
-
-          <li class="job-card" data-role="Office / Admin" data-variant="office">
-            <div class="job-card-top">
-              <h3 id="job-office-title">Office / Admin</h3>
-              <span class="job-status job-status--open">Available</span>
-            </div>
-            <p class="job-card-desc">
-              Keep scheduling, records, and client communication running smoothly
-              from our office. Organised, steady, and good with people.
-            </p>
-            <ul class="job-meta">
-              <li>Full-time</li>
-              <li>Office-based</li>
-            </ul>
-            <button type="button" class="btn btn-primary btn-block js-apply"
-                    data-role="Office / Admin" data-variant="office"
-                    aria-describedby="job-office-title">
-              Apply Now
-            </button>
-          </li>
-
-          <li class="job-card" data-role="Experienced Technician" data-variant="experienced">
-            <div class="job-card-top">
-              <h3 id="job-experienced-title">Experienced Technician</h3>
-              <span class="job-status job-status--open">Available</span>
-            </div>
-            <p class="job-card-desc">
-              Service, install, and troubleshoot commercial refrigeration and HVAC
-              systems on client sites. For technicians who have done this work before.
-            </p>
-            <ul class="job-meta">
-              <li>Full-time</li>
-              <li>Field-based</li>
-            </ul>
-            <button type="button" class="btn btn-primary btn-block js-apply"
-                    data-role="Experienced Technician" data-variant="experienced"
-                    aria-describedby="job-experienced-title">
-              Apply Now
-            </button>
-          </li>
-
-          <li class="job-card" data-role="No-Experience Technician" data-variant="trainee">
-            <div class="job-card-top">
-              <h3 id="job-trainee-title">No-Experience Technician</h3>
-              <span class="job-status job-status--open">Available</span>
-            </div>
-            <p class="job-card-desc">
-              Start from scratch and learn on the job. No background in refrigeration
-              needed &mdash; we train you on our own systems and sites.
-            </p>
-            <ul class="job-meta">
-              <li>Full-time</li>
-              <li>Training provided</li>
-            </ul>
-            <button type="button" class="btn btn-primary btn-block js-apply"
-                    data-role="No-Experience Technician" data-variant="trainee"
-                    aria-describedby="job-trainee-title">
-              Apply Now
-            </button>
-          </li>
-
-          <li class="job-card job-card--filled" data-role="Branch Manager" aria-disabled="true">
-            <div class="job-card-top">
-              <h3 id="job-branch-title">Branch Manager</h3>
-              <span class="job-status job-status--filled">Filled</span>
-            </div>
-            <p class="job-card-desc">
-              Runs day-to-day operations, staffing, and client accounts for a branch.
-              This role has been filled &mdash; check back for future openings.
-            </p>
-            <ul class="job-meta">
-              <li>Full-time</li>
-              <li>Office-based</li>
-            </ul>
-            <button type="button" class="btn btn-block btn-filled" disabled
-                    aria-describedby="job-branch-title">
-              Position Full
-            </button>
-          </li>
-</ul>
       </div>
     </section>
 
@@ -323,7 +237,7 @@
 
       <!-- ===================================================================
            WHERE APPLICATIONS ARE SENT
-           Submitted by script.js?v=20260813c to /api/apply — the serverless function in
+           Submitted by script.js?v=20260813d to /api/apply — the serverless function in
            this project's api/ folder — which emails it on with the CV
            attached. The recipient is set by the APPLY_TO environment
            variable in Vercel, not here.
@@ -539,6 +453,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=20260813c"></script>
+  <script src="script.js?v=20260813d"></script>
 </body>
 </html>
