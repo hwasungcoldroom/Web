@@ -1322,6 +1322,49 @@
     }
     li.appendChild(btn);
 
+    if (isOffice) {
+      var admin = el('div', 'job-admin-controls');
+
+      var open2 = job.status === 'open';
+      var toggle = el('button', 'job-admin-btn', open2 ? 'Mark as filled' : 'Mark as available');
+      toggle.type = 'button';
+      toggle.addEventListener('click', function () {
+        toggle.disabled = true;
+        fetch('/api/jobs', {
+          method: 'PUT',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: job.id, status: open2 ? 'filled' : 'open' })
+        })
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            if (data && data.ok) { job.status = data.job.status; render(); }
+            else { toggle.disabled = false; window.alert((data && data.error) || 'Could not update.'); }
+          })
+          .catch(function () { toggle.disabled = false; window.alert('Could not reach the server.'); });
+      });
+      admin.appendChild(toggle);
+
+      var del = el('button', 'job-admin-btn job-admin-btn--danger', 'Remove');
+      del.type = 'button';
+      del.addEventListener('click', function () {
+        if (!window.confirm('Remove the "' + job.role + '" position from the page?')) return;
+        del.disabled = true;
+        fetch('/api/jobs?id=' + encodeURIComponent(job.id), { method: 'DELETE', credentials: 'same-origin' })
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            if (data && data.ok) {
+              jobs = jobs.filter(function (j) { return j.id !== job.id; });
+              render();
+            } else { del.disabled = false; window.alert((data && data.error) || 'Could not delete.'); }
+          })
+          .catch(function () { del.disabled = false; window.alert('Could not reach the server.'); });
+      });
+      admin.appendChild(del);
+
+      li.appendChild(admin);
+    }
+
     return li;
   }
 
@@ -1339,17 +1382,14 @@
   function setupAdminUI() {
     var row      = document.getElementById('jobs-admin-row');
     var addBt    = document.getElementById('job-add-open');
-    var manageBt = document.getElementById('job-manage-open');
     var addModal = document.getElementById('job-modal');
-    var mgModal  = document.getElementById('job-manage-modal');
-    var mgList   = document.getElementById('job-manage-list');
     var roleIn = document.getElementById('job-role');
     var descIn = document.getElementById('job-desc');
     var metaIn = document.getElementById('job-meta');
     var varSel = document.getElementById('job-variant');
     var err    = document.getElementById('job-error');
     var submit = document.getElementById('job-submit');
-    if (!row || !addBt || !manageBt || !addModal || !mgModal || !submit) return;
+    if (!row || !addBt || !addModal || !submit) return;
 
     row.hidden = false;
 
@@ -1409,68 +1449,6 @@
       if (e.key === 'Enter') { e.preventDefault(); submitJob(); }
     });
 
-    /* ----- Manage positions ----- */
-    function renderManageList() {
-      mgList.innerHTML = '';
-      jobs.forEach(function (job) {
-        var li = el('li', 'job-manage-item');
-
-        var info = el('div', 'job-manage-info');
-        info.appendChild(el('span', 'job-manage-name', job.role));
-        info.appendChild(el('span',
-          'job-status ' + (job.status === 'open' ? 'job-status--open' : 'job-status--filled'),
-          job.status === 'open' ? 'Available' : 'Filled'));
-        li.appendChild(info);
-
-        var actions = el('div', 'job-manage-actions');
-
-        var toggle = el('button', 'job-admin-btn',
-          job.status === 'open' ? 'Mark as filled' : 'Mark as available');
-        toggle.type = 'button';
-        toggle.addEventListener('click', function () {
-          toggle.disabled = true;
-          fetch('/api/jobs', {
-            method: 'PUT',
-            credentials: 'same-origin',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: job.id, status: job.status === 'open' ? 'filled' : 'open' })
-          })
-            .then(function (r) { return r.json(); })
-            .then(function (data) {
-              if (data && data.ok) { job.status = data.job.status; render(); renderManageList(); }
-              else { toggle.disabled = false; window.alert((data && data.error) || 'Could not update.'); }
-            })
-            .catch(function () { toggle.disabled = false; window.alert('Could not reach the server.'); });
-        });
-        actions.appendChild(toggle);
-
-        var del = el('button', 'job-admin-btn job-admin-btn--danger', 'Remove');
-        del.type = 'button';
-        del.addEventListener('click', function () {
-          if (!window.confirm('Remove the "' + job.role + '" position from the page?')) return;
-          del.disabled = true;
-          fetch('/api/jobs?id=' + encodeURIComponent(job.id), { method: 'DELETE', credentials: 'same-origin' })
-            .then(function (r) { return r.json(); })
-            .then(function (data) {
-              if (data && data.ok) {
-                jobs = jobs.filter(function (j) { return j.id !== job.id; });
-                render(); renderManageList();
-              } else { del.disabled = false; window.alert((data && data.error) || 'Could not delete.'); }
-            })
-            .catch(function () { del.disabled = false; window.alert('Could not reach the server.'); });
-        });
-        actions.appendChild(del);
-
-        li.appendChild(actions);
-        mgList.appendChild(li);
-      });
-      if (!jobs.length) mgList.appendChild(el('li', 'job-manage-empty', 'No positions yet.'));
-    }
-
-    manageBt.addEventListener('click', function () {
-      renderManageList();
-      open(mgModal);
-    });
   }
 
   /* ---------- load ---------- */
