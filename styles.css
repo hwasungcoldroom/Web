@@ -2367,3 +2367,51 @@ body.office-page .site-footer { display: none; }
 }
 .partner-modal-submit { width: 100%; }
 .partner-modal-submit[disabled] { opacity: 0.6; cursor: wait; }
+
+/* ---- Employment page: office admin controls ---- */
+.jobs-loading { color: var(--color-text-muted); list-style: none; }
+
+.jobs-admin-row {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.job-admin-controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--color-border);
+}
+.job-admin-btn {
+  flex: 1;
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition);
+}
+.job-admin-btn:hover { color: var(--color-primary-dark); border-color: var(--color-primary); }
+.job-admin-btn--danger:hover { color: #B3352A; border-color: #B3352A; }
+.job-admin-btn[disabled] { opacity: 0.5; cursor: wait; }
+
+.partner-modal-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+  resize: vertical;
+}
+.partner-modal-form textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(30, 90, 140, 0.15);
+}

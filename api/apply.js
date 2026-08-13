@@ -28,8 +28,10 @@ const FROM_DEFAULT = 'Hwasung Careers <onboarding@resend.dev>';
 const MAX_CV_BYTES = 3 * 1024 * 1024;
 const ALLOWED_EXT  = /\.(pdf|docx)$/i;
 
-// Must match the data-role values on the job cards in employment.html.
-// A role missing from this list is rejected as an invalid position.
+// Fallback list only — the live check reads the job postings the boss
+// manages on the Employment page (api/_lib/jobs-store.js), so newly
+// added positions are automatically accepted and filled ones rejected.
+const jobsStore = require('./_lib/jobs-store.js');
 const POSITIONS = [
   'Freelancer / Part-Timer',
   'Office / Admin',
@@ -134,7 +136,10 @@ module.exports = async function handler(req, res) {
 
   // ---- validation (never trust the browser) ----
   const problems = [];
-  if (POSITIONS.indexOf(data.position) === -1) problems.push('position');
+  let openRoles;
+  try { openRoles = await jobsStore.openRoles(); } catch (e) { openRoles = POSITIONS; }
+  if (!openRoles || !openRoles.length) openRoles = POSITIONS;
+  if (openRoles.indexOf(data.position) === -1) problems.push('position');
   if (!data.firstName) problems.push('first name');
   if (!data.lastName) problems.push('last name');
   if (!/^[\d\s()+.-]{7,20}$/.test(data.mobile)) problems.push('mobile number');

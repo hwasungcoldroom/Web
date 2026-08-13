@@ -620,14 +620,14 @@
     }, 420);
   }
 
+  // Delegated so it also works for job cards rendered from the database.
   // Only .js-apply buttons are wired up, so the disabled "Position Full"
   // button can never open the form.
-  var applyBtns = document.querySelectorAll('.js-apply');
-  for (var b = 0; b < applyBtns.length; b++) {
-    applyBtns[b].addEventListener('click', function () {
-      selectRole(this.getAttribute('data-role'), this.getAttribute('data-variant'));
-    });
-  }
+  grid.addEventListener('click', function (event) {
+    var btn = event.target.closest ? event.target.closest('.js-apply') : null;
+    if (!btn) return;
+    selectRole(btn.getAttribute('data-role'), btn.getAttribute('data-variant'));
+  });
   changeBtn.addEventListener('click', clearRole);
 
   /* ---------- CV upload ---------- */
@@ -1257,6 +1257,203 @@
     var list = results[0], me = results[1];
     isOffice = !!(me && me.loggedIn && me.role === 'office');
     partners = (list && list.ok && list.partners) ? list.partners : FALLBACK.slice();
+    render();
+    if (isOffice) setupAdminUI();
+  });
+})();
+
+
+/* =========================================================
+   EMPLOYMENT PAGE — database-driven job postings
+   Everyone sees the openings (loaded from /api/jobs). Office
+   logins get: a remove button and an availability toggle on
+   each card, plus an "+ Add Position" button that opens a
+   popup. Falls back to the built-in list if storage is off.
+   ========================================================= */
+(function () {
+  'use strict';
+
+  var grid = document.getElementById('job-grid');
+  if (!grid) return;
+
+  var FALLBACK = [{"role": "Freelancer / Part-Timer", "variant": "experienced", "status": "open", "desc": "Take on jobs as they come, around your own schedule. Suited to technicians already working who want extra site work.", "meta": ["Part-time", "Flexible hours", "Per-project"], "id": "6e4abeeb-8589-44be-a6be-15005154bfc4"}, {"role": "Office / Admin", "variant": "office", "status": "open", "desc": "Keep scheduling, records, and client communication running smoothly from our office. Organised, steady, and good with people.", "meta": ["Full-time", "Office-based"], "id": "bd03758e-69ca-48ec-b517-5a2d026af69a"}, {"role": "Experienced Technician", "variant": "experienced", "status": "open", "desc": "Service, install, and troubleshoot commercial refrigeration and HVAC systems on client sites. For technicians who have done this work before.", "meta": ["Full-time", "Field-based"], "id": "9c362567-7102-484f-be0d-593f32b5993f"}, {"role": "No-Experience Technician", "variant": "trainee", "status": "open", "desc": "Start from scratch and learn on the job. No background in refrigeration needed — we train you on our own systems and sites.", "meta": ["Full-time", "Training provided"], "id": "7c61313f-9568-447c-8261-38b26cc4a48f"}, {"role": "Branch Manager", "variant": "office", "status": "filled", "desc": "Runs day-to-day operations, staffing, and client accounts for a branch. This role has been filled — check back for future openings.", "meta": ["Full-time", "Office-based"], "id": "fca1083e-ea96-4742-8565-b010c2bad829"}];
+
+  var isOffice = false;
+  var jobs = [];
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text) e.textContent = text;
+    return e;
+  }
+
+  function buildCard(job) {
+    var open = job.status === 'open';
+    var li = el('li', 'job-card' + (open ? '' : ' job-card--filled'));
+    li.setAttribute('data-role', job.role);
+    if (open) li.setAttribute('data-variant', job.variant);
+    else li.setAttribute('aria-disabled', 'true');
+
+    var top = el('div', 'job-card-top');
+    top.appendChild(el('h3', null, job.role));
+    top.appendChild(el('span', 'job-status ' + (open ? 'job-status--open' : 'job-status--filled'),
+      open ? 'Available' : 'Filled'));
+    li.appendChild(top);
+
+    if (job.desc) li.appendChild(el('p', 'job-card-desc', job.desc));
+
+    if (job.meta && job.meta.length) {
+      var ul = el('ul', 'job-meta');
+      job.meta.forEach(function (m) { ul.appendChild(el('li', null, m)); });
+      li.appendChild(ul);
+    }
+
+    var btn;
+    if (open) {
+      btn = el('button', 'btn btn-primary btn-block js-apply', 'Apply Now');
+      btn.type = 'button';
+      btn.setAttribute('data-role', job.role);
+      btn.setAttribute('data-variant', job.variant);
+    } else {
+      btn = el('button', 'btn btn-block btn-filled', 'Position Full');
+      btn.type = 'button';
+      btn.disabled = true;
+    }
+    li.appendChild(btn);
+
+    if (isOffice) {
+      var admin = el('div', 'job-admin-controls');
+
+      var toggle = el('button', 'job-admin-btn', open ? 'Mark as filled' : 'Mark as available');
+      toggle.type = 'button';
+      toggle.addEventListener('click', function () {
+        toggle.disabled = true;
+        fetch('/api/jobs', {
+          method: 'PUT',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: job.id, status: open ? 'filled' : 'open' })
+        })
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            if (data && data.ok) { job.status = data.job.status; render(); }
+            else { toggle.disabled = false; window.alert((data && data.error) || 'Could not update.'); }
+          })
+          .catch(function () { toggle.disabled = false; window.alert('Could not reach the server.'); });
+      });
+      admin.appendChild(toggle);
+
+      var del = el('button', 'job-admin-btn job-admin-btn--danger', 'Remove');
+      del.type = 'button';
+      del.addEventListener('click', function () {
+        if (!window.confirm('Remove the "' + job.role + '" position from the page?')) return;
+        del.disabled = true;
+        fetch('/api/jobs?id=' + encodeURIComponent(job.id), { method: 'DELETE', credentials: 'same-origin' })
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            if (data && data.ok) {
+              jobs = jobs.filter(function (j) { return j.id !== job.id; });
+              render();
+            } else { del.disabled = false; window.alert((data && data.error) || 'Could not delete.'); }
+          })
+          .catch(function () { del.disabled = false; window.alert('Could not reach the server.'); });
+      });
+      admin.appendChild(del);
+
+      li.appendChild(admin);
+    }
+
+    return li;
+  }
+
+  function render() {
+    grid.innerHTML = '';
+    // open positions first, filled ones at the end
+    jobs.filter(function (j) { return j.status === 'open'; })
+        .concat(jobs.filter(function (j) { return j.status !== 'open'; }))
+        .forEach(function (job) { grid.appendChild(buildCard(job)); });
+  }
+
+  /* ---------- office admin: Add Position popup ---------- */
+  function setupAdminUI() {
+    var row    = document.getElementById('jobs-admin-row');
+    var openBt = document.getElementById('job-add-open');
+    var modal  = document.getElementById('job-modal');
+    var roleIn = document.getElementById('job-role');
+    var descIn = document.getElementById('job-desc');
+    var metaIn = document.getElementById('job-meta');
+    var varSel = document.getElementById('job-variant');
+    var err    = document.getElementById('job-error');
+    var submit = document.getElementById('job-submit');
+    if (!row || !openBt || !modal || !submit) return;
+
+    row.hidden = false;
+
+    openBt.addEventListener('click', function () {
+      err.hidden = true;
+      if (window.HwasungModal) window.HwasungModal.open(modal);
+      else { modal.hidden = false; modal.classList.add('is-open'); }
+      window.setTimeout(function () { roleIn.focus(); }, 250);
+    });
+
+    function closeThis() {
+      if (window.HwasungModal) window.HwasungModal.close(modal);
+      else { modal.classList.remove('is-open'); modal.hidden = true; }
+    }
+
+    function submitJob() {
+      err.hidden = true;
+      if (!roleIn.value.trim()) {
+        err.textContent = 'Enter the position title.'; err.hidden = false; return;
+      }
+      submit.disabled = true; submit.textContent = 'Adding\u2026';
+      var meta = metaIn.value.split(',').map(function (m) { return m.trim(); }).filter(Boolean);
+      fetch('/api/jobs', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          role: roleIn.value.trim(),
+          desc: descIn.value.trim(),
+          meta: meta,
+          variant: varSel.value
+        })
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          submit.disabled = false; submit.textContent = 'Add position';
+          if (data && data.ok && data.job) {
+            jobs.push(data.job);
+            render();
+            roleIn.value = ''; descIn.value = ''; metaIn.value = '';
+            closeThis();
+          } else {
+            err.textContent = (data && data.error) || 'Could not save.'; err.hidden = false;
+          }
+        })
+        .catch(function () {
+          submit.disabled = false; submit.textContent = 'Add position';
+          err.textContent = 'Could not reach the server.'; err.hidden = false;
+        });
+    }
+
+    submit.addEventListener('click', submitJob);
+    roleIn.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); submitJob(); }
+    });
+  }
+
+  /* ---------- load ---------- */
+  Promise.all([
+    fetch('/api/jobs', { credentials: 'same-origin' })
+      .then(function (r) { return r.json(); }).catch(function () { return null; }),
+    fetch('/api/me', { credentials: 'same-origin' })
+      .then(function (r) { return r.json(); }).catch(function () { return null; })
+  ]).then(function (results) {
+    var list = results[0], me = results[1];
+    isOffice = !!(me && me.loggedIn && me.role === 'office');
+    jobs = (list && list.ok && list.jobs) ? list.jobs : FALLBACK.slice();
     render();
     if (isOffice) setupAdminUI();
   });
