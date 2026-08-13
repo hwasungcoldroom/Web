@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=20260813b">
+  <link rel="stylesheet" href="styles.css?v=20260813c">
   <link rel="icon" type="image/png" href="favicon.png">
 </head>
 <body data-page="employment">
@@ -61,7 +61,7 @@
           <li><a href="/faq">FAQ</a></li>
           <li><a href="/employment" aria-current="page">Employment</a></li>
           <li><a href="/contact">Contact</a></li>
-          <!-- Office menu: hidden by default; script.js?v=20260813b reveals it ONLY when
+          <!-- Office menu: hidden by default; script.js?v=20260813c reveals it ONLY when
                /api/me confirms an office login. Links come from the server. -->
           <li class="nav-office" data-nav-office hidden>
             <button type="button" class="nav-office-toggle" data-office-toggle aria-haspopup="true" aria-expanded="false">Office <span class="office-caret" aria-hidden="true">&#9662;</span></button>
@@ -101,13 +101,14 @@
           </p>
         </div>
 
+        <div class="jobs-admin-row" id="jobs-admin-row" hidden>
+          <button type="button" class="btn btn-sm btn-primary" id="job-add-open">+ Add Position</button>
+          <button type="button" class="btn btn-sm jobs-manage-btn" id="job-manage-open">Manage</button>
+        </div>
+
         <ul class="job-grid reveal" id="job-grid">
           <li class="jobs-loading">Loading open positions&hellip;</li>
         </ul>
-
-        <div class="jobs-admin-row" id="jobs-admin-row" hidden>
-          <button type="button" class="btn btn-primary" id="job-add-open">+ Add Position</button>
-        </div>
             <button type="button" class="btn btn-primary btn-block js-apply"
                     data-role="Freelancer / Part-Timer" data-variant="experienced"
                     aria-describedby="job-freelance-title">
@@ -197,7 +198,18 @@
       </div>
     </section>
 
-<div class="modal-overlay" id="job-modal" hidden>
+<div class="modal-overlay" id="job-manage-modal" hidden>
+    <div class="modal-panel modal-panel--manage" role="dialog" aria-modal="true" aria-labelledby="job-manage-title">
+      <button type="button" class="modal-close" data-close-modal aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <h2 id="job-manage-title" class="partner-modal-title">Manage positions</h2>
+      <p class="partner-modal-sub">Changes show on the page immediately.</p>
+      <ul class="job-manage-list" id="job-manage-list"></ul>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="job-modal" hidden>
     <div class="modal-panel modal-panel--partner" role="dialog" aria-modal="true" aria-labelledby="job-modal-title">
       <button type="button" class="modal-close" data-close-modal aria-label="Close">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
@@ -311,7 +323,7 @@
 
       <!-- ===================================================================
            WHERE APPLICATIONS ARE SENT
-           Submitted by script.js?v=20260813b to /api/apply — the serverless function in
+           Submitted by script.js?v=20260813c to /api/apply — the serverless function in
            this project's api/ folder — which emails it on with the CV
            attached. The recipient is set by the APPLY_TO environment
            variable in Vercel, not here.
@@ -527,6 +539,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=20260813b"></script>
+  <script src="script.js?v=20260813c"></script>
 </body>
 </html>
