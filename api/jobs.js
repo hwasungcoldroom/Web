@@ -22,6 +22,64 @@ const store = require('./_lib/jobs-store.js');
 
 const VARIANTS = ['office', 'experienced', 'trainee'];
 
+/* ---------------------------------------------------------
+   Optional: announce new job postings on Facebook.
+   Configured entirely through env vars — with none set, this
+   does nothing. Never blocks or fails the job creation.
+
+   Path A (recommended): Zapier / Make webhook
+     JOB_POST_WEBHOOK_URL = the webhook URL from your Zap/scenario
+     (Zap: "Webhooks by Zapier → Catch Hook" then
+      "Facebook Pages → Create Page Post" using the "message" field)
+
+   Path B: direct Facebook Graph API
+     FB_PAGE_ID    = the Facebook Page id
+     FB_PAGE_TOKEN = a Page access token with pages_manage_posts
+   --------------------------------------------------------- */
+async function announceJob(job) {
+  const message =
+    'NOW HIRING: ' + job.role + '\n\n' +
+    (job.desc ? job.desc + '\n\n' : '') +
+    (job.meta && job.meta.length ? job.meta.join(' | ') + '\n\n' : '') +
+    'Apply at https://hwasung1996.com/employment';
+
+  const timeout = new AbortController();
+  const timer = setTimeout(function () { timeout.abort(); }, 6000);
+
+  try {
+    if (process.env.JOB_POST_WEBHOOK_URL) {
+      await fetch(process.env.JOB_POST_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: timeout.signal,
+        body: JSON.stringify({
+          message: message,
+          role: job.role,
+          desc: job.desc || '',
+          tags: (job.meta || []).join(', '),
+          link: 'https://hwasung1996.com/employment'
+        })
+      });
+    } else if (process.env.FB_PAGE_ID && process.env.FB_PAGE_TOKEN) {
+      await fetch('https://graph.facebook.com/v19.0/' +
+        encodeURIComponent(process.env.FB_PAGE_ID) + '/feed', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: timeout.signal,
+        body: JSON.stringify({
+          message: message,
+          access_token: process.env.FB_PAGE_TOKEN
+        })
+      });
+    }
+  } catch (e) {
+    // Announcement failures are ignored on purpose — the job posting
+    // on the website itself must never be affected.
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
 
@@ -75,6 +133,7 @@ module.exports = async function handler(req, res) {
       const job = { id: crypto.randomUUID(), role: role, variant: variant, desc: desc, meta: meta, status: 'open' };
       current.jobs.push(job);
       await store.writeJobs(current.jobs);
+      await announceJob(job);   // no-op unless configured; never throws
       return res.status(200).json({ ok: true, job: job });
     } catch (e) {
       return res.status(502).json({ ok: false, error: 'Could not save the position.' });
