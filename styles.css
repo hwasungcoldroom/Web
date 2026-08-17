@@ -2460,18 +2460,18 @@ html.auth-office .main-nav .nav-office { display: block; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 62px;
-  height: 62px;
+  width: 78px;
+  height: 78px;
   border-radius: 50%;
   color: #fff;
-  border: 2px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.4);
+  border: 3px solid rgba(255, 255, 255, 0.92);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.45);
   transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
 }
-.hero-social-link svg { width: 30px; height: 30px; }
+.hero-social-link svg { width: 40px; height: 40px; }
 @media (max-width: 700px) {
-  .hero-social-link { width: 54px; height: 54px; }
-  .hero-social-link svg { width: 26px; height: 26px; }
+  .hero-social-link { width: 62px; height: 62px; }
+  .hero-social-link svg { width: 32px; height: 32px; }
 }
 
 /* brand colours so they pop off the dark hero */
