@@ -1093,15 +1093,7 @@ h3 { font-size: 1.15rem; font-weight: 600; }
   text-align: left;
 }
 .footer-brand p { font-size: 0.9rem; margin-bottom: 20px; }
-.social-icons { display: flex; gap: 12px; }
-.social-icons a {
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  background: rgba(246, 249, 251, 0.08);
-  display: flex; align-items: center; justify-content: center;
-  transition: background var(--transition);
-}
-.social-icons a:hover { background: var(--color-primary); }
+
 .site-footer h3 {
   color: #fff;
   font-size: 0.85rem;
@@ -2452,27 +2444,35 @@ html.auth-office .main-nav .nav-office { display: block; }
   margin-top: 28px;
 }
 .hero-social-label {
-  font-size: 0.82rem;
+  display: inline-block;
+  font-size: 0.85rem;
   font-weight: 800;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #CFEAFF;                          /* frosty ice-blue, pops on the dark hero */
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
-  margin-right: 4px;
+  color: #0E2A44;                 /* dark navy text ... */
+  background: #FFFFFF;            /* ... on a SOLID WHITE pill — cannot blend */
+  padding: 8px 16px;
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  margin-right: 6px;
 }
 .hero-social-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 62px;
+  height: 62px;
   border-radius: 50%;
   color: #fff;
-  border: 2px solid rgba(255, 255, 255, 0.85);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.4);
   transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
 }
-.hero-social-link svg { width: 24px; height: 24px; }
+.hero-social-link svg { width: 30px; height: 30px; }
+@media (max-width: 700px) {
+  .hero-social-link { width: 54px; height: 54px; }
+  .hero-social-link svg { width: 26px; height: 26px; }
+}
 
 /* brand colours so they pop off the dark hero */
 .hero-social-link--fb { background: #1877F2; }
