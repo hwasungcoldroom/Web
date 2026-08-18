@@ -38,7 +38,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=20260813m">
+  <link rel="stylesheet" href="styles.css?v=20260813n">
   <link rel="icon" type="image/png" href="favicon.png">
   <!-- Tells Google exactly who and where this business is, rather than
        leaving it to guess from the page text. Keep in step with the
@@ -189,7 +189,7 @@
           <li><a href="/faq">FAQ</a></li>
           <li><a href="/employment">Employment</a></li>
           <li><a href="/contact">Contact</a></li>
-          <!-- Office menu: hidden by default; script.js?v=20260813m reveals it ONLY when
+          <!-- Office menu: hidden by default; script.js?v=20260813n reveals it ONLY when
                /api/me confirms an office login. Links come from the server. -->
           <li class="nav-office" data-nav-office>
             <button type="button" class="nav-office-toggle" data-office-toggle aria-haspopup="true" aria-expanded="false">Office <span class="office-caret" aria-hidden="true">&#9662;</span></button>
@@ -278,19 +278,17 @@
             </button>
           </div>
 
-          <!-- Social links: Facebook live; YouTube & Instagram rendered but
-               inactive until the accounts exist — swap the href and remove
-               the --soon class to activate them. -->
+          <!-- Social links: Facebook, YouTube, and Instagram — all live. -->
           <div class="hero-social reveal" aria-label="Hwasung on social media">
             <span class="hero-social-label">Follow us</span>
             <a class="hero-social-link hero-social-link--fb hero-social-link--live" href="https://www.facebook.com/people/Hwa-Sung-Ref-CompanyInc/100063736243556/"
                target="_blank" rel="noopener noreferrer" aria-label="Hwasung Refrigeration on Facebook (opens in a new tab)">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.6c0-.9.3-1.6 1.6-1.6h1.7V3.1C16.5 3 15.4 3 14.2 3c-2.5 0-4.2 1.5-4.2 4.3v2.5H7.3v3.2H10V21h3.5Z"/></svg>
             </a>
-            <a class="hero-social-link hero-social-link--yt hero-social-link--soon" href="#" aria-label="YouTube (coming soon)" title="Coming soon" aria-disabled="true" tabindex="-1">
+            <a class="hero-social-link hero-social-link--yt hero-social-link--live" href="https://www.youtube.com/@gitaekkim9377" target="_blank" rel="noopener noreferrer" aria-label="Hwasung Refrigeration on YouTube (opens in a new tab)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 7.2a2.6 2.6 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.6 2.6 0 0 0 2.4 7.2 27 27 0 0 0 2 12a27 27 0 0 0 .4 4.8 2.6 2.6 0 0 0 1.8 1.8c1.6.4 7.8.4 7.8.4s6.2 0 7.8-.4a2.6 2.6 0 0 0 1.8-1.8A27 27 0 0 0 22 12a27 27 0 0 0-.4-4.8ZM10 15.2V8.8L15.6 12 10 15.2Z"/></svg>
             </a>
-            <a class="hero-social-link hero-social-link--ig hero-social-link--soon" href="#" aria-label="Instagram (coming soon)" title="Coming soon" aria-disabled="true" tabindex="-1">
+            <a class="hero-social-link hero-social-link--ig hero-social-link--live" href="https://www.instagram.com/hwasungrefrigeration/" target="_blank" rel="noopener noreferrer" aria-label="Hwasung Refrigeration on Instagram (opens in a new tab)">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
             </a>
           </div>
@@ -496,6 +494,6 @@
     <div class="modal-stack" id="welcome-stack"></div>
   </div>
 
-  <script src="script.js?v=20260813m"></script>
+  <script src="script.js?v=20260813n"></script>
 </body>
 </html>
