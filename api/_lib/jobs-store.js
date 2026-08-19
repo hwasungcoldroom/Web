@@ -9,35 +9,23 @@
 'use strict';
 
 const SEED = require('./jobs-seed.json');
+const blobJson = require('./blob-json.js');
 
-const BLOB_PATH = 'data/jobs.json';
+const BASE = 'data/jobs';   // versioned files: data/jobs-v<timestamp>.json
 
 function configured() {
-  return !!process.env.BLOB_READ_WRITE_TOKEN;
+  return blobJson.configured();
 }
 
 async function readJobs() {
   if (!configured()) return { jobs: SEED.slice(), fromSeed: true };
-  const { list } = require('@vercel/blob');
-  const found = await list({ prefix: BLOB_PATH, limit: 1 });
-  const blob = (found.blobs || []).find(function (b) { return b.pathname === BLOB_PATH; });
-  if (!blob) return { jobs: SEED.slice(), fromSeed: true };
-
-  const res = await fetch(blob.url + '?t=' + Date.now());
-  if (!res.ok) throw new Error('blob fetch failed: ' + res.status);
-  const data = await res.json();
-  return { jobs: Array.isArray(data) ? data : [], fromSeed: false };
+  const r = await blobJson.readLatest(BASE);
+  if (!r.found) return { jobs: SEED.slice(), fromSeed: true };
+  return { jobs: Array.isArray(r.data) ? r.data : [], fromSeed: false };
 }
 
 async function writeJobs(jobs) {
-  const { put } = require('@vercel/blob');
-  await put(BLOB_PATH, JSON.stringify(jobs), {
-    access: 'public',
-    contentType: 'application/json',
-    addRandomSuffix: false,
-    allowOverwrite: true,
-    cacheControlMaxAge: 60
-  });
+  await blobJson.writeVersioned(BASE, jobs);
 }
 
 /* Role names of positions currently open — used by /api/apply so

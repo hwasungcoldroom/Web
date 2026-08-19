@@ -23,37 +23,24 @@
 const crypto = require('crypto');
 const auth = require('./_lib/auth.js');
 const SEED = require('./_lib/partners-seed.json');
+const blobJson = require('./_lib/blob-json.js');
 
-const BLOB_PATH = 'data/partners.json';
+const BASE = 'data/partners';   // versioned files: data/partners-v<timestamp>.json
 const ALLOWED_REGIONS = ['1', '2', '3', '4A', '4B', '5', '6', '7', '8', '9', '10', '11', '12', '13', 'NCR', 'CAR', 'BARMM'];
 
 function blobConfigured() {
-  return !!process.env.BLOB_READ_WRITE_TOKEN;
+  return blobJson.configured();
 }
 
-/* Read the current list: the stored blob if it exists, else the seed. */
+/* Read the current list: newest stored version if any, else the seed. */
 async function readPartners() {
-  const { list } = require('@vercel/blob');
-  const found = await list({ prefix: BLOB_PATH, limit: 1 });
-  const blob = (found.blobs || []).find(function (b) { return b.pathname === BLOB_PATH; });
-  if (!blob) return { partners: SEED.slice(), fromSeed: true };
-
-  // cache-busting query so we always read the freshest version
-  const res = await fetch(blob.url + '?t=' + Date.now());
-  if (!res.ok) throw new Error('blob fetch failed: ' + res.status);
-  const data = await res.json();
-  return { partners: Array.isArray(data) ? data : [], fromSeed: false };
+  const r = await blobJson.readLatest(BASE);
+  if (!r.found) return { partners: SEED.slice(), fromSeed: true };
+  return { partners: Array.isArray(r.data) ? r.data : [], fromSeed: false };
 }
 
 async function writePartners(partners) {
-  const { put } = require('@vercel/blob');
-  await put(BLOB_PATH, JSON.stringify(partners), {
-    access: 'public',
-    contentType: 'application/json',
-    addRandomSuffix: false,
-    allowOverwrite: true,
-    cacheControlMaxAge: 60
-  });
+  await blobJson.writeVersioned(BASE, partners);
 }
 
 module.exports = async function handler(req, res) {
