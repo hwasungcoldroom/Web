@@ -22,6 +22,18 @@ const store = require('./_lib/jobs-store.js');
 
 const VARIANTS = ['office', 'experienced', 'trainee'];
 
+/* Core positions that can never be deleted — only marked filled or
+   available. Matched by name, case-insensitive. */
+const PROTECTED_ROLES = [
+  'freelancer / part-timer',
+  'experienced technician',
+  'no-experience technician',
+  'branch manager'
+];
+function isProtectedRole(role) {
+  return PROTECTED_ROLES.indexOf(String(role || '').trim().toLowerCase()) >= 0;
+}
+
 /* ---------------------------------------------------------
    Optional: announce new job postings on Facebook.
    Configured entirely through env vars — with none set, this
@@ -165,10 +177,17 @@ module.exports = async function handler(req, res) {
     }
     try {
       const current = await store.readJobs();
-      const next = current.jobs.filter(function (j) { return j.id !== id; });
-      if (next.length === current.jobs.length) {
+      const target = current.jobs.find(function (j) { return j.id === id; });
+      if (!target) {
         return res.status(404).json({ ok: false, error: 'Position not found.' });
       }
+      if (isProtectedRole(target.role)) {
+        return res.status(400).json({
+          ok: false,
+          error: 'This core position can\'t be removed — mark it as filled instead.'
+        });
+      }
+      const next = current.jobs.filter(function (j) { return j.id !== id; });
       await store.writeJobs(next);
       return res.status(200).json({ ok: true });
     } catch (e) {

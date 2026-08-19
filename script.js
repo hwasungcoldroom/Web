@@ -1311,6 +1311,18 @@
   var isOffice = false;
   var jobs = [];
 
+  // Core positions: no Remove button; they can only be marked
+  // filled/available. (Also enforced server-side in /api/jobs.)
+  var PROTECTED_ROLES = [
+    'freelancer / part-timer',
+    'experienced technician',
+    'no-experience technician',
+    'branch manager'
+  ];
+  function isProtectedRole(role) {
+    return PROTECTED_ROLES.indexOf(String(role || '').trim().toLowerCase()) >= 0;
+  }
+
   function el(tag, cls, text) {
     var e = document.createElement(tag);
     if (cls) e.className = cls;
@@ -1375,22 +1387,24 @@
       });
       admin.appendChild(toggle);
 
-      var del = el('button', 'job-admin-btn job-admin-btn--danger', 'Remove');
-      del.type = 'button';
-      del.addEventListener('click', function () {
-        if (!window.confirm('Remove the "' + job.role + '" position from the page?')) return;
-        del.disabled = true;
-        fetch('/api/jobs?id=' + encodeURIComponent(job.id), { method: 'DELETE', credentials: 'same-origin' })
-          .then(function (r) { return r.json(); })
-          .then(function (data) {
-            if (data && data.ok) {
-              jobs = jobs.filter(function (j) { return j.id !== job.id; });
-              render();
-            } else { del.disabled = false; window.alert((data && data.error) || 'Could not delete.'); }
-          })
-          .catch(function () { del.disabled = false; window.alert('Could not reach the server.'); });
-      });
-      admin.appendChild(del);
+      if (!isProtectedRole(job.role)) {
+        var del = el('button', 'job-admin-btn job-admin-btn--danger', 'Remove');
+        del.type = 'button';
+        del.addEventListener('click', function () {
+          if (!window.confirm('Remove the "' + job.role + '" position from the page?')) return;
+          del.disabled = true;
+          fetch('/api/jobs?id=' + encodeURIComponent(job.id), { method: 'DELETE', credentials: 'same-origin' })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+              if (data && data.ok) {
+                jobs = jobs.filter(function (j) { return j.id !== job.id; });
+                render();
+              } else { del.disabled = false; window.alert((data && data.error) || 'Could not delete.'); }
+            })
+            .catch(function () { del.disabled = false; window.alert('Could not reach the server.'); });
+        });
+        admin.appendChild(del);
+      }
 
       li.appendChild(admin);
     }
